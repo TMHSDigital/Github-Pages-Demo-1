@@ -62,6 +62,9 @@ body {
 
 .site-header h1 {
     margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
     display: flex;
     align-items: center;
 }
@@ -78,6 +81,7 @@ body {
 
 .brand-primary {
     color: var(--primary-color);
+    margin-right: 0.1em;
 }
 
 .brand-secondary {
@@ -89,6 +93,7 @@ body {
 
 .site-footer .brand-primary,
 .site-footer .brand-secondary {
+    color: white;
     -webkit-text-fill-color: white;
     background: none;
 }
