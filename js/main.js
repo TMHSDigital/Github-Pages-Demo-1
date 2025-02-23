@@ -116,22 +116,45 @@ const app = {
         const menuButton = document.querySelector('.menu-button');
         const nav = document.querySelector('nav');
         const navLinks = document.querySelectorAll('nav a');
+        let isMenuOpen = false;
 
         if (menuButton && nav) {
+            // Toggle menu
             menuButton.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
                 nav.classList.toggle('active');
-                const isOpen = nav.classList.contains('active');
-                menuButton.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = isOpen ? 'hidden' : '';
+                menuButton.innerHTML = isMenuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = isMenuOpen ? 'hidden' : '';
             });
 
             // Close menu when clicking a link
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
+                    isMenuOpen = false;
                     nav.classList.remove('active');
                     menuButton.innerHTML = '<i class="fas fa-bars"></i>';
                     document.body.style.overflow = '';
                 });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (isMenuOpen && !nav.contains(e.target) && !menuButton.contains(e.target)) {
+                    isMenuOpen = false;
+                    nav.classList.remove('active');
+                    menuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Handle escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isMenuOpen) {
+                    isMenuOpen = false;
+                    nav.classList.remove('active');
+                    menuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                    document.body.style.overflow = '';
+                }
             });
         }
     }
