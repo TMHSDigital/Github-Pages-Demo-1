@@ -385,22 +385,25 @@ textarea {
 .social-link {
     color: white;
     text-decoration: none;
-    padding: 0.75rem;
+    padding: 1rem;
     border-radius: 0.5rem;
     background: rgba(255, 255, 255, 0.1);
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
 }
 
 .social-link:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+    color: white;
 }
 
-.social-link span {
-    font-weight: 500;
+.social-link i {
+    font-size: 1.25rem;
 }
 
 /* Responsive Design */
