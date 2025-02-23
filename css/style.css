@@ -356,13 +356,13 @@ textarea {
 .site-footer {
     background: var(--primary-color);
     color: white;
-    padding: 4rem 0;
+    padding: 3rem 0;
 }
 
 .footer-content {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: center;
     text-align: center;
 }
@@ -371,15 +371,9 @@ textarea {
     opacity: 0.9;
 }
 
-.footer-links {
-    display: flex;
-    gap: 3rem;
-}
-
 .footer-social {
     display: flex;
     gap: 1.5rem;
-    margin-top: 1rem;
 }
 
 .social-link {
@@ -455,13 +449,7 @@ textarea {
     }
 
     .footer-content {
-        gap: 2rem;
-    }
-
-    .footer-links {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .footer-social {
