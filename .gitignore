@@ -19,7 +19,5 @@ build/
 .env
 .env.local
 
-_site/
-.sass-cache/
-.jekyll-cache/
+# Logs
 *.log 
