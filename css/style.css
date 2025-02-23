@@ -62,9 +62,18 @@ body {
 
 .site-header h1 {
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 2rem;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-tmhs {
+    margin-right: 0.5rem;
 }
 
 .brand-primary {
@@ -370,6 +379,17 @@ textarea {
 
 .footer-links a:hover {
     opacity: 1;
+}
+
+.footer-logos {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.footer-logos .logo {
+    height: 1.75rem;
+    filter: brightness(0) invert(1);
 }
 
 /* Responsive Design */
