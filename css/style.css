@@ -64,11 +64,24 @@ body {
     margin: 0;
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    letter-spacing: -0.025em;
+}
+
+.brand-primary {
+    color: var(--primary-color);
+}
+
+.brand-secondary {
+    background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -0.025em;
+}
+
+.site-footer .brand-primary,
+.site-footer .brand-secondary {
+    -webkit-text-fill-color: white;
+    background: none;
 }
 
 nav ul {
