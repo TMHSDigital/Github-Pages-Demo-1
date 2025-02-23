@@ -453,24 +453,43 @@ textarea {
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        transition: right 0.3s ease;
+        transition: transform 0.3s ease;
         display: flex;
         align-items: center;
         justify-content: center;
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
     }
 
     nav.active {
-        right: 0;
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
     }
 
     nav ul {
         flex-direction: column;
         text-align: center;
         gap: 2rem;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+    }
+
+    nav.active ul {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     nav a {
         font-size: 1.25rem;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+    }
+
+    nav a::after {
+        bottom: 0;
     }
 
     .hero {
