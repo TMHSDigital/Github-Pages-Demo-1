@@ -2,7 +2,7 @@
 
 A sophisticated, modern website template showcasing advanced CSS effects, responsive design, and smooth interactions. Built with pure HTML, CSS, and JavaScript.
 
-![Modern Demo Site](assets/preview.png)
+![Modern Demo Site](assets/images/preview.png)
 
 ## Features
 
