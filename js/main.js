@@ -5,6 +5,7 @@ const app = {
     init() {
         this.attachEventListeners();
         this.setupFormHandling();
+        this.setupMobileMenu();
     },
 
     attachEventListeners() {
@@ -108,6 +109,30 @@ const app = {
             this.showFormSuccess();
         } catch (error) {
             this.showFormError('Failed to send message. Please try again.');
+        }
+    },
+
+    setupMobileMenu() {
+        const menuButton = document.querySelector('.menu-button');
+        const nav = document.querySelector('nav');
+        const navLinks = document.querySelectorAll('nav a');
+
+        if (menuButton && nav) {
+            menuButton.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                const isOpen = nav.classList.contains('active');
+                menuButton.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = isOpen ? 'hidden' : '';
+            });
+
+            // Close menu when clicking a link
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    menuButton.innerHTML = '<i class="fas fa-bars"></i>';
+                    document.body.style.overflow = '';
+                });
+            });
         }
     }
 };
