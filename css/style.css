@@ -361,8 +361,10 @@ textarea {
 
 .footer-content {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 2rem;
     align-items: center;
+    text-align: center;
 }
 
 .footer-info {
@@ -374,27 +376,31 @@ textarea {
     gap: 3rem;
 }
 
-.footer-links a {
+.footer-social {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.social-link {
     color: white;
     text-decoration: none;
-    opacity: 0.8;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
     transition: all 0.2s ease;
-    font-weight: 500;
-}
-
-.footer-links a:hover {
-    opacity: 1;
-}
-
-.footer-logos {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    gap: 0.5rem;
 }
 
-.footer-logos .logo {
-    height: 1.75rem;
-    filter: brightness(0) invert(1);
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.social-link span {
+    font-weight: 500;
 }
 
 /* Responsive Design */
@@ -446,14 +452,17 @@ textarea {
     }
 
     .footer-content {
-        flex-direction: column;
         gap: 2rem;
-        text-align: center;
     }
 
     .footer-links {
         flex-wrap: wrap;
         justify-content: center;
         gap: 2rem;
+    }
+
+    .footer-social {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 } 
