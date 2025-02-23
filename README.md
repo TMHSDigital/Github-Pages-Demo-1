@@ -1,4 +1,4 @@
-# Your Website Name
+# Demo Site
 
 A clean, modern website built with HTML, CSS, and JavaScript.
 
