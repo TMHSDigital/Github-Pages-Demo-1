@@ -59,8 +59,8 @@ Watch our brief introduction:
 ## Highlights
 
 <table>
-<tr>
-<td width="50%">
+  <tr>
+    <td width="50%">
 
 ### Modern Design
 - Frosted glass UI
@@ -69,20 +69,20 @@ Watch our brief introduction:
 - Dynamic shadows
 - Progress indicators
 
-</td>
-<td width="50%">
+    </td>
+    <td width="50%">
 
 ### Theme System
 - Smart theme detection
 - Smooth transitions
 - Persistent settings
-- High contrast
-- System sync
+- High contrast options
+- System sync with OS preferences
 
-</td>
-</tr>
-<tr>
-<td>
+    </td>
+  </tr>
+  <tr>
+    <td>
 
 ### Performance
 - Zero dependencies
@@ -91,26 +91,28 @@ Watch our brief introduction:
 - Native scrolling
 - Minimal footprint
 
-</td>
-<td>
+    </td>
+    <td>
 
 ### Responsive
-- Mobile-first
+- Mobile-first design
 - Fluid typography
 - Smart layouts
 - Touch optimized
-- Adaptive grid
+- Adaptive grid system
 
-</td>
-</tr>
+    </td>
+  </tr>
 </table>
 
 ## Documentation
 
 ### Prerequisites
-- Modern web browser
-- Basic understanding of HTML/CSS/JS
-- Local development server (Python or Node.js)
+- Modern web browser (Chrome 80+, Firefox 72+, Safari 13.1+, or Edge 80+)
+- Basic familiarity with HTML, CSS, and JavaScript
+- Local development server (Python, Node.js, or PHP)
+- Text editor or IDE
+- Git for version control
 
 ### Installation
 
@@ -242,10 +244,10 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 
 | Browser | Support | Notes |
 |:--------|:-------:|:------|
-| Chrome  | ✅ 2    | Full  |
-| Firefox | ✅ 2    | Full  |
-| Safari  | ✅ 2    | Full  |
-| Edge    | ✅ 2    | Full  |
+| Chrome  |    ✅    | Full  |
+| Firefox |    ✅    | Full  |
+| Safari  |    ✅    | Full  |
+| Edge    |    ✅    | Full  |
 
 ## FAQ
 
@@ -323,9 +325,9 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-[View Demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/) • 
-[Report Bug](../../issues) • 
-[Request Feature](../../issues)
+<a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/">View Demo</a> • 
+<a href="../../issues">Report Bug</a> • 
+<a href="../../issues">Request Feature</a>
 
 <sub>Designed and developed by TMHSDigital</sub>
 
