@@ -751,11 +751,23 @@ textarea[aria-invalid="true"] {
 
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-    * {
+    *,
+    ::before,
+    ::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+    
+    .fade-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    
+    .feature-card:hover {
+        transform: none;
     }
 }
 
@@ -1000,6 +1012,7 @@ textarea,
 /* Initial load - no transitions */
 .theme-transitioning {
     transition: var(--theme-transition) !important;
+    contain: style layout;
 }
 
 /* Elements that should transition */
@@ -1091,73 +1104,145 @@ body.theme-transitioning,
 
 /* Intersection Observer Animations */
 .fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  will-change: opacity, transform;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    contain: layout style paint;
 }
 
 .fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Form Error Message */
 .form-error-message {
-  background: #fee2e2;
-  border: 1px solid #ef4444;
-  color: #b91c1c;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  margin-bottom: 1.5rem;
-  animation: slideIn 0.3s ease;
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    contain: content;
 }
 
 [data-theme="dark"] .form-error-message {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: #ef4444;
-  color: #fca5a5;
-}
-
-/* Theme Transitions */
-.theme-transitioning {
-  transition: var(--theme-transition) !important;
-}
-
-/* Elements that should transition */
-body.theme-transitioning,
-.theme-transitioning .site-header,
-.theme-transitioning .feature-card,
-.theme-transitioning .contact-form,
-.theme-transitioning input,
-.theme-transitioning textarea,
-.theme-transitioning .settings-panel,
-.theme-transitioning .social-link,
-.theme-transitioning .hero,
-.theme-transitioning .menu-button,
-.theme-transitioning .toggle-slider,
-.theme-transitioning .toggle-slider:before {
-  transition: var(--theme-transition);
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #fca5a5;
 }
 
 /* Lazy Loading */
 .social-link {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeUp 0.3s ease forwards;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp 0.3s ease forwards;
 }
 
 .social-link:nth-child(2) {
-  animation-delay: 0.1s;
+    animation-delay: 0.1s;
 }
 
 .social-link:nth-child(3) {
-  animation-delay: 0.2s;
+    animation-delay: 0.2s;
 }
 
 @keyframes fadeUp {
-  to {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        contain: style layout;
+    }
+}
+
+/* Performance optimizations */
+.feature-card,
+.social-link,
+.settings-panel {
+    will-change: transform, opacity;
+    contain: content;
+}
+
+/* Smoother animations */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    contain: layout style paint;
+}
+
+.fade-in.visible {
     opacity: 1;
     transform: translateY(0);
-  }
+}
+
+/* Enhanced error messages */
+.form-error-message {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    contain: content;
+}
+
+[data-theme="dark"] .form-error-message {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #fca5a5;
+}
+
+/* Optimized theme transitions */
+.theme-transitioning {
+    transition: var(--theme-transition) !important;
+    contain: style layout;
+}
+
+/* Optimized animations */
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        contain: style layout;
+    }
+}
+
+/* Better reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .fade-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    
+    .feature-card:hover {
+        transform: none;
+    }
 } 

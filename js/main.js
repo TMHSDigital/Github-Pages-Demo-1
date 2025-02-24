@@ -200,24 +200,33 @@ const app = {
         const originalText = submitButton.textContent;
         let retries = 0;
         const MAX_RETRIES = 3;
+        const RETRY_DELAY = 1000;
         
-        const showError = (message) => {
+        const showError = (message, isRetrying = false) => {
             const errorEl = document.createElement('div');
             errorEl.className = 'form-error-message';
             errorEl.setAttribute('role', 'alert');
+            errorEl.setAttribute('aria-live', isRetrying ? 'polite' : 'assertive');
             errorEl.textContent = message;
             
             const existing = this.form.querySelector('.form-error-message');
             if (existing) existing.remove();
             
             this.form.insertBefore(errorEl, this.form.firstChild);
-            setTimeout(() => errorEl.remove(), 5000);
+            
+            // Only auto-remove non-retry errors
+            if (!isRetrying) {
+                setTimeout(() => errorEl.remove(), 5000);
+            }
         };
+        
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         
         const trySubmit = async () => {
             try {
                 submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Sending...';
+                submitButton.setAttribute('aria-label', 'Sending message...');
                 
                 // Simulate API call
                 await new Promise(resolve => setTimeout(resolve, 1000));
@@ -229,7 +238,9 @@ const app = {
             } catch (error) {
                 retries++;
                 if (retries < MAX_RETRIES) {
-                    showError(`Failed to send message. Retrying... (${retries}/${MAX_RETRIES})`);
+                    const delay = RETRY_DELAY * Math.pow(2, retries - 1); // Exponential backoff
+                    showError(`Failed to send message. Retrying in ${delay/1000} seconds... (${retries}/${MAX_RETRIES})`, true);
+                    await wait(delay);
                     return await trySubmit();
                 }
                 showError('Failed to send message after multiple attempts. Please try again later.');
@@ -242,6 +253,7 @@ const app = {
         } finally {
             submitButton.disabled = false;
             submitButton.textContent = originalText;
+            submitButton.removeAttribute('aria-label');
         }
     },
 
@@ -376,6 +388,11 @@ const app = {
 
     // Theme utility method
     updateTheme(isDark, enableTransition = true) {
+        // Clear any pending transitions
+        if (this.themeState.transitionTimeout) {
+            clearTimeout(this.themeState.transitionTimeout);
+        }
+        
         // Prevent rapid toggles during transition
         if (enableTransition && this.themeState.isTransitioning) return;
         
@@ -388,14 +405,18 @@ const app = {
         
         if (enableTransition) {
             this.themeState.isTransitioning = true;
+            
+            // Start transition
             requestAnimationFrame(() => {
                 root.classList.add('theme-transitioning');
                 root.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
                 
-                setTimeout(() => {
+                // Ensure transition completes
+                this.themeState.transitionTimeout = setTimeout(() => {
                     root.classList.remove('theme-transitioning');
                     this.themeState.isTransitioning = false;
+                    this.announceMessage(`Theme changed to ${newTheme} mode`);
                 }, this.themeState.TRANSITION_DURATION);
             });
         } else {
