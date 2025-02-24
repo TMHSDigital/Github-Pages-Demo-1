@@ -1,104 +1,138 @@
 # Modern Demo Site
 
-A sophisticated, modern website template showcasing advanced CSS effects, responsive design, and smooth interactions. Built with pure HTML, CSS, and JavaScript.
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Demo-blue)](https://tmhsdigital.github.io/Github-Pages-Demo-1/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Built with: HTML](https://img.shields.io/badge/Built%20with-HTML-orange)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![Style: CSS](https://img.shields.io/badge/Style-CSS-blue)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Maintained](https://img.shields.io/badge/Maintained-yes-green.svg)](https://github.com/TMHSDigital/Github-Pages-Demo-1/graphs/commit-activity)
 
-<div style="padding: 20px; border-radius: 12px; background: white; box-shadow: 0 8px 30px rgba(0,0,0,0.12); margin: 20px 0;">
-    <img src="assets/images/preview.png" alt="Modern Demo Site" style="width: 100%; border-radius: 8px; display: block;">
+> A sophisticated, modern website template showcasing advanced CSS effects, responsive design, and smooth interactions. Built with pure HTML, CSS, and JavaScript.
+
+[View Demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/) • [Documentation](#documentation) • [Report Bug](../../issues) • [Request Feature](../../issues)
+
+<details>
+<summary>Screenshot</summary>
+<br>
+
+<div align="center">
+    <img src="assets/images/preview.png" alt="Modern Demo Site Preview" style="max-width: 100%; border-radius: 8px;">
 </div>
 
-## Features
+</details>
+
+---
+
+## Highlights
+
+<table>
+<tr>
+<td width="50%">
 
 ### Modern Design
-- Frosted glass UI with backdrop filters
-- Multi-layered gradient compositions
-- Advanced CSS animations and transitions
-- SVG pattern overlays
-- Sophisticated shadow hierarchy
-- Floating gradient blob effects
-- Scroll progress indicators
+- Frosted glass UI
+- Multi-layered gradients
+- Advanced animations
+- Dynamic shadows
+- Progress indicators
+
+</td>
+<td width="50%">
 
 ### Theme System
-- Dark/Light mode toggle
-- System preference detection
-- Smooth theme transitions
-- Persistent theme settings
-- Accessible color schemes
-- High contrast support
+- Smart theme detection
+- Smooth transitions
+- Persistent settings
+- High contrast
+- System sync
+
+</td>
+</tr>
+<tr>
+<td>
 
 ### Performance
-- Zero external dependencies
-- Hardware-accelerated animations
-- Optimized asset loading
-- Native smooth scrolling
-- Minimal CSS footprint
-- Efficient theme switching
+- Zero dependencies
+- Hardware acceleration
+- Optimized assets
+- Native scrolling
+- Minimal footprint
 
-### Responsive Design
-- Mobile-first architecture
-- Fluid typography system
-- Contextual layouts
-- Touch-optimized interactions
-- Breakpoint-free design
-- Adaptive feature grid
+</td>
+<td>
 
-### Development
-- Semantic HTML structure
-- Modern CSS architecture (Custom Properties, Grid, Flexbox)
-- Modular JavaScript patterns
-- Comprehensive documentation
-- DRY principles
-- Progressive enhancement
+### Responsive
+- Mobile-first
+- Fluid typography
+- Smart layouts
+- Touch optimized
+- Adaptive grid
 
-### Accessibility
-- ARIA-enhanced components
-- Keyboard navigation support
-- Screen reader optimized
-- Skip-to-content links
-- Focus management
-- Reduced motion support
+</td>
+</tr>
+</table>
 
-## Quick Start
+## Documentation
 
-1. Clone the repository:
+### Prerequisites
+- Modern web browser
+- Basic understanding of HTML/CSS/JS
+- Local development server (Python or Node.js)
+
+### Installation
+
+1. Clone the repository
    ```bash
    git clone https://github.com/TMHSDigital/modern-demo-site.git
    ```
 
-2. Navigate to the project:
+2. Navigate to project directory
    ```bash
    cd modern-demo-site
    ```
 
-3. Serve the project:
+3. Serve locally
    ```bash
-   # Python
+   # Using Python
    python -m http.server 8000
-
-   # Node.js
+   
+   # Using Node.js
    npx serve
+   
+   # Using PHP
+   php -S localhost:8000
    ```
 
-## Project Structure
+4. View in browser
+   ```
+   http://localhost:8000
+   ```
 
-```
-.
+<details>
+<summary>Project Structure</summary>
+
+```bash
+modern-demo-site/
 ├── index.html              # Entry point
-├── css/
-│   └── style.css          # Styles
-├── js/
-│   └── main.js            # Core functionality
-├── assets/                # Static assets
-│   ├── images/
-│   └── favicon.ico
-└── README.md
+├── css/                    # Styles
+│   └── style.css          # Main stylesheet
+├── js/                    # Scripts
+│   └── main.js           # Core functionality
+├── assets/               # Static files
+│   ├── images/          # Image assets
+│   └── favicon.ico      # Site favicon
+└── README.md            # Documentation
 ```
+</details>
 
 ## Customization
 
-### Theme Configuration
+<details>
+<summary>Theme Configuration</summary>
 
-The design system uses CSS custom properties for theming. Modify the variables in `css/style.css`:
-
+### Basic Customization
+Modify the CSS variables in `css/style.css`:
 ```css
 :root {
     --primary-color: #0f172a;
@@ -109,58 +143,96 @@ The design system uses CSS custom properties for theming. Modify the variables i
 }
 ```
 
-### Typography System
+### Advanced Theming
+- Create new theme files in `css/themes/`
+- Override default variables
+- Import in your HTML
+</details>
 
-The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optimal legibility:
+<details>
+<summary>Typography System</summary>
 
-1. Configure font sources in `index.html`
-2. Adjust typography scale in `css/style.css`
+### Font Configuration
+The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optimal legibility.
 
-### Core Components
+1. Configure sources in `index.html`:
+   ```html
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+   ```
 
-#### Header
-- Frosted glass effect with backdrop filters
-- Dynamic navigation states
-- Gradient-enhanced branding
-- Responsive collapse system
+2. Adjust scale in `css/style.css`:
+   ```css
+   html {
+       font-size: 16px;
+       line-height: 1.5;
+   }
+   ```
+</details>
 
-#### Hero Section
-- Multi-layer gradient system
-- SVG pattern overlays
-- Responsive text scaling
-- Optimized CTA placement
+## Core Components
 
-#### Feature Grid
-- CSS Grid layout
-- Interactive card states
-- Fluid responsive breakpoints
-- Consistent spacing system
+<details>
+<summary>View Components</summary>
 
-#### Contact Form
-- Modern form controls
-- Interactive states
-- Client-side validation
+### Header
+- Frosted glass effect
+- Dynamic navigation
+- Gradient branding
+- Smart collapse
+
+### Hero Section
+- Gradient system
+- Pattern overlays
+- Smart scaling
+- CTA optimization
+
+### Feature Grid
+- CSS Grid magic
+- Interactive cards
+- Fluid breakpoints
+- Consistent spacing
+
+### Contact Form
+- Modern controls
+- Live validation
+- Smart feedback
 - Responsive layout
 
-#### Footer
-- Modular layout system
-- Responsive reflow
-- Branded elements
+### Footer
+- Modular system
+- Smart reflow
+- Brand elements
 - Accessibility optimized
+
+</details>
 
 ## Browser Support
 
-- Chrome (latest 2 versions)
-- Firefox (latest 2 versions)
-- Safari (latest 2 versions)
-- Edge (latest 2 versions)
+| Browser | Support      | Notes |
+|---------|--------------|-------|
+| Chrome  | ✅ Last 2    | Full support |
+| Firefox | ✅ Last 2    | Full support |
+| Safari  | ✅ Last 2    | Full support |
+| Edge    | ✅ Last 2    | Full support |
 
 ## Contributing
 
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a Pull Request.
+
+### Development Process
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/enhancement`)
-3. Commit changes (`git commit -m 'Add enhancement'`)
-4. Push to branch (`git push origin feature/enhancement`)
+2. Create a feature branch
+   ```bash
+   git checkout -b feature/amazing
+   ```
+3. Commit your changes
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+4. Push to your fork
+   ```bash
+   git push origin feature/amazing
+   ```
 5. Open a Pull Request
 
 ## License
@@ -171,7 +243,16 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
 
 - Typography: [Inter](https://fonts.google.com/specimen/Inter) by Rasmus Andersson
 - Icons: [Heroicons](https://heroicons.com/)
+- Inspiration: Modern web design trends and best practices
 
 ---
 
-Designed and developed by TMHSDigital 
+<div align="center">
+
+[View Demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/) • 
+[Report Bug](../../issues) • 
+[Request Feature](../../issues)
+
+<sub>Designed and developed by TMHSDigital</sub>
+
+</div> 
