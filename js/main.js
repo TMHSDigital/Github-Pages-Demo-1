@@ -22,7 +22,7 @@ const app = {
         if (this.settingsToggle && this.settingsPanel) this.setupSettings();
         this.loadSettings();
 
-        // Initialize theme management with enhanced state
+        // Initialize theme management with improved memory handling
         this.themeState = {
             isTransitioning: false,
             currentTheme: null,
@@ -410,14 +410,15 @@ const app = {
         this.announceMessage('Page loaded. Welcome to TMHSDigital.');
     },
 
-    // Theme state management
+    // Theme state management with improved memory handling
     themeState: {
         isTransitioning: false,
         currentTheme: null,
-        TRANSITION_DURATION: 300
+        TRANSITION_DURATION: 300,
+        transitionTimeout: null,
+        rafHandle: null
     },
 
-    // Theme utility method
     updateTheme(isDark, enableTransition = true) {
         // Clear any pending transitions and animations
         if (this.themeState.transitionTimeout) {
@@ -440,13 +441,13 @@ const app = {
         if (enableTransition) {
             this.themeState.isTransitioning = true;
             
-            // Start transition
+            // Start transition with RAF for better paint timing
             this.themeState.rafHandle = requestAnimationFrame(() => {
                 root.classList.add('theme-transitioning');
                 root.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
                 
-                // Ensure transition completes
+                // Ensure transition completes and cleanup
                 this.themeState.transitionTimeout = setTimeout(() => {
                     root.classList.remove('theme-transitioning');
                     this.themeState.isTransitioning = false;

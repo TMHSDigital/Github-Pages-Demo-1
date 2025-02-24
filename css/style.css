@@ -1169,6 +1169,9 @@ body.theme-transitioning,
 .settings-panel {
     will-change: transform, opacity;
     contain: content;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    perspective: 1000px;
 }
 
 /* Smoother animations */
@@ -1268,6 +1271,7 @@ textarea.is-valid {
     background-position: right 1rem center;
     background-size: 1rem;
     padding-right: 2.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input.is-invalid,
@@ -1278,6 +1282,7 @@ textarea.is-invalid {
     background-position: right 1rem center;
     background-size: 1rem;
     padding-right: 2.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 [data-theme="dark"] input.is-valid,
