@@ -14,6 +14,8 @@ A sophisticated, modern website template showcasing advanced CSS effects, respon
 - Advanced CSS animations and transitions
 - SVG pattern overlays
 - Sophisticated shadow hierarchy
+- Floating gradient blob effects
+- Scroll progress indicators
 
 ### Performance
 - Zero external dependencies
