@@ -83,7 +83,8 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.8);
-    transition: transform var(--transition-speed) ease;
+    transition: transform var(--transition-speed) ease,
+                border-color var(--theme-transition-timing);
     contain: layout;
 }
 
