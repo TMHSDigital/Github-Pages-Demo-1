@@ -1364,4 +1364,36 @@ textarea.is-invalid {
     background: rgba(239, 68, 68, 0.2);
     border-color: #ef4444;
     color: #fca5a5;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+input.is-valid:focus-visible,
+textarea.is-valid:focus-visible {
+    outline-color: #10b981;
+}
+
+input.is-invalid:focus-visible,
+textarea.is-invalid:focus-visible {
+    outline-color: #ef4444;
+}
+
+[data-theme="dark"] input:focus-visible,
+[data-theme="dark"] textarea:focus-visible {
+    outline-color: var(--accent-color);
+}
+
+[data-theme="dark"] input.is-valid:focus-visible,
+[data-theme="dark"] textarea.is-valid:focus-visible {
+    outline-color: #34d399;
+}
+
+[data-theme="dark"] input.is-invalid:focus-visible,
+[data-theme="dark"] textarea.is-invalid:focus-visible {
+    outline-color: #f87171;
 } 
