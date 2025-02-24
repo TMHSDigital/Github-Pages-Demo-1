@@ -261,18 +261,18 @@ const app = {
 
         // Handle dark mode toggle
         darkModeToggle.addEventListener('change', () => {
-            // Enable transitions
-            document.documentElement.classList.add('theme-transitioning');
+            const isDark = darkModeToggle.checked;
             
+            // Enable transitions only during theme change
             requestAnimationFrame(() => {
-                const isDark = darkModeToggle.checked;
+                document.documentElement.classList.add('theme-transitioning');
                 document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
                 localStorage.setItem('theme', isDark ? 'dark' : 'light');
                 
                 // Remove transition class after animation
                 setTimeout(() => {
                     document.documentElement.classList.remove('theme-transitioning');
-                }, 300); // Match transition duration
+                }, 300);
             });
         });
     },
