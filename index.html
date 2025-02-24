@@ -126,6 +126,31 @@
         </div>
     </footer>
 
+    <!-- Settings Panel -->
+    <button class="settings-toggle" aria-label="Open settings" aria-expanded="false">
+        <i class="fas fa-cog"></i>
+    </button>
+
+    <div class="settings-panel" aria-labelledby="settings-title" role="dialog" aria-modal="true">
+        <div class="settings-header">
+            <h3 id="settings-title">Settings</h3>
+            <button class="settings-close" aria-label="Close settings">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-group">
+                <label class="settings-label">
+                    <span>Dark Mode</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="darkModeToggle" aria-label="Toggle dark mode">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+
     <script src="js/main.js" type="module"></script>
 </body>
 </html> 

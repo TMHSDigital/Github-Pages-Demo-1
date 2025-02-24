@@ -6,6 +6,8 @@ const app = {
         this.attachEventListeners();
         this.setupFormHandling();
         this.setupMobileMenu();
+        this.setupSettings();
+        this.loadSettings();
     },
 
     attachEventListeners() {
@@ -202,6 +204,84 @@ const app = {
                 }
             });
         }
+    },
+
+    setupSettings() {
+        const settingsToggle = document.querySelector('.settings-toggle');
+        const settingsPanel = document.querySelector('.settings-panel');
+        const settingsClose = document.querySelector('.settings-close');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        // Toggle settings panel
+        settingsToggle.addEventListener('click', () => {
+            settingsPanel.classList.add('active');
+            settingsToggle.setAttribute('aria-expanded', 'true');
+            // Trap focus in settings panel
+            this.trapFocus(settingsPanel);
+        });
+
+        // Close settings panel
+        settingsClose.addEventListener('click', () => {
+            settingsPanel.classList.remove('active');
+            settingsToggle.setAttribute('aria-expanded', 'false');
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
+                settingsPanel.classList.remove('active');
+                settingsToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (settingsPanel.classList.contains('active') &&
+                !settingsPanel.contains(e.target) &&
+                !settingsToggle.contains(e.target)) {
+                settingsPanel.classList.remove('active');
+                settingsToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Handle dark mode toggle
+        darkModeToggle.addEventListener('change', () => {
+            document.documentElement.setAttribute('data-theme', darkModeToggle.checked ? 'dark' : 'light');
+            localStorage.setItem('theme', darkModeToggle.checked ? 'dark' : 'light');
+        });
+    },
+
+    loadSettings() {
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('darkModeToggle').checked = savedTheme === 'dark';
+    },
+
+    trapFocus(element) {
+        const focusableElements = element.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+
+        element.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        lastFocusable.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        firstFocusable.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+
+        firstFocusable.focus();
     }
 };
 
