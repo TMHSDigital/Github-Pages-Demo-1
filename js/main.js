@@ -3,266 +3,332 @@
 // Example of a modern JavaScript module
 const app = {
     init() {
-        this.attachEventListeners();
-        this.setupFormHandling();
-        this.setupMobileMenu();
-        this.setupSettings();
+        // Cache DOM elements
+        this.header = document.querySelector('.site-header');
+        this.progressBar = document.querySelector('.scroll-progress');
+        this.menuButton = document.querySelector('.menu-button');
+        this.nav = document.querySelector('nav');
+        this.form = document.getElementById('contact-form');
+        this.settingsToggle = document.querySelector('.settings-toggle');
+        this.settingsPanel = document.querySelector('.settings-panel');
+        this.settingsClose = document.querySelector('.settings-close');
+        this.darkModeToggle = document.getElementById('darkModeToggle');
+
+        // Initialize components
+        this.setupScrollHandling();
+        this.setupSmoothScroll();
+        if (this.form) this.setupFormHandling();
+        if (this.menuButton && this.nav) this.setupMobileMenu();
+        if (this.settingsToggle && this.settingsPanel) this.setupSettings();
         this.loadSettings();
+
+        // Announce when the page is fully loaded
+        window.addEventListener('load', () => {
+            this.announcePageLoaded();
+        });
     },
 
-    attachEventListeners() {
+    setupScrollHandling() {
         let scrollTimeout;
-        let ticking = false;
         let lastScroll = 0;
-        
-        // Cache DOM elements for scroll handler
-        const header = document.querySelector('.site-header');
-        const progressBar = document.querySelector('.scroll-progress');
+        let scrollTicking = false;
 
-        // Smooth scroll for navigation links
+        const handleScroll = () => {
+            if (!scrollTicking) {
+                requestAnimationFrame(() => {
+                    const currentScroll = window.pageYOffset;
+                    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const progress = (currentScroll / scrollHeight) * 100;
+
+                    // Update progress bar
+                    if (this.progressBar) {
+                        this.progressBar.style.width = `${progress}%`;
+                        this.progressBar.setAttribute('aria-valuenow', Math.round(progress));
+                    }
+
+                    // Header visibility
+                    if (currentScroll <= 0) {
+                        this.header.classList.remove('scroll-up');
+                        this.header.setAttribute('aria-hidden', 'false');
+                    } else if (currentScroll > lastScroll && !this.header.classList.contains('scroll-down')) {
+                        this.header.classList.remove('scroll-up');
+                        this.header.classList.add('scroll-down');
+                        this.header.setAttribute('aria-hidden', 'true');
+                    } else if (currentScroll < lastScroll && this.header.classList.contains('scroll-down')) {
+                        this.header.classList.remove('scroll-down');
+                        this.header.classList.add('scroll-up');
+                        this.header.setAttribute('aria-hidden', 'false');
+                    }
+
+                    lastScroll = currentScroll;
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+
+            // Debounce progress bar animation
+            clearTimeout(scrollTimeout);
+            this.progressBar?.classList.add('pulse');
+            scrollTimeout = setTimeout(() => {
+                this.progressBar?.classList.remove('pulse');
+            }, 200);
+        };
+
+        // Use passive scroll listener for better performance
+        window.addEventListener('scroll', handleScroll, { passive: true });
+    },
+
+    setupSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', (e) => {
                 e.preventDefault();
                 const target = document.querySelector(anchor.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                    const startPosition = window.pageYOffset;
+                    const distance = targetPosition - startPosition;
+                    
+                    // Skip animation if user prefers reduced motion
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        window.scrollTo(0, targetPosition);
+                        target.focus({ preventScroll: true });
+                        return;
+                    }
+
+                    // Smooth scroll with RAF
+                    let startTime = null;
+                    const duration = 600;
+
+                    function animation(currentTime) {
+                        if (startTime === null) startTime = currentTime;
+                        const timeElapsed = currentTime - startTime;
+                        const progress = Math.min(timeElapsed / duration, 1);
+                        const easeProgress = 0.5 * (1 - Math.cos(Math.PI * progress));
+                        
+                        window.scrollTo(0, startPosition + distance * easeProgress);
+                        
+                        if (timeElapsed < duration) {
+                            requestAnimationFrame(animation);
+                        } else {
+                            target.focus({ preventScroll: true });
+                        }
+                    }
+                    
+                    requestAnimationFrame(animation);
                 }
             });
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const currentScroll = window.pageYOffset;
-                    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-                    const progress = (currentScroll / scrollHeight) * 100;
-
-                    // Update scroll progress bar
-                    progressBar.style.width = `${progress}%`;
-
-                    // Add pulse effect
-                    clearTimeout(scrollTimeout);
-                    progressBar.classList.add('pulse');
-                    scrollTimeout = setTimeout(() => {
-                        progressBar.classList.remove('pulse');
-                    }, 500);
-
-                    // Header scroll logic
-                    if (currentScroll <= 0) {
-                        header.classList.remove('scroll-up');
-                    } else if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
-                        header.classList.remove('scroll-up');
-                        header.classList.add('scroll-down');
-                    } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
-                        header.classList.remove('scroll-down');
-                        header.classList.add('scroll-up');
-                    }
-                    lastScroll = currentScroll;
-                    ticking = false;
-                });
-                ticking = true;
-            }
         });
     },
 
     setupFormHandling() {
-        const form = document.getElementById('contact-form');
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
+        const formGroups = this.form.querySelectorAll('.form-group');
+        
+        // Add live validation feedback
+        formGroups.forEach(group => {
+            const input = group.querySelector('input, textarea');
+            const error = group.querySelector('.form-error');
+            
+            if (input && error) {
+                input.addEventListener('input', () => {
+                    this.validateInput(input);
+                });
 
-                // Validate form
-                if (this.validateForm(data)) {
-                    // Simulate form submission
-                    this.submitForm(data);
-                }
-            });
-        }
-    },
-
-    validateForm(data) {
-        const errors = [];
-        const errorElements = {
-            name: document.getElementById('name-error'),
-            email: document.getElementById('email-error'),
-            message: document.getElementById('message-error')
-        };
-
-        // Reset previous errors
-        Object.values(errorElements).forEach(el => el.textContent = '');
-        ['name', 'email', 'message'].forEach(field => {
-            document.getElementById(field).setAttribute('aria-invalid', 'false');
+                input.addEventListener('blur', () => {
+                    this.validateInput(input, true);
+                });
+            }
         });
 
-        if (!data.name?.trim()) {
-            errors.push({ field: 'name', message: 'Name is required' });
-        }
-        if (!data.email || !this.isValidEmail(data.email)) {
-            errors.push({ field: 'email', message: 'Valid email is required' });
-        }
-        if (!data.message?.trim()) {
-            errors.push({ field: 'message', message: 'Message is required' });
+        this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (this.validateForm()) {
+                this.submitForm();
+            }
+        });
+    },
+
+    validateInput(input, showError = false) {
+        const error = document.getElementById(`${input.id}-error`);
+        let isValid = true;
+        let message = '';
+
+        if (!input.value.trim()) {
+            isValid = false;
+            message = `${input.name.charAt(0).toUpperCase() + input.name.slice(1)} is required`;
+        } else if (input.type === 'email' && !this.isValidEmail(input.value)) {
+            isValid = false;
+            message = 'Please enter a valid email address';
         }
 
-        if (errors.length > 0) {
-            // Show all errors but only focus the first field
-            errors.forEach((error, index) => {
-                const element = errorElements[error.field];
-                const input = document.getElementById(error.field);
-                if (element && input) {
-                    element.textContent = error.message;
-                    input.setAttribute('aria-invalid', 'true');
-                    if (index === 0) input.focus();
+        input.setAttribute('aria-invalid', (!isValid).toString());
+        if (error) {
+            error.textContent = showError ? message : '';
+            error.setAttribute('aria-hidden', (!showError || isValid).toString());
+        }
+
+        return isValid;
+    },
+
+    validateForm() {
+        const inputs = this.form.querySelectorAll('input, textarea');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (!this.validateInput(input, true)) {
+                isValid = false;
+                if (!this.form.querySelector('[aria-invalid="true"]:focus')) {
+                    input.focus();
                 }
-            });
-            return false;
-        }
+            }
+        });
 
-        return true;
+        return isValid;
     },
 
-    isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    },
-
-    showFormError(message) {
-        alert(message); // Replace with better UI feedback in production
-    },
-
-    showFormSuccess() {
-        const form = document.getElementById('contact-form');
-        const successMessage = document.createElement('div');
-        successMessage.className = 'form-success';
-        successMessage.setAttribute('role', 'alert');
-        successMessage.textContent = 'Message sent successfully!';
+    async submitForm() {
+        const submitButton = this.form.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
         
-        form.reset();
-        form.insertAdjacentElement('beforebegin', successMessage);
-        
-        setTimeout(() => successMessage.remove(), 5000);
-    },
-
-    async submitForm(data) {
         try {
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1000));
+            
             this.showFormSuccess();
+            this.form.reset();
+            
+            // Announce success to screen readers
+            this.announceMessage('Message sent successfully!');
         } catch (error) {
             this.showFormError('Failed to send message. Please try again.');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
         }
     },
 
     setupMobileMenu() {
-        const menuButton = document.querySelector('.menu-button');
-        const nav = document.querySelector('nav');
-        const navLinks = document.querySelectorAll('nav a');
         let isMenuOpen = false;
 
         const updateMenuState = (isOpen) => {
             isMenuOpen = isOpen;
-            nav.classList.toggle('active', isOpen);
-            menuButton.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-            menuButton.setAttribute('aria-expanded', isOpen.toString());
-            this.updateBodyOverflow();
+            this.nav.classList.toggle('active', isOpen);
+            this.menuButton.innerHTML = isOpen ? 
+                '<i class="fas fa-times"></i>' : 
+                '<i class="fas fa-bars"></i>';
+            this.menuButton.setAttribute('aria-expanded', isOpen.toString());
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+
+            // Announce menu state to screen readers
+            this.announceMessage(`Menu ${isOpen ? 'opened' : 'closed'}`);
+
+            // Trap focus when menu is open
+            if (isOpen) {
+                this.trapFocus(this.nav);
+            }
         };
 
-        if (menuButton && nav) {
-            // Toggle menu
-            menuButton.addEventListener('click', () => {
-                updateMenuState(!isMenuOpen);
-            });
+        this.menuButton.addEventListener('click', () => {
+            updateMenuState(!isMenuOpen);
+        });
 
-            // Close menu when clicking a link
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    updateMenuState(false);
-                });
-            });
+        // Close menu on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isMenuOpen) {
+                updateMenuState(false);
+                this.menuButton.focus();
+            }
+        });
 
-            // Close menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (isMenuOpen && !nav.contains(e.target) && !menuButton.contains(e.target)) {
-                    updateMenuState(false);
-                }
-            });
-
-            // Handle escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && isMenuOpen) {
-                    updateMenuState(false);
-                }
-            });
-        }
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !this.nav.contains(e.target) && !this.menuButton.contains(e.target)) {
+                updateMenuState(false);
+            }
+        });
     },
 
     setupSettings() {
-        const settingsToggle = document.querySelector('.settings-toggle');
-        const settingsPanel = document.querySelector('.settings-panel');
-        const settingsClose = document.querySelector('.settings-close');
-        const darkModeToggle = document.getElementById('darkModeToggle');
         let isSettingsOpen = false;
         let previousActiveElement = null;
 
-        const updatePanelState = (isOpen) => {
+        const updateSettingsState = (isOpen) => {
             isSettingsOpen = isOpen;
-            settingsPanel.classList.toggle('active', isOpen);
-            settingsToggle.setAttribute('aria-expanded', isOpen.toString());
-            settingsPanel.setAttribute('aria-hidden', (!isOpen).toString());
-            
+            this.settingsPanel.classList.toggle('active', isOpen);
+            this.settingsToggle.setAttribute('aria-expanded', isOpen.toString());
+            this.settingsPanel.setAttribute('aria-hidden', (!isOpen).toString());
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+
             if (isOpen) {
                 previousActiveElement = document.activeElement;
-                // Ensure panel is focusable
-                settingsPanel.setAttribute('tabindex', '-1');
-                // Delay focus to allow for animation
-                requestAnimationFrame(() => {
-                    this.trapFocus(settingsPanel);
-                });
+                this.trapFocus(this.settingsPanel);
+                this.announceMessage('Settings panel opened');
             } else {
-                // Return focus after animation completes
-                setTimeout(() => {
-                    previousActiveElement?.focus();
-                }, 300); // Match transition duration
+                previousActiveElement?.focus();
+                this.announceMessage('Settings panel closed');
             }
-            
-            this.updateBodyOverflow();
         };
 
-        // Toggle settings panel
-        settingsToggle.addEventListener('click', () => {
-            updatePanelState(!isSettingsOpen);
+        this.settingsToggle.addEventListener('click', () => {
+            updateSettingsState(!isSettingsOpen);
         });
 
-        // Close settings panel
-        settingsClose.addEventListener('click', () => {
-            updatePanelState(false);
+        this.settingsClose.addEventListener('click', () => {
+            updateSettingsState(false);
         });
 
-        // Close on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && isSettingsOpen) {
-                updatePanelState(false);
+                updateSettingsState(false);
+            }
+        });
+    },
+
+    trapFocus(element) {
+        const focusableElements = element.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        if (focusableElements.length === 0) return;
+
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+
+        element.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        e.preventDefault();
+                        lastFocusable.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        e.preventDefault();
+                        firstFocusable.focus();
+                    }
+                }
             }
         });
 
-        // Click outside to close
-        document.addEventListener('click', (e) => {
-            if (isSettingsOpen && 
-                !settingsPanel.contains(e.target) && 
-                !settingsToggle.contains(e.target)) {
-                updatePanelState(false);
-            }
-        });
+        firstFocusable.focus();
+    },
 
-        // Handle dark mode toggle
-        darkModeToggle.addEventListener('change', () => {
-            this.updateTheme(darkModeToggle.checked);
-        });
+    announceMessage(message) {
+        const announcer = document.getElementById('a11y-announcer') || (() => {
+            const el = document.createElement('div');
+            el.id = 'a11y-announcer';
+            el.setAttribute('aria-live', 'polite');
+            el.className = 'sr-only';
+            document.body.appendChild(el);
+            return el;
+        })();
+        announcer.textContent = message;
+    },
+
+    announcePageLoaded() {
+        this.announceMessage('Page loaded. Welcome to TMHSDigital.');
     },
 
     // Theme state management
@@ -325,49 +391,25 @@ const app = {
         }
     },
 
-    trapFocus(element) {
-        const focusableElements = element.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        const firstFocusable = focusableElements[0] || element;
-        const lastFocusable = focusableElements[focusableElements.length - 1] || element;
-
-        element.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                    if (document.activeElement === firstFocusable) {
-                        lastFocusable.focus();
-                        e.preventDefault();
-                    }
-                } else {
-                    if (document.activeElement === lastFocusable) {
-                        firstFocusable.focus();
-                        e.preventDefault();
-                    }
-                }
-            }
-        });
-
-        firstFocusable.focus();
+    isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     },
 
-    updateBodyOverflow() {
-        const mobileMenu = document.querySelector('nav');
-        const settingsPanel = document.querySelector('.settings-panel');
-        const isMenuOpen = mobileMenu?.classList.contains('active');
-        const isSettingsOpen = settingsPanel?.classList.contains('active');
-        const isAnyPanelOpen = isMenuOpen || isSettingsOpen;
+    showFormError(message) {
+        alert(message); // Replace with better UI feedback in production
+    },
 
-        document.body.style.overflow = isAnyPanelOpen ? 'hidden' : '';
-        document.documentElement.style.overflow = isAnyPanelOpen ? 'hidden' : '';
-
-        // Update ARIA attributes
-        if (mobileMenu) {
-            mobileMenu.setAttribute('aria-hidden', (!isMenuOpen).toString());
-        }
-        if (settingsPanel) {
-            settingsPanel.setAttribute('aria-hidden', (!isSettingsOpen).toString());
-        }
+    showFormSuccess() {
+        const form = document.getElementById('contact-form');
+        const successMessage = document.createElement('div');
+        successMessage.className = 'form-success';
+        successMessage.setAttribute('role', 'alert');
+        successMessage.textContent = 'Message sent successfully!';
+        
+        form.reset();
+        form.insertAdjacentElement('beforebegin', successMessage);
+        
+        setTimeout(() => successMessage.remove(), 5000);
     }
 };
 
