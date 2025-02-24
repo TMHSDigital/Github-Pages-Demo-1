@@ -261,32 +261,56 @@ const app = {
 
         // Handle dark mode toggle
         darkModeToggle.addEventListener('change', () => {
+            // Enable transitions
+            document.documentElement.classList.add('theme-transitioning');
+            
             requestAnimationFrame(() => {
                 const isDark = darkModeToggle.checked;
                 document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
                 localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                
+                // Remove transition class after animation
+                setTimeout(() => {
+                    document.documentElement.classList.remove('theme-transitioning');
+                }, 300); // Match transition duration
             });
         });
     },
 
     loadSettings() {
+        // Prevent flash of wrong theme
+        document.documentElement.style.visibility = 'hidden';
+
         // Check system preference
         const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const savedTheme = localStorage.getItem('theme');
         
         // Use saved theme or system preference
         const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-        document.getElementById('darkModeToggle').checked = theme === 'dark';
+        
+        // Apply theme before showing content
+        requestAnimationFrame(() => {
+            document.documentElement.setAttribute('data-theme', theme);
+            document.getElementById('darkModeToggle').checked = theme === 'dark';
+            document.documentElement.style.visibility = '';
+        });
 
         // Listen for system preference changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleSystemThemeChange = (e) => {
             if (!localStorage.getItem('theme')) {
                 const newTheme = e.matches ? 'dark' : 'light';
                 document.documentElement.setAttribute('data-theme', newTheme);
                 document.getElementById('darkModeToggle').checked = e.matches;
             }
-        });
+        };
+
+        // Use newer event listener if supported, fallback for Safari
+        if (darkModeMediaQuery.addEventListener) {
+            darkModeMediaQuery.addEventListener('change', handleSystemThemeChange);
+        } else {
+            darkModeMediaQuery.addListener(handleSystemThemeChange);
+        }
     },
 
     trapFocus(element) {

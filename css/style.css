@@ -19,10 +19,11 @@
     --blob-2: #22d3ee66;
     --blob-size: 400px;
     --transition-speed: 0.3s;
-    --theme-transition: background-color 0.3s ease,
-                       color 0.3s ease,
-                       border-color 0.3s ease,
-                       box-shadow 0.3s ease;
+    --theme-transition-timing: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --theme-transition: background-color var(--theme-transition-timing),
+                       color var(--theme-transition-timing),
+                       border-color var(--theme-transition-timing),
+                       box-shadow var(--theme-transition-timing);
 }
 
 [data-theme="dark"] {
@@ -1004,4 +1005,25 @@ textarea,
     background: var(--gray-700);
     border-color: var(--accent-color);
     box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
+
+/* Initial load - no transitions */
+.theme-transitioning {
+    transition: var(--theme-transition) !important;
+}
+
+/* Elements that should transition */
+body.theme-transitioning,
+.theme-transitioning .site-header,
+.theme-transitioning .feature-card,
+.theme-transitioning .contact-form,
+.theme-transitioning input,
+.theme-transitioning textarea,
+.theme-transitioning .settings-panel,
+.theme-transitioning .social-link,
+.theme-transitioning .hero,
+.theme-transitioning .menu-button,
+.theme-transitioning .toggle-slider,
+.theme-transitioning .toggle-slider:before {
+    transition: var(--theme-transition);
 } 
