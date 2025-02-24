@@ -55,6 +55,7 @@ body {
     top: 0;
     z-index: 1000;
     padding: 1.25rem 0;
+    contain: paint;
 }
 
 .site-header .container {
@@ -240,6 +241,7 @@ nav a:hover::after {
     padding: 8rem 0;
     background: var(--gray-50);
     position: relative;
+    contain: paint;
 }
 
 .features h2 {
@@ -268,7 +270,7 @@ nav a:hover::after {
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) rotateZ(1.5deg);
     box-shadow: var(--shadow-lg);
 }
 

@@ -141,6 +141,7 @@ const app = {
                 nav.classList.toggle('active');
                 menuButton.innerHTML = isMenuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
                 document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+                menuButton.setAttribute('aria-expanded', isMenuOpen.toString());
             });
 
             // Close menu when clicking a link
