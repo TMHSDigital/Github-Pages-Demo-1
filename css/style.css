@@ -454,125 +454,192 @@ nav a:hover::after {
 /* Contact Section */
 .contact {
     padding: 8rem 0;
-    background: var(--gray-50);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
+}
+
+.contact::before {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    top: -10%;
+    left: -10%;
+    background: linear-gradient(135deg, var(--blob-2) 0%, var(--blob-1) 100%);
+    opacity: 0.1;
+    filter: blur(70px);
+    transform: translateZ(0);
+    animation: floatBackground 15s ease-in-out infinite alternate;
+}
+
+@keyframes floatBackground {
+    from { transform: translate(-5%, -5%) rotate(-5deg); }
+    to { transform: translate(5%, 5%) rotate(5deg); }
 }
 
 .contact h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 3rem;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 4rem;
     text-align: center;
-    color: var(--primary-color);
-    letter-spacing: -0.025em;
+    letter-spacing: -0.05em;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    opacity: 0;
+    animation: fadeScale 0.6s ease-out forwards;
+}
+
+@keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .contact-form {
     max-width: 600px;
     margin: 2rem auto 0;
-    background: white;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 3rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--gray-200);
+    border-radius: 1.5rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 0.6s 0.2s ease-out forwards;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .form-group {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-label {
+.form-group label {
     display: block;
     margin-bottom: 0.75rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--primary-color);
+    transform-origin: left;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.form-group:focus-within label {
+    transform: scale(0.95);
+    color: var(--accent-color);
 }
 
 input,
 textarea {
     width: 100%;
-    padding: 0.875rem 1rem;
+    padding: 1rem 1.25rem;
     border: 1px solid var(--glass-border);
-    border-radius: 0.75rem;
+    border-radius: 1rem;
     font-size: 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: var(--text-color);
     background: var(--glass-bg);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    color: var(--text-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input:hover,
+textarea:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
 }
 
 input:focus,
 textarea:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
+    box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15);
     background: var(--bg-color);
 }
 
-textarea {
-    height: 150px;
-    resize: vertical;
-}
-
 .submit-button {
+    width: 100%;
+    padding: 1rem 2rem;
     background: var(--gradient-primary);
     color: white;
-    padding: 1rem 2rem;
     border: none;
-    border-radius: 0.75rem;
-    font-size: 1rem;
+    border-radius: 1rem;
+    font-size: 1.125rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
 }
 
 .submit-button:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-    filter: brightness(1.1);
 }
 
-.form-error {
-    color: #ef4444;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-    opacity: 0;
-    transform: translateY(-0.5rem);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+.submit-button:hover::before {
+    transform: translateX(100%);
+    transition: transform 0.6s ease;
 }
 
-[aria-invalid="true"] + .form-error {
-    opacity: 1;
-    transform: translateY(0);
+/* Dark mode enhancements */
+[data-theme="dark"] .contact {
+    background: rgba(15, 23, 42, 0.6);
 }
 
-input[aria-invalid="true"],
-textarea[aria-invalid="true"] {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 1px #ef4444;
+[data-theme="dark"] .contact::before {
+    opacity: 0.15;
 }
 
-.form-success {
-    background: #10b981;
-    color: white;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1rem;
-    animation: slideIn 0.3s ease;
+[data-theme="dark"] .contact-form {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-@keyframes slideIn {
-    from { 
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+[data-theme="dark"] .form-group label {
+    color: var(--gray-100);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--gray-100);
+}
+
+[data-theme="dark"] input:hover,
+[data-theme="dark"] textarea:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15);
 }
 
 /* Footer */
