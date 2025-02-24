@@ -202,7 +202,7 @@ const app = {
             return isValid;
         };
 
-        // Show validating state immediately
+        // Show validating state immediately when there's input
         if (input.value.trim()) {
             input.classList.add('is-validating');
         }
