@@ -12,10 +12,19 @@
     --gray-800: #1e293b;
     --card-bg: var(--bg-color);
     
-    /* Shadows with better contrast */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.15);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.2);
+    /* Enhanced shadows with depth */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(8, 145, 178, 0.05);
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(37, 99, 235, 0.05);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(8, 145, 178, 0.05);
+    
+    /* Modern glass effect values */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    
+    /* Enhanced gradient effects */
+    --gradient-primary: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+    --gradient-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
     
     /* Layout */
     --container-width: min(1200px, 90vw);
@@ -36,23 +45,25 @@
 }
 
 [data-theme="dark"] {
-    /* Dark theme with improved contrast */
+    /* Dark theme with sci-fi feel */
     --primary-color: #f8fafc;
     --text-color: #f1f5f9;
-    --bg-color: #0f172a;
+    --bg-color: #030712;
     --gray-50: #1e293b;
     --gray-100: #334155;
     --gray-200: #475569;
     --gray-700: #e2e8f0;
     --gray-800: #f1f5f9;
-    --card-bg: #1e293b;
+    --card-bg: #0f172a;
     
-    /* Dark theme effects */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.25);
-    --shadow-lg: 0 8px 30px rgb(0 0 0 / 0.4);
-    --blob-1: rgba(37, 99, 235, 0.25);
-    --blob-2: rgba(8, 145, 178, 0.25);
+    /* Dark theme glass effect */
+    --glass-bg: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    
+    /* Enhanced dark shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(8, 145, 178, 0.1);
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(37, 99, 235, 0.1);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(8, 145, 178, 0.1);
 }
 
 * {
@@ -88,9 +99,11 @@ body {
     left: 0;
     right: 0;
     z-index: 100;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    background: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     transition: transform var(--transition-speed) ease,
                 border-color var(--theme-transition-timing);
     contain: layout;
@@ -213,7 +226,7 @@ nav a:hover::after {
     place-items: center;
     padding: 12rem 0 8rem;
     background: radial-gradient(circle at top right, var(--accent-color) 0%, transparent 60%),
-                linear-gradient(60deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+                linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     position: relative;
     overflow: hidden;
 }
@@ -225,9 +238,10 @@ nav a:hover::after {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none" stroke="white" stroke-width="0.25" stroke-opacity="0.1"/></svg>');
+    background: url('data:image/svg+xml,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none" stroke="white" stroke-width="0.25" stroke-opacity="0.1"/></svg>') repeat;
     background-size: 30px 30px;
-    opacity: 0.4;
+    opacity: 0.3;
+    animation: pulse 4s ease-in-out infinite;
 }
 
 .hero::after {
@@ -274,20 +288,20 @@ nav a:hover::after {
     display: inline-flex;
     align-items: center;
     padding: 1rem 2.5rem;
-    background: white;
-    color: var(--primary-color);
+    background: var(--gradient-primary);
+    color: white;
     text-decoration: none;
     border-radius: 0.75rem;
     font-weight: 600;
     font-size: 1.125rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: var(--shadow);
 }
 
 .cta-button:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-    background: var(--gray-50);
+    filter: brightness(1.1);
 }
 
 /* Features Section */
@@ -326,17 +340,20 @@ nav a:hover::after {
 }
 
 .feature-card {
-    background: white;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 2.5rem;
     border-radius: 1rem;
-    box-shadow: var(--shadow);
-    transition: all 0.3s ease;
-    border: 1px solid var(--gray-200);
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.02);
     box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
 }
 
 .feature-card h3 {
@@ -420,20 +437,22 @@ input,
 textarea {
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 1px solid var(--gray-200);
+    border: 1px solid var(--glass-border);
     border-radius: 0.75rem;
     font-size: 1rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--text-color);
-    background: var(--gray-50);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 input:focus,
 textarea:focus {
     outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    background: white;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1);
+    background: var(--bg-color);
 }
 
 textarea {
@@ -442,7 +461,7 @@ textarea {
 }
 
 .submit-button {
-    background: var(--primary-color);
+    background: var(--gradient-primary);
     color: white;
     padding: 1rem 2rem;
     border: none;
@@ -450,14 +469,14 @@ textarea {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
 }
 
 .submit-button:hover {
-    background: var(--gray-800);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    filter: brightness(1.1);
 }
 
 .form-error {
@@ -731,9 +750,12 @@ textarea[aria-invalid="true"] {
     top: 1rem;
     right: 1rem;
     width: min(400px, calc(100vw - 2rem));
-    background: var(--card-bg);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     border-radius: 0.75rem;
-    box-shadow: var(--shadow-lg);
     transform: translateY(-1rem) scale(0.95);
     opacity: 0;
     visibility: hidden;
