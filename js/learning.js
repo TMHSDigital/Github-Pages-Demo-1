@@ -15,7 +15,7 @@ class LearningCore {
             this.toggle(e.detail.enabled);
         });
 
-        // Add feature card tooltips
+        // Add feature card tooltips and keyboard enhancements
         this.setupFeatureCards();
     }
 
