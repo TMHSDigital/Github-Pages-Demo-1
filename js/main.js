@@ -11,6 +11,9 @@ const app = {
     },
 
     attachEventListeners() {
+        let scrollTimeout;
+        let ticking = false;
+        
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Site loaded!');
             // Smooth scroll for navigation links
@@ -29,39 +32,44 @@ const app = {
 
             // Header scroll effect
             let lastScroll = 0;
-            let scrollTimeout;
             
             window.addEventListener('scroll', () => {
-                const header = document.querySelector('.site-header');
-                const progressBar = document.querySelector('.scroll-progress');
-                const currentScroll = window.pageYOffset;
-                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const progress = (currentScroll / scrollHeight) * 100;
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const header = document.querySelector('.site-header');
+                        const progressBar = document.querySelector('.scroll-progress');
+                        const currentScroll = window.pageYOffset;
+                        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                        const progress = (currentScroll / scrollHeight) * 100;
 
-                // Update scroll progress bar
-                progressBar.style.width = `${progress}%`;
+                        // Update scroll progress bar
+                        progressBar.style.width = `${progress}%`;
 
-                // Add pulse effect
-                clearTimeout(scrollTimeout);
-                progressBar.classList.add('pulse');
-                scrollTimeout = setTimeout(() => {
-                    progressBar.classList.remove('pulse');
-                }, 500);
+                        // Add pulse effect
+                        clearTimeout(scrollTimeout);
+                        progressBar.classList.add('pulse');
+                        scrollTimeout = setTimeout(() => {
+                            progressBar.classList.remove('pulse');
+                        }, 500);
 
-                // Existing header scroll logic
-                if (currentScroll <= 0) {
-                    header.classList.remove('scroll-up');
-                    return;
+                        // Existing header scroll logic
+                        if (currentScroll <= 0) {
+                            header.classList.remove('scroll-up');
+                            return;
+                        }
+
+                        if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
+                            header.classList.remove('scroll-up');
+                            header.classList.add('scroll-down');
+                        } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
+                            header.classList.remove('scroll-down');
+                            header.classList.add('scroll-up');
+                        }
+                        lastScroll = currentScroll;
+                        ticking = false;
+                    });
+                    ticking = true;
                 }
-
-                if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
-                    header.classList.remove('scroll-up');
-                    header.classList.add('scroll-down');
-                } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
-                    header.classList.remove('scroll-down');
-                    header.classList.add('scroll-up');
-                }
-                lastScroll = currentScroll;
             });
         });
     },
