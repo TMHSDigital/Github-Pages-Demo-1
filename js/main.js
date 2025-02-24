@@ -278,22 +278,9 @@ const app = {
     },
 
     loadSettings() {
-        // Prevent flash of wrong theme
-        document.documentElement.style.visibility = 'hidden';
-
-        // Check system preference
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const savedTheme = localStorage.getItem('theme');
-        
-        // Use saved theme or system preference
-        const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-        
-        // Apply theme before showing content
-        requestAnimationFrame(() => {
-            document.documentElement.setAttribute('data-theme', theme);
-            document.getElementById('darkModeToggle').checked = theme === 'dark';
-            document.documentElement.style.visibility = '';
-        });
+        // Theme is already set by preload script, just setup the toggle
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        document.getElementById('darkModeToggle').checked = currentTheme === 'dark';
 
         // Listen for system preference changes
         const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');

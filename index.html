@@ -8,6 +8,34 @@
     <meta property="og:description" content="A modern demo website showcasing web development capabilities">
     <meta property="og:type" content="website">
     <title>TMHSDigital</title>
+    
+    <!-- Preload theme detection -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+
+    <!-- No-JS fallback -->
+    <noscript>
+        <style>
+            /* Fallback for no JS - default to dark theme */
+            :root { 
+                --bg: #1a1a1a;
+                --text: #ffffff;
+                --card-bg: #2a2a2a;
+                --gray-700: #404040;
+            }
+            /* Hide theme toggle and settings when JS is disabled */
+            #settingsToggle, #settingsPanel { 
+                display: none !important; 
+            }
+        </style>
+    </noscript>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
