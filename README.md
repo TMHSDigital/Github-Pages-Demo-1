@@ -14,7 +14,18 @@
 
 [View Demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/) • [Documentation](#documentation) • [Report Bug](../../issues) • [Request Feature](../../issues)
 
+<details>
+<summary>Preview</summary>
+<br>
+
+<div align="center">
+    <img src="assets/images/preview.png" alt="Modern Demo Site Preview" style="max-width: 100%; border-radius: 8px;">
+</div>
+
+</details>
+
 ## Table of Contents
+- [Getting Started](#getting-started)
 - [Highlights](#highlights)
 - [Documentation](#documentation)
   - [Prerequisites](#prerequisites)
@@ -25,21 +36,25 @@
   - [Typography System](#typography-system)
 - [Core Components](#core-components)
 - [Browser Support](#browser-support)
+- [FAQ](#faq)
 - [Contributing](#contributing)
 - [License](#license)
 - [Credits](#credits)
 
-<details>
-<summary>Screenshot</summary>
-<br>
+## Getting Started
 
+Experience the future of web design in three simple steps:
+
+1. **Quick Start**: Visit our [live demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/)
+2. **Explore Features**: Test the dark mode, responsive layouts, and animations
+3. **Make It Yours**: Fork the repository and customize to your needs
+
+Watch our brief introduction:
 <div align="center">
-    <img src="assets/images/preview.png" alt="Modern Demo Site Preview" style="max-width: 100%; border-radius: 8px;">
+    <a href="https://www.youtube.com/watch?v=your-video-id" target="_blank">
+        <img src="assets/images/video-thumbnail.png" alt="Introduction Video" style="max-width: 600px; border-radius: 8px;">
+    </a>
 </div>
-
-</details>
-
----
 
 ## Highlights
 
@@ -231,6 +246,48 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 | Firefox | ✅ 2    | Full  |
 | Safari  | ✅ 2    | Full  |
 | Edge    | ✅ 2    | Full  |
+
+## FAQ
+
+<details>
+<summary>How do I customize the color scheme?</summary>
+
+Modify the CSS variables in `css/style.css`. See [Theme Configuration](#theme-configuration) for details.
+</details>
+
+<details>
+<summary>Can I use this template for commercial projects?</summary>
+
+Yes! This project is licensed under MIT. You're free to use it for personal or commercial projects.
+</details>
+
+<details>
+<summary>How do I deploy to GitHub Pages?</summary>
+
+1. Fork this repository
+2. Enable GitHub Pages in your repository settings
+3. Select the main branch as source
+4. Your site will be live at `https://[username].github.io/[repo-name]`
+</details>
+
+<details>
+<summary>How do I report a bug?</summary>
+
+Open an issue using our [bug report template](../../issues/new?template=bug_report.md).
+Include:
+- Expected behavior
+- Actual behavior
+- Steps to reproduce
+- Screenshots if applicable
+</details>
+
+<details>
+<summary>How do I add new features?</summary>
+
+1. Check our [roadmap](../../projects) for planned features
+2. Open a feature request if your idea isn't listed
+3. Fork, implement, and submit a PR
+</details>
 
 ## Contributing
 
