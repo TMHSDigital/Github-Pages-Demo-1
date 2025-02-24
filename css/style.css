@@ -875,7 +875,15 @@ input:checked + .toggle-slider:before {
 
 [data-theme="dark"] .hero {
     background: radial-gradient(circle at top right, var(--accent-color) 0%, transparent 60%),
-                linear-gradient(60deg, var(--bg-color) 0%, var(--secondary-color) 100%);
+                linear-gradient(60deg, var(--gray-800) 0%, var(--secondary-color) 100%);
+}
+
+[data-theme="dark"] .hero::before {
+    opacity: 0.2;
+}
+
+[data-theme="dark"] .hero::after {
+    opacity: 0.4;
 }
 
 [data-theme="dark"] .about {
@@ -1061,4 +1069,17 @@ body.theme-transitioning,
 
 [data-theme="dark"] .submit-button:hover {
     background: var(--secondary-color);
+}
+
+[data-theme="dark"] .cta-button {
+    background: var(--gray-800);
+    color: var(--gray-100);
+    border: 1px solid var(--gray-700);
+}
+
+[data-theme="dark"] .cta-button:hover {
+    background: var(--gray-700);
+    border-color: var(--accent-color);
+    color: white;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 } 
