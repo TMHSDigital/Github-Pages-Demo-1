@@ -17,12 +17,21 @@ A sophisticated, modern website template showcasing advanced CSS effects, respon
 - Floating gradient blob effects
 - Scroll progress indicators
 
+### Theme System
+- Dark/Light mode toggle
+- System preference detection
+- Smooth theme transitions
+- Persistent theme settings
+- Accessible color schemes
+- High contrast support
+
 ### Performance
 - Zero external dependencies
 - Hardware-accelerated animations
 - Optimized asset loading
 - Native smooth scrolling
 - Minimal CSS footprint
+- Efficient theme switching
 
 ### Responsive Design
 - Mobile-first architecture
@@ -30,6 +39,7 @@ A sophisticated, modern website template showcasing advanced CSS effects, respon
 - Contextual layouts
 - Touch-optimized interactions
 - Breakpoint-free design
+- Adaptive feature grid
 
 ### Development
 - Semantic HTML structure
@@ -37,6 +47,15 @@ A sophisticated, modern website template showcasing advanced CSS effects, respon
 - Modular JavaScript patterns
 - Comprehensive documentation
 - DRY principles
+- Progressive enhancement
+
+### Accessibility
+- ARIA-enhanced components
+- Keyboard navigation support
+- Screen reader optimized
+- Skip-to-content links
+- Focus management
+- Reduced motion support
 
 ## Quick Start
 
