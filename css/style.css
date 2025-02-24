@@ -1025,7 +1025,7 @@ textarea:focus {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
     color: white;
     width: 3.5rem;
     height: 3.5rem;
@@ -1035,7 +1035,8 @@ textarea:focus {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: var(--shadow-lg),
-                0 0 15px rgba(37, 99, 235, 0.3);
+                0 0 20px rgba(37, 99, 235, 0.3),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1049,8 +1050,9 @@ textarea:focus {
 
 .settings-toggle:hover {
     transform: rotate(90deg) scale(1.15);
-    box-shadow: 0 0 25px rgba(37, 99, 235, 0.4),
-                inset 0 0 15px rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-lg),
+                0 0 30px rgba(37, 99, 235, 0.4),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .settings-toggle.active {
@@ -1068,13 +1070,17 @@ textarea:focus {
     top: 1rem;
     right: 1rem;
     width: min(400px, calc(100vw - 2rem));
-    background: var(--glass-bg);
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.8)
+    );
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
     box-shadow: var(--shadow-lg),
-                0 0 20px rgba(0, 0, 0, 0.1),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
+                0 0 30px rgba(0, 0, 0, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.3);
     border-radius: 1rem;
     transform: translateY(-1rem) scale(0.95);
     opacity: 0;
@@ -1141,18 +1147,26 @@ textarea:focus {
 .settings-group {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.1)
+    );
     border-radius: 0.75rem;
     border: 1px solid var(--glass-border);
     cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                background 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .settings-group:hover {
     transform: translateX(8px);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.15)
+    );
+    box-shadow: var(--shadow),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .settings-label {
@@ -1184,10 +1198,10 @@ textarea:focus {
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--gray-200);
+    background: linear-gradient(to right, var(--gray-100), var(--gray-200));
     transition: all 0.3s ease;
     border-radius: 26px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-slider:before {
@@ -1200,11 +1214,13 @@ textarea:focus {
     background: white;
     transition: all 0.3s ease;
     border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
 input:checked + .toggle-slider {
     background: var(--gradient-primary);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 input:checked + .toggle-slider:before {
@@ -1217,8 +1233,14 @@ input:focus-visible + .toggle-slider {
 
 /* Dark mode enhancements */
 [data-theme="dark"] .settings-panel {
-    background: rgba(15, 23, 42, 0.85);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+        to bottom right,
+        rgba(15, 23, 42, 0.9),
+        rgba(15, 23, 42, 0.85)
+    );
+    box-shadow: var(--shadow-lg),
+                0 0 30px rgba(0, 0, 0, 0.2),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="dark"] .settings-header {
@@ -1232,12 +1254,21 @@ input:focus-visible + .toggle-slider {
 }
 
 [data-theme="dark"] .settings-group {
-    background: rgba(255, 255, 255, 0.02);
-    border-color: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.04)
+    );
 }
 
 [data-theme="dark"] .settings-group:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.04),
+        rgba(255, 255, 255, 0.06)
+    );
+    box-shadow: var(--shadow),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .settings-close {
@@ -1270,6 +1301,11 @@ input:focus-visible + .toggle-slider {
         max-height: 70vh;
         overflow-y: auto;
         overscroll-behavior: contain;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.95),
+            rgba(255, 255, 255, 0.9)
+        );
     }
     
     .settings-toggle {
