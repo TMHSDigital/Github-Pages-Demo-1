@@ -87,7 +87,7 @@
    git clone https://github.com/TMHSDigital/modern-demo-site.git
    ```
 
-2. Navigate to project directory
+2. Navigate to the project directory
    ```bash
    cd modern-demo-site
    ```
@@ -112,17 +112,17 @@
 <details>
 <summary>Project Structure</summary>
 
-```bash
+```
 modern-demo-site/
 ├── index.html              # Entry point
 ├── css/                    # Styles
-│   └── style.css          # Main stylesheet
-├── js/                    # Scripts
-│   └── main.js           # Core functionality
-├── assets/               # Static files
-│   ├── images/          # Image assets
-│   └── favicon.ico      # Site favicon
-└── README.md            # Documentation
+│   └── style.css           # Main stylesheet
+├── js/                     # Scripts
+│   └── main.js             # Core functionality
+├── assets/                 # Static files
+│   ├── images/             # Image assets
+│   └── favicon.ico         # Site favicon
+└── README.md               # Documentation
 ```
 </details>
 
@@ -187,7 +187,7 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 - CTA optimization
 
 ### Feature Grid
-- CSS Grid magic
+- CSS Grid layout
 - Interactive cards
 - Fluid breakpoints
 - Consistent spacing
@@ -199,7 +199,7 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 - Responsive layout
 
 ### Footer
-- Modular system
+- Modular structure
 - Smart reflow
 - Brand elements
 - Accessibility optimized
@@ -208,12 +208,12 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 
 ## Browser Support
 
-| Browser | Support      | Notes |
-|---------|--------------|-------|
-| Chrome  | ✅ Last 2    | Full support |
-| Firefox | ✅ Last 2    | Full support |
-| Safari  | ✅ Last 2    | Full support |
-| Edge    | ✅ Last 2    | Full support |
+| Browser | Support   | Notes       |
+|---------|-----------|-------------|
+| Chrome  | ✅ Last 2 | Full support|
+| Firefox | ✅ Last 2 | Full support|
+| Safari  | ✅ Last 2 | Full support|
+| Edge    | ✅ Last 2 | Full support|
 
 ## Contributing
 
