@@ -261,34 +261,59 @@ const app = {
 
         // Handle dark mode toggle
         darkModeToggle.addEventListener('change', () => {
-            const isDark = darkModeToggle.checked;
-            
-            // Enable transitions only during theme change
-            requestAnimationFrame(() => {
-                document.documentElement.classList.add('theme-transitioning');
-                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                
-                // Remove transition class after animation
-                setTimeout(() => {
-                    document.documentElement.classList.remove('theme-transitioning');
-                }, 300);
-            });
+            this.updateTheme(darkModeToggle.checked);
         });
     },
 
+    // Theme state management
+    themeState: {
+        isTransitioning: false,
+        currentTheme: null,
+        TRANSITION_DURATION: 300
+    },
+
+    // Theme utility method
+    updateTheme(isDark, enableTransition = true) {
+        // Prevent rapid toggles during transition
+        if (enableTransition && this.themeState.isTransitioning) return;
+        
+        const root = document.documentElement;
+        const newTheme = isDark ? 'dark' : 'light';
+        
+        // Skip if theme hasn't changed
+        if (newTheme === this.themeState.currentTheme) return;
+        this.themeState.currentTheme = newTheme;
+        
+        if (enableTransition) {
+            this.themeState.isTransitioning = true;
+            requestAnimationFrame(() => {
+                root.classList.add('theme-transitioning');
+                root.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                setTimeout(() => {
+                    root.classList.remove('theme-transitioning');
+                    this.themeState.isTransitioning = false;
+                }, this.themeState.TRANSITION_DURATION);
+            });
+        } else {
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        document.getElementById('darkModeToggle').checked = isDark;
+    },
+
     loadSettings() {
-        // Theme is already set by preload script, just setup the toggle
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        document.getElementById('darkModeToggle').checked = currentTheme === 'dark';
+        // Initialize theme state
+        this.themeState.currentTheme = document.documentElement.getAttribute('data-theme');
+        document.getElementById('darkModeToggle').checked = this.themeState.currentTheme === 'dark';
 
         // Listen for system preference changes
-        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const darkModeMediaQuery = matchMedia('(prefers-color-scheme: dark)');
         const handleSystemThemeChange = (e) => {
             if (!localStorage.getItem('theme')) {
-                const newTheme = e.matches ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                document.getElementById('darkModeToggle').checked = e.matches;
+                this.updateTheme(e.matches, false);
             }
         };
 

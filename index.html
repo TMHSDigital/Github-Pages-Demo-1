@@ -12,10 +12,10 @@
     <!-- Preload theme detection -->
     <script>
         (function() {
-            const savedTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-theme', 
+                localStorage.getItem('theme') || 
+                (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            );
         })();
     </script>
 
