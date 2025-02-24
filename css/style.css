@@ -543,4 +543,25 @@ textarea {
         flex-wrap: wrap;
         justify-content: center;
     }
+}
+
+/* Scroll Progress Indicator */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+    z-index: 9999;
+    transition: width 0.3s ease;
+}
+
+.scroll-progress.pulse {
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 } 

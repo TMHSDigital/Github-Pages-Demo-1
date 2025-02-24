@@ -27,10 +27,26 @@ const app = {
 
             // Header scroll effect
             let lastScroll = 0;
+            let scrollTimeout;
+            
             window.addEventListener('scroll', () => {
                 const header = document.querySelector('.site-header');
+                const progressBar = document.querySelector('.scroll-progress');
                 const currentScroll = window.pageYOffset;
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (currentScroll / scrollHeight) * 100;
 
+                // Update scroll progress bar
+                progressBar.style.width = `${progress}%`;
+
+                // Add pulse effect
+                clearTimeout(scrollTimeout);
+                progressBar.classList.add('pulse');
+                scrollTimeout = setTimeout(() => {
+                    progressBar.classList.remove('pulse');
+                }, 500);
+
+                // Existing header scroll logic
                 if (currentScroll <= 0) {
                     header.classList.remove('scroll-up');
                     return;
