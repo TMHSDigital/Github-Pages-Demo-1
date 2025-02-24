@@ -972,16 +972,16 @@ textarea,
 
 [data-theme="dark"] input,
 [data-theme="dark"] textarea {
-    background: var(--gray-50);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: var(--text-color);
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+    color: var(--gray-100);
 }
 
 [data-theme="dark"] input:focus,
 [data-theme="dark"] textarea:focus {
-    background: var(--gray-100);
+    background: var(--gray-800);
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
 }
 
 /* Initial load - no transitions */
@@ -1039,4 +1039,26 @@ body.theme-transitioning,
 
 [data-theme="dark"] .settings-close:hover {
     color: var(--accent-color);
+}
+
+[data-theme="dark"] .contact-form {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+}
+
+[data-theme="dark"] .contact h2 {
+    color: var(--gray-100);
+}
+
+[data-theme="dark"] label {
+    color: var(--gray-100);
+}
+
+[data-theme="dark"] .submit-button {
+    background: var(--accent-color);
+    color: var(--gray-800);
+}
+
+[data-theme="dark"] .submit-button:hover {
+    background: var(--secondary-color);
 } 
