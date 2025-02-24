@@ -68,21 +68,21 @@ Watch our brief introduction:
     <td width="50%">
 
 ### Modern Design
-- Frosted glass UI
-- Multi-layered gradients
-- Advanced animations
-- Dynamic shadows
-- Progress indicators
+- Glass morphism UI with dynamic saturation
+- Floating gradient backgrounds
+- Perspective-based 3D effects
+- Dynamic shadow system
+- Scroll-based progress indicators
 
     </td>
     <td width="50%">
 
 ### Theme System
-- Smart theme detection
-- Smooth transitions
-- Persistent settings
-- High contrast options
-- System sync with OS preferences
+- System preference detection
+- Smooth theme transitions
+- Local storage persistence
+- High contrast accessibility
+- Real-time theme switching
 
     </td>
   </tr>
@@ -90,21 +90,21 @@ Watch our brief introduction:
     <td>
 
 ### Performance
-- Zero dependencies
-- Hardware acceleration
-- Optimized assets
-- Native scrolling
-- Minimal footprint
+- Hardware-accelerated transforms
+- Strategic content containment
+- Optimized will-change usage
+- Reduced motion support
+- Efficient CSS custom properties
 
     </td>
     <td>
 
 ### Responsive
-- Mobile-first design
-- Fluid typography
-- Smart layouts
-- Touch optimized
-- Adaptive grid system
+- Mobile-first architecture
+- Fluid typography system
+- Dynamic grid layouts
+- Touch-optimized interactions
+- Adaptive component scaling
 
     </td>
   </tr>
@@ -113,34 +113,31 @@ Watch our brief introduction:
 ## Documentation
 
 ### Prerequisites
-- Modern web browser (Chrome 80+, Firefox 72+, Safari 13.1+, or Edge 80+)
+- Modern web browser (Chrome 80+, Firefox 75+, Safari 13.1+, or Edge 80+)
 - Basic familiarity with HTML, CSS, and JavaScript
-- Local development server (Python 3.x, Node.js 14+, or PHP 7+)
+- Local development server (Python 3.x or Node.js 14+)
 - Text editor or IDE (VS Code recommended)
-- Git for version control (2.x+)
+- Git for version control
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/TMHSDigital/modern-demo-site.git
+   git clone https://github.com/TMHSDigital/Github-Pages-Demo-1.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd modern-demo-site
+   cd Github-Pages-Demo-1
    ```
 
 3. Serve locally using any of these methods:
    ```bash
-   # Using Python (recommended)
+   # Using Python
    python -m http.server 8000
 
    # Using Node.js
    npx serve
-
-   # Using PHP
-   php -S localhost:8000
    ```
 
 4. View in browser:
@@ -152,16 +149,15 @@ Watch our brief introduction:
 <summary>Project Structure</summary>
 
 ```
-modern-demo-site/
-├── index.html              # Entry point
-├── css/                    # Styles
-│   └── style.css           # Main stylesheet
-├── js/                     # Scripts
-│   └── main.js             # Core functionality
-├── assets/                 # Static files
-│   ├── images/             # Image assets
-│   └── favicon.ico         # Site favicon
-└── README.md               # Documentation
+Github-Pages-Demo-1/
+├── index.html          # Entry point
+├── css/               # Styles
+│   └── style.css      # Main stylesheet
+├── js/                # Scripts
+│   └── main.js        # Core functionality
+├── assets/            # Static files
+│   └── favicon.ico    # Site favicon
+└── README.md          # Documentation
 ```
 </details>
 
@@ -175,17 +171,18 @@ Modify the CSS variables in `css/style.css`:
 ```css
 :root {
     --primary-color: #0f172a;
-    --secondary-color: #3b82f6;
-    --accent-color: #22d3ee;
-    --text-color: #334155;
+    --secondary-color: #2563eb;
+    --accent-color: #0891b2;
+    --text-color: #1e293b;
     --bg-color: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.7);
 }
 ```
 
 ### Advanced Theming
-- Create new theme files in `css/themes/`
-- Override default variables
-- Import in your HTML
+- Customize glass effects via `--glass-bg` and `--glass-border`
+- Adjust animation timing with `--transition-speed`
+- Modify shadow depths using `--shadow-sm`, `--shadow`, `--shadow-lg`
 </details>
 
 <details>
@@ -194,16 +191,16 @@ Modify the CSS variables in `css/style.css`:
 ### Font Configuration
 The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optimal legibility.
 
-1. Configure sources in `index.html`:
+1. Configure weights in `index.html`:
    ```html
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
    ```
 
 2. Adjust scale in `css/style.css`:
    ```css
    html {
        font-size: 16px;
-       line-height: 1.5;
+       line-height: 1.6;
    }
    ```
 </details>
@@ -214,34 +211,34 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 <summary>View Components</summary>
 
 ### Header
-- Frosted glass effect
-- Dynamic navigation
-- Gradient branding
-- Smart collapse
+- Glass morphism backdrop filter
+- Dynamic scroll behavior
+- Gradient-enhanced branding
+- Responsive navigation
 
 ### Hero Section
-- Gradient system
-- Pattern overlays
-- Smart scaling
-- CTA optimization
+- Dynamic gradient system
+- SVG pattern overlays
+- Animated blob backgrounds
+- Optimized CTA placement
 
 ### Feature Grid
-- CSS Grid layout
-- Interactive cards
-- Fluid breakpoints
-- Consistent spacing
+- Perspective-based 3D cards
+- Staggered animations
+- Glass morphism effects
+- Interactive hover states
 
 ### Contact Form
-- Modern controls
-- Live validation
-- Smart feedback
-- Responsive layout
+- Real-time validation
+- Animated feedback states
+- Glass morphism styling
+- Accessible form controls
 
 ### Footer
-- Modular structure
-- Smart reflow
-- Brand elements
+- Social media integration
+- Brand consistency
 - Accessibility optimized
+- Responsive layout
 
 </details>
 
@@ -250,7 +247,7 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 | Browser         | Support | Notes |
 |:---------------|:-------:|:------|
 | Chrome 80+     |   ✅    | Full  |
-| Firefox 72+    |   ✅    | Full  |
+| Firefox 75+    |   ✅    | Full  |
 | Safari 13.1+   |   ✅    | Full  |
 | Edge 80+       |   ✅    | Full  |
 
@@ -274,7 +271,7 @@ Yes! This project is licensed under MIT. You're free to use it for personal or c
 1. Fork this repository
 2. Enable GitHub Pages in your repository settings
 3. Select the main branch as source
-4. Your site will be live at `https://[username].github.io/[repo-name]`
+4. Your site will be live at `https://[username].github.io/Github-Pages-Demo-1`
 </details>
 
 <details>
@@ -323,7 +320,7 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
 ## Credits
 
 - Typography: [Inter](https://fonts.google.com/specimen/Inter) by Rasmus Andersson
-- Icons: [Heroicons](https://heroicons.com/)
+- Icons: [Font Awesome](https://fontawesome.com/)
 - Inspiration: Modern web design trends and best practices
 
 ---
@@ -335,5 +332,5 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
     <a href="../../issues">Request Feature</a>
   </p>
   
-  <sub>Designed and developed with ❤️ by TMHSDigital</sub>
+  <sub>Designed and developed by TMHSDigital</sub>
 </div> 
