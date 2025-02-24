@@ -2,7 +2,9 @@
 
 A sophisticated, modern website template showcasing advanced CSS effects, responsive design, and smooth interactions. Built with pure HTML, CSS, and JavaScript.
 
-![Modern Demo Site](assets/images/preview.png)
+<div style="padding: 20px; border-radius: 12px; background: white; box-shadow: 0 8px 30px rgba(0,0,0,0.12); margin: 20px 0;">
+    <img src="assets/images/preview.png" alt="Modern Demo Site" style="width: 100%; border-radius: 8px; display: block;">
+</div>
 
 ## Features
 
