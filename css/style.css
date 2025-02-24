@@ -419,6 +419,26 @@ textarea {
     bottom: -1.25rem;
 }
 
+.form-success {
+    background: #10b981;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Footer */
 .site-footer {
     background: var(--primary-color);
@@ -504,11 +524,15 @@ textarea {
         transform: translateX(100%);
         transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
         will-change: transform;
-        contain: paint;
+        contain: layout paint;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        z-index: 1000;
     }
 
     nav.active {
         transform: translateX(0);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.1);
     }
 
     nav ul {

@@ -83,23 +83,44 @@ const app = {
 
     validateForm(data) {
         const errors = [];
+        const errorElements = {
+            name: document.getElementById('name-error'),
+            email: document.getElementById('email-error'),
+            message: document.getElementById('message-error')
+        };
+
+        // Reset previous errors
+        Object.values(errorElements).forEach(el => el.textContent = '');
 
         if (!data.name || data.name.trim() === '') {
-            errors.push('Name is required');
+            errors.push({ field: 'name', message: 'Name is required' });
         }
 
         if (!data.email || !this.isValidEmail(data.email)) {
-            errors.push('Valid email is required');
+            errors.push({ field: 'email', message: 'Valid email is required' });
         }
 
         if (!data.message || data.message.trim() === '') {
-            errors.push('Message is required');
+            errors.push({ field: 'message', message: 'Message is required' });
         }
 
         if (errors.length > 0) {
-            this.showFormError(errors.join('\n'));
+            errors.forEach(error => {
+                const element = errorElements[error.field];
+                if (element) {
+                    element.textContent = error.message;
+                    const input = document.getElementById(error.field);
+                    input.setAttribute('aria-invalid', 'true');
+                    input.focus();
+                }
+            });
             return false;
         }
+
+        // Reset aria-invalid
+        ['name', 'email', 'message'].forEach(field => {
+            document.getElementById(field).setAttribute('aria-invalid', 'false');
+        });
 
         return true;
     },
@@ -114,8 +135,15 @@ const app = {
 
     showFormSuccess() {
         const form = document.getElementById('contact-form');
+        const successMessage = document.createElement('div');
+        successMessage.className = 'form-success';
+        successMessage.setAttribute('role', 'alert');
+        successMessage.textContent = 'Message sent successfully!';
+        
         form.reset();
-        alert('Message sent successfully!'); // Replace with better UI feedback in production
+        form.insertAdjacentElement('beforebegin', successMessage);
+        
+        setTimeout(() => successMessage.remove(), 5000);
     },
 
     async submitForm(data) {
