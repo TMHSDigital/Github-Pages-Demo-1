@@ -22,11 +22,13 @@ const app = {
         if (this.settingsToggle && this.settingsPanel) this.setupSettings();
         this.loadSettings();
 
-        // Initialize theme management
+        // Initialize theme management with enhanced state
         this.themeState = {
             isTransitioning: false,
             currentTheme: null,
-            TRANSITION_DURATION: 300
+            TRANSITION_DURATION: 300,
+            transitionTimeout: null,
+            rafHandle: null
         };
 
         this.setupThemeManagement();
@@ -162,21 +164,50 @@ const app = {
         let isValid = true;
         let message = '';
 
-        if (!input.value.trim()) {
-            isValid = false;
-            message = `${input.name.charAt(0).toUpperCase() + input.name.slice(1)} is required`;
-        } else if (input.type === 'email' && !this.isValidEmail(input.value)) {
-            isValid = false;
-            message = 'Please enter a valid email address';
+        // Debounce validation for better UX
+        if (this.validationTimeout) {
+            clearTimeout(this.validationTimeout);
         }
 
-        input.setAttribute('aria-invalid', (!isValid).toString());
-        if (error) {
-            error.textContent = showError ? message : '';
-            error.setAttribute('aria-hidden', (!showError || isValid).toString());
+        const validate = () => {
+            if (!input.value.trim()) {
+                isValid = false;
+                message = `${input.name.charAt(0).toUpperCase() + input.name.slice(1)} is required`;
+            } else if (input.type === 'email' && !this.isValidEmail(input.value)) {
+                isValid = false;
+                message = 'Please enter a valid email address';
+            }
+
+            input.setAttribute('aria-invalid', (!isValid).toString());
+            
+            if (error) {
+                if (showError) {
+                    error.textContent = message;
+                    error.setAttribute('aria-hidden', 'false');
+                    // Announce error only on blur
+                    if (!input.matches(':focus')) {
+                        this.announceMessage(message);
+                    }
+                } else {
+                    error.textContent = '';
+                    error.setAttribute('aria-hidden', 'true');
+                }
+            }
+
+            // Add visual feedback classes
+            input.classList.toggle('is-invalid', !isValid);
+            input.classList.toggle('is-valid', isValid && input.value.trim());
+
+            return isValid;
+        };
+
+        // Debounce validation while typing
+        if (!showError) {
+            this.validationTimeout = setTimeout(validate, 300);
+            return true;
         }
 
-        return isValid;
+        return validate();
     },
 
     validateForm() {
@@ -388,9 +419,12 @@ const app = {
 
     // Theme utility method
     updateTheme(isDark, enableTransition = true) {
-        // Clear any pending transitions
+        // Clear any pending transitions and animations
         if (this.themeState.transitionTimeout) {
             clearTimeout(this.themeState.transitionTimeout);
+        }
+        if (this.themeState.rafHandle) {
+            cancelAnimationFrame(this.themeState.rafHandle);
         }
         
         // Prevent rapid toggles during transition
@@ -407,7 +441,7 @@ const app = {
             this.themeState.isTransitioning = true;
             
             // Start transition
-            requestAnimationFrame(() => {
+            this.themeState.rafHandle = requestAnimationFrame(() => {
                 root.classList.add('theme-transitioning');
                 root.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
@@ -417,6 +451,7 @@ const app = {
                     root.classList.remove('theme-transitioning');
                     this.themeState.isTransitioning = false;
                     this.announceMessage(`Theme changed to ${newTheme} mode`);
+                    this.themeState.rafHandle = null;
                 }, this.themeState.TRANSITION_DURATION);
             });
         } else {
