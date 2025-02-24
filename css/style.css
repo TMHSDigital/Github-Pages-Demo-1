@@ -372,27 +372,83 @@ nav a:hover::after {
 /* About Section */
 .about {
     padding: 8rem 0;
-    background: white;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+}
+
+.about::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, var(--blob-1) 0%, var(--blob-2) 100%);
+    opacity: 0.1;
+    filter: blur(70px);
+    transform: translateZ(0);
 }
 
 .about h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 3rem;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 4rem;
     text-align: center;
     color: var(--primary-color);
-    letter-spacing: -0.025em;
+    letter-spacing: -0.05em;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
 }
 
 .about-content {
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    box-shadow: var(--shadow-lg);
 }
 
 .about-text p {
-    margin-bottom: 1.5rem;
-    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    line-height: 1.8;
     color: var(--text-color);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Dark mode enhancements */
+[data-theme="dark"] .about {
+    background: rgba(15, 23, 42, 0.6);
+}
+
+[data-theme="dark"] .about::before {
+    opacity: 0.15;
+}
+
+[data-theme="dark"] .about-content {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .about h2 {
+    background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 /* Contact Section */
