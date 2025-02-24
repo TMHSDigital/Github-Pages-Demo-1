@@ -92,27 +92,27 @@
             <div class="container">
                 <h2 id="features-title">Key Features</h2>
                 <div class="feature-grid">
-                    <div class="feature-card">
+                    <div class="feature-card" data-feature="modern-design">
                         <h3>Modern Design</h3>
                         <p>Clean and responsive layout with beautiful gradients and animations.</p>
                     </div>
-                    <div class="feature-card">
+                    <div class="feature-card" data-feature="fast-loading">
                         <h3>Fast Loading</h3>
                         <p>Optimized performance with minimal dependencies.</p>
                     </div>
-                    <div class="feature-card">
+                    <div class="feature-card" data-feature="seo-ready">
                         <h3>SEO Ready</h3>
                         <p>Built with search engines in mind for better visibility.</p>
                     </div>
-                    <div class="feature-card">
+                    <div class="feature-card" data-feature="customization">
                         <h3>Easy to Customize</h3>
                         <p>Simple structure with modular components for quick modifications.</p>
                     </div>
-                    <div class="feature-card">
+                    <div class="feature-card" data-feature="dark-mode">
                         <h3>Dark Mode</h3>
                         <p>Elegant dark theme with smooth transitions for better viewing.</p>
                     </div>
-                    <div class="feature-card">
+                    <div class="feature-card" data-feature="mobile-first">
                         <h3>Mobile First</h3>
                         <p>Fully responsive design that works perfectly on all devices.</p>
                     </div>
@@ -208,6 +208,17 @@
                         <input type="checkbox" 
                                id="darkModeToggle" 
                                aria-label="Toggle dark mode">
+                        <span class="toggle-slider" aria-hidden="true"></span>
+                    </div>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label" for="learningModeToggle">
+                    <span>Learning Mode</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" 
+                               id="learningModeToggle" 
+                               aria-label="Toggle learning mode">
                         <span class="toggle-slider" aria-hidden="true"></span>
                     </div>
                 </label>

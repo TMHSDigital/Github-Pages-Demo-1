@@ -1541,160 +1541,6 @@ body.theme-transitioning,
     color: #fca5a5;
 }
 
-/* Optimized theme transitions */
-.theme-transitioning {
-    transition: var(--theme-transition) !important;
-    contain: style layout;
-    will-change: background-color, color, border-color;
-    backface-visibility: hidden;
-}
-
-/* Optimized animations */
-@keyframes slideIn {
-    from { 
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        contain: style layout;
-    }
-}
-
-/* Better reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    ::before,
-    ::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-    
-    .fade-in {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
-    
-    .feature-card:hover {
-        transform: none;
-    }
-}
-
-/* Enhanced form validation states */
-.form-group {
-    position: relative;
-}
-
-input.is-validating,
-textarea.is-validating {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='1s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    padding-right: 2.5rem;
-    transition: background-image 0.2s ease;
-}
-
-input.is-valid,
-textarea.is-valid {
-    border-color: #10b981;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2310b981' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    padding-right: 2.5rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
-}
-
-input.is-invalid,
-textarea.is-invalid {
-    border-color: #ef4444;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ef4444'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ef4444' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1rem;
-    padding-right: 2.5rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
-}
-
-/* Dark mode validation styles */
-[data-theme="dark"] input.is-validating,
-[data-theme="dark"] textarea.is-validating {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2'%3E%3Cpath d='M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='1s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
-}
-
-[data-theme="dark"] input.is-valid,
-[data-theme="dark"] textarea.is-valid {
-    border-color: #34d399;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2334d399' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
-}
-
-[data-theme="dark"] input.is-invalid,
-[data-theme="dark"] textarea.is-invalid {
-    border-color: #f87171;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23f87171'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23f87171' stroke='none'/%3e%3c/svg%3e");
-}
-
-/* Performance optimizations */
-.feature-card,
-.social-link,
-.settings-panel {
-    will-change: transform, opacity;
-    contain: content;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-}
-
-/* Smoother animations */
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, transform;
-    contain: layout style paint;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-}
-
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Enhanced error messages */
-.form-error-message {
-    background: #fee2e2;
-    border: 1px solid #ef4444;
-    color: #b91c1c;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
-    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    contain: content;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-}
-
-[data-theme="dark"] .form-error-message {
-    background: rgba(239, 68, 68, 0.2);
-    border-color: #ef4444;
-    color: #fca5a5;
-}
-
 input:focus-visible,
 textarea:focus-visible {
     outline: 2px solid var(--accent-color);
@@ -1725,4 +1571,204 @@ textarea.is-invalid:focus-visible {
 [data-theme="dark"] input.is-invalid:focus-visible,
 [data-theme="dark"] textarea.is-invalid:focus-visible {
     outline-color: #f87171;
+}
+
+/* Learning Mode Styles */
+.learning-mode .feature-card {
+    position: relative;
+    cursor: help;
+    outline: 2px solid transparent;
+    border-radius: 0.75rem;
+    transition: outline-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transform-origin: center;
+}
+
+.learning-mode .feature-card:hover {
+    outline-color: var(--accent-color);
+    transform: scale(1.02);
+}
+
+.learning-mode .feature-card:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-color), var(--shadow-lg);
+    transform: scale(1.02);
+}
+
+.learning-mode .feature-card:active {
+    transform: scale(0.98);
+}
+
+/* Keyboard focus indicator */
+.learning-mode .feature-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--secondary-color), var(--shadow-lg);
+    transform: scale(1.02);
+}
+
+/* Feature Tooltip */
+.feature-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    width: max-content;
+    max-width: min(300px, 90vw);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    font-size: 0.875rem;
+    pointer-events: none;
+    text-align: center;
+}
+
+.learning-mode .feature-card:hover .feature-tooltip,
+.learning-mode .feature-card:focus .feature-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Keyboard navigation indicator */
+.learning-mode .feature-card:focus-visible::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 1rem;
+    background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+    opacity: 0.2;
+    z-index: -1;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.3; }
+}
+
+/* Notifications */
+.notifications-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+    max-width: min(400px, 90vw);
+}
+
+.notification {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    font-size: 0.875rem;
+    pointer-events: auto;
+    transform-origin: top right;
+}
+
+.notification.info {
+    border-left: 4px solid var(--secondary-color);
+}
+
+.notification.warning {
+    border-left: 4px solid var(--accent-color);
+}
+
+.notification.fade-in {
+    animation: notificationSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.notification.fade-out {
+    animation: notificationSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes notificationSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes notificationSlideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%) scale(0.9);
+    }
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .notification,
+[data-theme="dark"] .feature-tooltip {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .feature-tooltip {
+        position: fixed;
+        bottom: 1rem;
+        left: 1rem;
+        right: 1rem;
+        transform: translateY(100%);
+        width: auto;
+        max-width: none;
+    }
+
+    .learning-mode .feature-card:hover .feature-tooltip,
+    .learning-mode .feature-card:focus .feature-tooltip {
+        transform: translateY(0);
+    }
+
+    .notifications-container {
+        left: 1rem;
+        right: 1rem;
+        align-items: center;
+    }
+
+    .notification {
+        width: 100%;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .learning-mode .feature-card {
+        transform: none !important;
+        transition: outline-color 0.2s ease;
+    }
+
+    .feature-tooltip,
+    .notification {
+        transition: opacity 0.2s ease;
+    }
+
+    .notification.fade-in,
+    .notification.fade-out {
+        animation: none;
+        opacity: 1;
+    }
 } 

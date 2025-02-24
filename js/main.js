@@ -13,6 +13,7 @@ const app = {
         this.settingsPanel = document.querySelector('.settings-panel');
         this.settingsClose = document.querySelector('.settings-close');
         this.darkModeToggle = document.getElementById('darkModeToggle');
+        this.learningModeToggle = document.getElementById('learningModeToggle');
 
         // Initialize components
         this.setupScrollHandling();
@@ -21,6 +22,10 @@ const app = {
         if (this.menuButton && this.nav) this.setupMobileMenu();
         if (this.settingsToggle && this.settingsPanel) this.setupSettings();
         this.loadSettings();
+
+        // Initialize Learning Mode
+        this.learningCore = new LearningCore();
+        this.learningCore.init();
 
         // Initialize theme management with improved memory handling
         this.themeState = {
@@ -335,36 +340,50 @@ const app = {
     },
 
     setupSettings() {
-        let isSettingsOpen = false;
-        let previousActiveElement = null;
-
         const updateSettingsState = (isOpen) => {
-            isSettingsOpen = isOpen;
             this.settingsPanel.classList.toggle('active', isOpen);
-            this.settingsToggle.setAttribute('aria-expanded', isOpen.toString());
-            this.settingsPanel.setAttribute('aria-hidden', (!isOpen).toString());
-            document.body.style.overflow = isOpen ? 'hidden' : '';
-
+            this.settingsToggle.setAttribute('aria-expanded', isOpen);
+            this.settingsPanel.setAttribute('aria-hidden', !isOpen);
+            
             if (isOpen) {
-                previousActiveElement = document.activeElement;
                 this.trapFocus(this.settingsPanel);
-                this.announceMessage('Settings panel opened');
-            } else {
-                previousActiveElement?.focus();
-                this.announceMessage('Settings panel closed');
+                // Update learning mode toggle state
+                if (this.learningModeToggle) {
+                    this.learningModeToggle.checked = this.learningCore.enabled;
+                }
             }
         };
 
         this.settingsToggle.addEventListener('click', () => {
-            updateSettingsState(!isSettingsOpen);
+            const isOpen = !this.settingsPanel.classList.contains('active');
+            updateSettingsState(isOpen);
         });
 
         this.settingsClose.addEventListener('click', () => {
             updateSettingsState(false);
         });
 
+        // Add learning mode toggle handler
+        if (this.learningModeToggle) {
+            this.learningModeToggle.addEventListener('change', () => {
+                document.dispatchEvent(new CustomEvent('learning-mode-toggle', {
+                    detail: { enabled: this.learningModeToggle.checked }
+                }));
+            });
+        }
+
+        // Close on escape
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isSettingsOpen) {
+            if (e.key === 'Escape' && this.settingsPanel.classList.contains('active')) {
+                updateSettingsState(false);
+            }
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (!this.settingsPanel.contains(e.target) && 
+                !this.settingsToggle.contains(e.target) && 
+                this.settingsPanel.classList.contains('active')) {
                 updateSettingsState(false);
             }
         });
@@ -471,24 +490,30 @@ const app = {
     },
 
     loadSettings() {
-        // Initialize theme state
-        this.themeState.currentTheme = document.documentElement.getAttribute('data-theme');
-        document.getElementById('darkModeToggle').checked = this.themeState.currentTheme === 'dark';
+        // Load theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            this.updateTheme(savedTheme === 'dark');
+        } else {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            this.updateTheme(prefersDark);
+        }
 
-        // Listen for system preference changes
-        const darkModeMediaQuery = matchMedia('(prefers-color-scheme: dark)');
+        // Load learning mode state
+        if (this.learningModeToggle) {
+            const learningEnabled = localStorage.getItem('learning_mode') === 'true';
+            this.learningModeToggle.checked = learningEnabled;
+        }
+
+        // Watch for system theme changes
         const handleSystemThemeChange = (e) => {
             if (!localStorage.getItem('theme')) {
-                this.updateTheme(e.matches, false);
+                this.updateTheme(e.matches);
             }
         };
 
-        // Use newer event listener if supported, fallback for Safari
-        if (darkModeMediaQuery.addEventListener) {
-            darkModeMediaQuery.addEventListener('change', handleSystemThemeChange);
-        } else {
-            darkModeMediaQuery.addListener(handleSystemThemeChange);
-        }
+        window.matchMedia('(prefers-color-scheme: dark)')
+            .addEventListener('change', handleSystemThemeChange);
     },
 
     isValidEmail(email) {
