@@ -1,16 +1,33 @@
 # Modern Demo Site
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Demo-blue)](https://tmhsdigital.github.io/Github-Pages-Demo-1/)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/TMHSDigital/Github-Pages-Demo-1/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Built with: HTML](https://img.shields.io/badge/Built%20with-HTML-orange)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![Style: CSS](https://img.shields.io/badge/Style-CSS-blue)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Code Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![Maintained](https://img.shields.io/badge/Maintained-yes-green.svg)](https://github.com/TMHSDigital/Github-Pages-Demo-1/graphs/commit-activity)
 
 > A sophisticated, modern website template showcasing advanced CSS effects, responsive design, and smooth interactions. Built with pure HTML, CSS, and JavaScript.
 
 [View Demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/) • [Documentation](#documentation) • [Report Bug](../../issues) • [Request Feature](../../issues)
+
+## Table of Contents
+- [Highlights](#highlights)
+- [Documentation](#documentation)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Project Structure](#project-structure)
+- [Customization](#customization)
+  - [Theme Configuration](#theme-configuration)
+  - [Typography System](#typography-system)
+- [Core Components](#core-components)
+- [Browser Support](#browser-support)
+- [Contributing](#contributing)
+- [License](#license)
+- [Credits](#credits)
 
 <details>
 <summary>Screenshot</summary>
@@ -208,12 +225,12 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 
 ## Browser Support
 
-| Browser | Support   | Notes       |
-|---------|-----------|-------------|
-| Chrome  | ✅ Last 2 | Full support|
-| Firefox | ✅ Last 2 | Full support|
-| Safari  | ✅ Last 2 | Full support|
-| Edge    | ✅ Last 2 | Full support|
+| Browser | Support | Notes |
+|:--------|:-------:|:------|
+| Chrome  | ✅ 2    | Full  |
+| Firefox | ✅ 2    | Full  |
+| Safari  | ✅ 2    | Full  |
+| Edge    | ✅ 2    | Full  |
 
 ## Contributing
 
