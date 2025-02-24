@@ -12,14 +12,19 @@
 
 > A sophisticated, modern website template showcasing advanced CSS effects, responsive design, and smooth interactions. Built with pure HTML, CSS, and JavaScript.
 
-[View Demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/) • [Documentation](#documentation) • [Report Bug](../../issues) • [Request Feature](../../issues)
+<div align="center">
+  <a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/">View Demo</a> • 
+  <a href="#documentation">Documentation</a> • 
+  <a href="../../issues">Report Bug</a> • 
+  <a href="../../issues">Request Feature</a>
+</div>
 
 <details>
-<summary>Preview</summary>
+<summary><strong>Preview</strong></summary>
 <br>
 
 <div align="center">
-    <img src="assets/images/preview.png" alt="Modern Demo Site Preview" style="max-width: 100%; border-radius: 8px;">
+  <img src="assets/images/preview.png" alt="Modern Demo Site Preview" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
 </div>
 
 </details>
@@ -110,35 +115,35 @@ Watch our brief introduction:
 ### Prerequisites
 - Modern web browser (Chrome 80+, Firefox 72+, Safari 13.1+, or Edge 80+)
 - Basic familiarity with HTML, CSS, and JavaScript
-- Local development server (Python, Node.js, or PHP)
-- Text editor or IDE
-- Git for version control
+- Local development server (Python 3.x, Node.js 14+, or PHP 7+)
+- Text editor or IDE (VS Code recommended)
+- Git for version control (2.x+)
 
 ### Installation
 
-1. Clone the repository
+1. Clone the repository:
    ```bash
    git clone https://github.com/TMHSDigital/modern-demo-site.git
    ```
 
-2. Navigate to the project directory
+2. Navigate to the project directory:
    ```bash
    cd modern-demo-site
    ```
 
-3. Serve locally
+3. Serve locally using any of these methods:
    ```bash
-   # Using Python
+   # Using Python (recommended)
    python -m http.server 8000
-   
+
    # Using Node.js
    npx serve
-   
+
    # Using PHP
    php -S localhost:8000
    ```
 
-4. View in browser
+4. View in browser:
    ```
    http://localhost:8000
    ```
@@ -242,12 +247,12 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 
 ## Browser Support
 
-| Browser | Support | Notes |
-|:--------|:-------:|:------|
-| Chrome  |    ✅    | Full  |
-| Firefox |    ✅    | Full  |
-| Safari  |    ✅    | Full  |
-| Edge    |    ✅    | Full  |
+| Browser         | Support | Notes |
+|:---------------|:-------:|:------|
+| Chrome 80+     |   ✅    | Full  |
+| Firefox 72+    |   ✅    | Full  |
+| Safari 13.1+   |   ✅    | Full  |
+| Edge 80+       |   ✅    | Full  |
 
 ## FAQ
 
@@ -324,11 +329,11 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
 ---
 
 <div align="center">
-
-<a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/">View Demo</a> • 
-<a href="../../issues">Report Bug</a> • 
-<a href="../../issues">Request Feature</a>
-
-<sub>Designed and developed by TMHSDigital</sub>
-
+  <p>
+    <a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/">View Demo</a> • 
+    <a href="../../issues">Report Bug</a> • 
+    <a href="../../issues">Request Feature</a>
+  </p>
+  
+  <sub>Designed and developed with ❤️ by TMHSDigital</sub>
 </div> 
