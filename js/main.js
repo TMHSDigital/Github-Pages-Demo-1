@@ -164,43 +164,38 @@ const app = {
         const navLinks = document.querySelectorAll('nav a');
         let isMenuOpen = false;
 
+        const updateMenuState = (isOpen) => {
+            isMenuOpen = isOpen;
+            nav.classList.toggle('active', isOpen);
+            menuButton.innerHTML = isOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            menuButton.setAttribute('aria-expanded', isOpen.toString());
+            this.updateBodyOverflow();
+        };
+
         if (menuButton && nav) {
             // Toggle menu
             menuButton.addEventListener('click', () => {
-                isMenuOpen = !isMenuOpen;
-                nav.classList.toggle('active');
-                menuButton.innerHTML = isMenuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-                document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-                menuButton.setAttribute('aria-expanded', isMenuOpen.toString());
+                updateMenuState(!isMenuOpen);
             });
 
             // Close menu when clicking a link
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    isMenuOpen = false;
-                    nav.classList.remove('active');
-                    menuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                    document.body.style.overflow = '';
+                    updateMenuState(false);
                 });
             });
 
             // Close menu when clicking outside
             document.addEventListener('click', (e) => {
                 if (isMenuOpen && !nav.contains(e.target) && !menuButton.contains(e.target)) {
-                    isMenuOpen = false;
-                    nav.classList.remove('active');
-                    menuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                    document.body.style.overflow = '';
+                    updateMenuState(false);
                 }
             });
 
             // Handle escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && isMenuOpen) {
-                    isMenuOpen = false;
-                    nav.classList.remove('active');
-                    menuButton.innerHTML = '<i class="fas fa-bars"></i>';
-                    document.body.style.overflow = '';
+                    updateMenuState(false);
                 }
             });
         }
@@ -219,7 +214,7 @@ const app = {
             settingsPanel.classList.toggle('active', isOpen);
             settingsToggle.setAttribute('aria-expanded', isOpen.toString());
             settingsPanel.setAttribute('aria-hidden', (!isOpen).toString());
-            document.body.style.overflow = isOpen ? 'hidden' : '';
+            this.updateBodyOverflow();
 
             if (isOpen) {
                 previousActiveElement = document.activeElement;
@@ -276,8 +271,8 @@ const app = {
         const focusableElements = element.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );
-        const firstFocusable = focusableElements[0];
-        const lastFocusable = focusableElements[focusableElements.length - 1];
+        const firstFocusable = focusableElements[0] || element;
+        const lastFocusable = focusableElements[focusableElements.length - 1] || element;
 
         element.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
@@ -296,6 +291,17 @@ const app = {
         });
 
         firstFocusable.focus();
+    },
+
+    updateBodyOverflow() {
+        const mobileMenu = document.querySelector('.menu-button');
+        const settingsPanel = document.querySelector('.settings-panel');
+        const isAnyPanelOpen = 
+            mobileMenu?.getAttribute('aria-expanded') === 'true' ||
+            settingsPanel?.classList.contains('active');
+
+        document.body.style.overflow = isAnyPanelOpen ? 'hidden' : '';
+        document.documentElement.style.overflow = isAnyPanelOpen ? 'hidden' : '';
     }
 };
 
