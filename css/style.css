@@ -313,8 +313,9 @@ nav a:hover::after {
     position: relative;
     overflow: hidden;
     clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
-    perspective: 1000px;
+    perspective: 1500px;
     transform-style: preserve-3d;
+    isolation: isolate;
 }
 
 .features::before {
@@ -324,7 +325,12 @@ nav a:hover::after {
     height: 120%;
     top: -10%;
     left: -10%;
-    background: linear-gradient(135deg, var(--blob-1) 0%, var(--blob-2) 100%);
+    background: linear-gradient(135deg, 
+        var(--blob-1) 0%, 
+        var(--blob-2) 50%,
+        var(--accent-color) 100%
+    );
+    mix-blend-mode: soft-light;
     opacity: 0.1;
     filter: blur(70px) saturate(150%);
     transform: translateZ(0);
@@ -366,7 +372,7 @@ nav a:hover::after {
     margin-top: 2rem;
     position: relative;
     z-index: 1;
-    transform-style: preserve-3d;
+    perspective: 1000px;
 }
 
 .feature-card {
@@ -374,16 +380,18 @@ nav a:hover::after {
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
     padding: 2.5rem;
     border-radius: 1.5rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     position: relative;
     overflow: hidden;
     opacity: 0;
     transform: translateY(20px) translateZ(0);
     will-change: transform, opacity;
     backface-visibility: hidden;
+    transform-style: preserve-3d;
 }
 
 .feature-card:nth-child(1) { animation: slideUp 0.6s 0.1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
@@ -409,8 +417,10 @@ nav a:hover::after {
 }
 
 .feature-card:hover {
-    transform: translateY(-5px) scale(1.02) translateZ(0) rotateX(2deg);
-    box-shadow: var(--shadow-lg), 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px) scale(1.02) translateZ(20px) rotateX(2deg);
+    box-shadow: var(--shadow-lg),
+                0 20px 40px -10px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
     border-color: var(--accent-color);
 }
 
@@ -428,14 +438,24 @@ nav a:hover::after {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    transform: translateZ(0);
+    transform: translateZ(10px);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .feature-card p {
     color: var(--text-color);
     line-height: 1.6;
     font-size: 1.125rem;
-    transform: translateZ(0);
+    transform: translateZ(5px);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.feature-card:hover h3 {
+    transform: translateZ(30px);
+}
+
+.feature-card:hover p {
+    transform: translateZ(20px);
 }
 
 /* Dark mode enhancements */
@@ -452,13 +472,15 @@ nav a:hover::after {
 [data-theme="dark"] .feature-card {
     background: rgba(15, 23, 42, 0.8);
     border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 [data-theme="dark"] .feature-card:hover {
     border-color: var(--accent-color);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(8, 145, 178, 0.1);
     background: rgba(15, 23, 42, 0.9);
 }
 
@@ -469,7 +491,14 @@ nav a:hover::after {
 /* Responsive adjustments */
 @media (max-width: 1024px) {
     .feature-grid {
-        grid-template-columns: repeat(2, 1fr);
+        perspective: none;
+    }
+    
+    .feature-card,
+    .feature-card:hover,
+    .feature-card h3,
+    .feature-card p {
+        transform: none;
     }
 }
 
