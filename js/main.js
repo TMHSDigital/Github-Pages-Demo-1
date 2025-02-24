@@ -214,14 +214,23 @@ const app = {
             settingsPanel.classList.toggle('active', isOpen);
             settingsToggle.setAttribute('aria-expanded', isOpen.toString());
             settingsPanel.setAttribute('aria-hidden', (!isOpen).toString());
-            this.updateBodyOverflow();
-
+            
             if (isOpen) {
                 previousActiveElement = document.activeElement;
-                this.trapFocus(settingsPanel);
+                // Ensure panel is focusable
+                settingsPanel.setAttribute('tabindex', '-1');
+                // Delay focus to allow for animation
+                requestAnimationFrame(() => {
+                    this.trapFocus(settingsPanel);
+                });
             } else {
-                previousActiveElement?.focus();
+                // Return focus after animation completes
+                setTimeout(() => {
+                    previousActiveElement?.focus();
+                }, 300); // Match transition duration
             }
+            
+            this.updateBodyOverflow();
         };
 
         // Toggle settings panel
@@ -250,7 +259,7 @@ const app = {
             }
         });
 
-        // Handle dark mode toggle with animation frame for performance
+        // Handle dark mode toggle
         darkModeToggle.addEventListener('change', () => {
             requestAnimationFrame(() => {
                 const isDark = darkModeToggle.checked;
@@ -294,14 +303,22 @@ const app = {
     },
 
     updateBodyOverflow() {
-        const mobileMenu = document.querySelector('.menu-button');
+        const mobileMenu = document.querySelector('nav');
         const settingsPanel = document.querySelector('.settings-panel');
-        const isAnyPanelOpen = 
-            mobileMenu?.getAttribute('aria-expanded') === 'true' ||
-            settingsPanel?.classList.contains('active');
+        const isMenuOpen = mobileMenu?.classList.contains('active');
+        const isSettingsOpen = settingsPanel?.classList.contains('active');
+        const isAnyPanelOpen = isMenuOpen || isSettingsOpen;
 
         document.body.style.overflow = isAnyPanelOpen ? 'hidden' : '';
         document.documentElement.style.overflow = isAnyPanelOpen ? 'hidden' : '';
+
+        // Update ARIA attributes
+        if (mobileMenu) {
+            mobileMenu.setAttribute('aria-hidden', (!isMenuOpen).toString());
+        }
+        if (settingsPanel) {
+            settingsPanel.setAttribute('aria-hidden', (!isSettingsOpen).toString());
+        }
     }
 };
 
