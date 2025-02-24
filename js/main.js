@@ -444,41 +444,41 @@ const app = {
     },
 
     updateTheme(isDark, enableTransition = true) {
-        // Clear any pending transitions
-        if (this.themeState.transitionTimeout) {
-            clearTimeout(this.themeState.transitionTimeout);
-        }
-        if (this.themeState.rafHandle) {
-            cancelAnimationFrame(this.themeState.rafHandle);
-        }
-        
+        // Clear existing transitions
+        if (this.themeState.transitionTimeout) clearTimeout(this.themeState.transitionTimeout);
+        if (this.themeState.rafHandle) cancelAnimationFrame(this.themeState.rafHandle);
+
         const root = document.documentElement;
         const newTheme = isDark ? 'dark' : 'light';
-        
-        // Skip if theme hasn't changed
         if (newTheme === this.themeState.currentTheme) return;
-        
-        // Update state immediately
+
+        // Immediate state update
         this.themeState.currentTheme = newTheme;
         localStorage.setItem('theme', newTheme);
-        
+
+        const applyTheme = () => {
+            root.setAttribute('data-theme', newTheme);
+            if (this.darkModeToggle) this.darkModeToggle.checked = isDark;
+            
+            // Update notification container theme if it exists
+            const notificationContainer = document.querySelector('.notifications-container');
+            if (notificationContainer) {
+                notificationContainer.setAttribute('data-theme', newTheme);
+            }
+        };
+
         if (enableTransition) {
             root.classList.add('theme-transitioning');
-            requestAnimationFrame(() => {
-                root.setAttribute('data-theme', newTheme);
-                
-                this.themeState.transitionTimeout = setTimeout(() => {
-                    root.classList.remove('theme-transitioning');
-                    this.announceMessage(`Theme changed to ${newTheme} mode`);
-                }, 300);
+            this.themeState.rafHandle = requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    applyTheme();
+                    this.themeState.transitionTimeout = setTimeout(() => {
+                        root.classList.remove('theme-transitioning');
+                    }, 300);
+                });
             });
         } else {
-            root.setAttribute('data-theme', newTheme);
-        }
-        
-        // Update toggle state
-        if (this.darkModeToggle) {
-            this.darkModeToggle.checked = isDark;
+            applyTheme();
         }
     },
 
