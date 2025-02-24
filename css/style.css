@@ -8,8 +8,13 @@
     --gray-50: #f8fafc;
     --gray-100: #f1f5f9;
     --gray-200: #e2e8f0;
+    --gray-300: #d1d5db;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
     --gray-700: #334155;
     --gray-800: #1e293b;
+    --gray-900: #0f172a;
     --card-bg: var(--bg-color);
     
     /* Enhanced shadows with depth */
@@ -52,8 +57,13 @@
     --gray-50: #1e293b;
     --gray-100: #334155;
     --gray-200: #475569;
-    --gray-700: #e2e8f0;
-    --gray-800: #f1f5f9;
+    --gray-300: #64748b;
+    --gray-400: #94a3b8;
+    --gray-500: #cbd5e1;
+    --gray-600: #e2e8f0;
+    --gray-700: #f1f5f9;
+    --gray-800: #f8fafc;
+    --gray-900: #ffffff;
     --card-bg: #0f172a;
     
     /* Dark theme glass effect */

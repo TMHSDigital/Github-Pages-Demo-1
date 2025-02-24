@@ -486,29 +486,48 @@ const app = {
             localStorage.setItem('theme', newTheme);
         }
         
-        document.getElementById('darkModeToggle').checked = isDark;
+        // Update the checkbox state
+        if (this.darkModeToggle) {
+            this.darkModeToggle.checked = isDark;
+        }
     },
 
     loadSettings() {
         // Load theme preference
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
-            this.updateTheme(savedTheme === 'dark');
+            this.updateTheme(savedTheme === 'dark', false);
         } else {
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            this.updateTheme(prefersDark);
+            this.updateTheme(prefersDark, false);
         }
 
-        // Load learning mode state
+        // Load learning mode state and set up toggle handler
         if (this.learningModeToggle) {
             const learningEnabled = localStorage.getItem('learning_mode') === 'true';
             this.learningModeToggle.checked = learningEnabled;
+            
+            // Add learning mode toggle handler
+            this.learningModeToggle.addEventListener('change', (e) => {
+                const enabled = e.target.checked;
+                localStorage.setItem('learning_mode', enabled);
+                document.dispatchEvent(new CustomEvent('learning-mode-toggle', { 
+                    detail: { enabled } 
+                }));
+            });
+        }
+
+        // Set up dark mode toggle handler
+        if (this.darkModeToggle) {
+            this.darkModeToggle.addEventListener('change', (e) => {
+                this.updateTheme(e.target.checked);
+            });
         }
 
         // Watch for system theme changes
         const handleSystemThemeChange = (e) => {
             if (!localStorage.getItem('theme')) {
-                this.updateTheme(e.matches);
+                this.updateTheme(e.matches, false);
             }
         };
 
