@@ -1087,4 +1087,77 @@ body.theme-transitioning,
     border-color: var(--accent-color);
     color: white;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Intersection Observer Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Form Error Message */
+.form-error-message {
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #b91c1c;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  animation: slideIn 0.3s ease;
+}
+
+[data-theme="dark"] .form-error-message {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+/* Theme Transitions */
+.theme-transitioning {
+  transition: var(--theme-transition) !important;
+}
+
+/* Elements that should transition */
+body.theme-transitioning,
+.theme-transitioning .site-header,
+.theme-transitioning .feature-card,
+.theme-transitioning .contact-form,
+.theme-transitioning input,
+.theme-transitioning textarea,
+.theme-transitioning .settings-panel,
+.theme-transitioning .social-link,
+.theme-transitioning .hero,
+.theme-transitioning .menu-button,
+.theme-transitioning .toggle-slider,
+.theme-transitioning .toggle-slider:before {
+  transition: var(--theme-transition);
+}
+
+/* Lazy Loading */
+.social-link {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.3s ease forwards;
+}
+
+.social-link:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.social-link:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 } 

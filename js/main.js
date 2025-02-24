@@ -22,6 +22,16 @@ const app = {
         if (this.settingsToggle && this.settingsPanel) this.setupSettings();
         this.loadSettings();
 
+        // Initialize theme management
+        this.themeState = {
+            isTransitioning: false,
+            currentTheme: null,
+            TRANSITION_DURATION: 300
+        };
+
+        this.setupThemeManagement();
+        this.setupIntersectionObserver();
+
         // Announce when the page is fully loaded
         window.addEventListener('load', () => {
             this.announcePageLoaded();
@@ -188,21 +198,47 @@ const app = {
     async submitForm() {
         const submitButton = this.form.querySelector('button[type="submit"]');
         const originalText = submitButton.textContent;
+        let retries = 0;
+        const MAX_RETRIES = 3;
+        
+        const showError = (message) => {
+            const errorEl = document.createElement('div');
+            errorEl.className = 'form-error-message';
+            errorEl.setAttribute('role', 'alert');
+            errorEl.textContent = message;
+            
+            const existing = this.form.querySelector('.form-error-message');
+            if (existing) existing.remove();
+            
+            this.form.insertBefore(errorEl, this.form.firstChild);
+            setTimeout(() => errorEl.remove(), 5000);
+        };
+        
+        const trySubmit = async () => {
+            try {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                this.showFormSuccess();
+                this.form.reset();
+                this.announceMessage('Message sent successfully!');
+                return true;
+            } catch (error) {
+                retries++;
+                if (retries < MAX_RETRIES) {
+                    showError(`Failed to send message. Retrying... (${retries}/${MAX_RETRIES})`);
+                    return await trySubmit();
+                }
+                showError('Failed to send message after multiple attempts. Please try again later.');
+                return false;
+            }
+        };
         
         try {
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            this.showFormSuccess();
-            this.form.reset();
-            
-            // Announce success to screen readers
-            this.announceMessage('Message sent successfully!');
-        } catch (error) {
-            this.showFormError('Failed to send message. Please try again.');
+            await trySubmit();
         } finally {
             submitButton.disabled = false;
             submitButton.textContent = originalText;
@@ -410,6 +446,58 @@ const app = {
         form.insertAdjacentElement('beforebegin', successMessage);
         
         setTimeout(() => successMessage.remove(), 5000);
+    },
+
+    setupThemeManagement() {
+        const darkModeToggle = this.darkModeToggle;
+        if (!darkModeToggle) return;
+
+        // Initialize theme state
+        this.themeState.currentTheme = document.documentElement.getAttribute('data-theme');
+        darkModeToggle.checked = this.themeState.currentTheme === 'dark';
+
+        // Handle toggle changes
+        darkModeToggle.addEventListener('change', () => {
+            this.updateTheme(darkModeToggle.checked);
+        });
+
+        // Listen for system preference changes
+        const darkModeMediaQuery = matchMedia('(prefers-color-scheme: dark)');
+        const handleSystemThemeChange = (e) => {
+            if (!localStorage.getItem('theme')) {
+                this.updateTheme(e.matches, false);
+            }
+        };
+
+        // Use newer event listener if supported, fallback for Safari
+        if (darkModeMediaQuery.addEventListener) {
+            darkModeMediaQuery.addEventListener('change', handleSystemThemeChange);
+        } else {
+            darkModeMediaQuery.addListener(handleSystemThemeChange);
+        }
+    },
+
+    setupIntersectionObserver() {
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+
+        // Observe feature cards and sections
+        document.querySelectorAll('.feature-card, section').forEach(el => {
+            el.classList.add('fade-in');
+            observer.observe(el);
+        });
     }
 };
 
