@@ -164,9 +164,10 @@ const app = {
         let isValid = true;
         let message = '';
 
-        // Debounce validation for better UX
+        // Enhanced debounce validation
         if (this.validationTimeout) {
             clearTimeout(this.validationTimeout);
+            input.classList.remove('is-validating');
         }
 
         const validate = () => {
@@ -184,7 +185,6 @@ const app = {
                 if (showError) {
                     error.textContent = message;
                     error.setAttribute('aria-hidden', 'false');
-                    // Announce error only on blur
                     if (!input.matches(':focus')) {
                         this.announceMessage(message);
                     }
@@ -194,14 +194,19 @@ const app = {
                 }
             }
 
-            // Add visual feedback classes
+            // Enhanced visual feedback
+            input.classList.remove('is-validating');
             input.classList.toggle('is-invalid', !isValid);
             input.classList.toggle('is-valid', isValid && input.value.trim());
 
             return isValid;
         };
 
-        // Debounce validation while typing
+        // Show validating state immediately
+        if (input.value.trim()) {
+            input.classList.add('is-validating');
+        }
+
         if (!showError) {
             this.validationTimeout = setTimeout(validate, 300);
             return true;
@@ -441,19 +446,21 @@ const app = {
         if (enableTransition) {
             this.themeState.isTransitioning = true;
             
-            // Start transition with RAF for better paint timing
+            // Start transition with double RAF for smoother paint timing
             this.themeState.rafHandle = requestAnimationFrame(() => {
-                root.classList.add('theme-transitioning');
-                root.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                
-                // Ensure transition completes and cleanup
-                this.themeState.transitionTimeout = setTimeout(() => {
-                    root.classList.remove('theme-transitioning');
-                    this.themeState.isTransitioning = false;
-                    this.announceMessage(`Theme changed to ${newTheme} mode`);
-                    this.themeState.rafHandle = null;
-                }, this.themeState.TRANSITION_DURATION);
+                requestAnimationFrame(() => {
+                    root.classList.add('theme-transitioning');
+                    root.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    
+                    // Ensure transition completes and cleanup
+                    this.themeState.transitionTimeout = setTimeout(() => {
+                        root.classList.remove('theme-transitioning');
+                        this.themeState.isTransitioning = false;
+                        this.announceMessage(`Theme changed to ${newTheme} mode`);
+                        this.themeState.rafHandle = null;
+                    }, this.themeState.TRANSITION_DURATION);
+                });
             });
         } else {
             root.setAttribute('data-theme', newTheme);

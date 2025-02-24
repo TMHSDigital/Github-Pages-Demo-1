@@ -1262,7 +1262,21 @@ body.theme-transitioning,
     }
 }
 
-/* Form validation states */
+/* Enhanced form validation states */
+.form-group {
+    position: relative;
+}
+
+input.is-validating,
+textarea.is-validating {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='1s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+    transition: background-image 0.2s ease;
+}
+
 input.is-valid,
 textarea.is-valid {
     border-color: #10b981;
@@ -1271,7 +1285,7 @@ textarea.is-valid {
     background-position: right 1rem center;
     background-size: 1rem;
     padding-right: 2.5rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
 }
 
 input.is-invalid,
@@ -1282,7 +1296,13 @@ textarea.is-invalid {
     background-position: right 1rem center;
     background-size: 1rem;
     padding-right: 2.5rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
+}
+
+/* Dark mode validation styles */
+[data-theme="dark"] input.is-validating,
+[data-theme="dark"] textarea.is-validating {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2'%3E%3Cpath d='M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='1s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
 }
 
 [data-theme="dark"] input.is-valid,
@@ -1295,4 +1315,53 @@ textarea.is-invalid {
 [data-theme="dark"] textarea.is-invalid {
     border-color: #f87171;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23f87171'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23f87171' stroke='none'/%3e%3c/svg%3e");
+}
+
+/* Performance optimizations */
+.feature-card,
+.social-link,
+.settings-panel {
+    will-change: transform, opacity;
+    contain: content;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* Smoother animations */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    contain: layout style paint;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Enhanced error messages */
+.form-error-message {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    contain: content;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+[data-theme="dark"] .form-error-message {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #fca5a5;
 } 
