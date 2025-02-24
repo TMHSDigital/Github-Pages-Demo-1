@@ -16,14 +16,15 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="scroll-progress"></div>
-    <header class="site-header">
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="scroll-progress" role="progressbar" aria-label="Scroll progress"></div>
+    <header class="site-header" role="banner">
         <div class="container">
             <h1><span class="brand-primary">TMHS</span><span class="brand-secondary">Digital</span></h1>
-            <button class="menu-button" aria-label="Toggle menu">
-                <i class="fas fa-bars"></i>
-            </button>
-            <nav>
+            <nav role="navigation" aria-label="Main navigation">
+                <button class="menu-button" aria-label="Toggle menu" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#features">Features</a></li>
@@ -34,18 +35,18 @@
         </div>
     </header>
 
-    <main>
-        <section id="home" class="hero">
+    <main id="main" role="main">
+        <section id="home" class="hero" aria-labelledby="hero-title">
             <div class="container">
-                <h2>Welcome to the Future</h2>
+                <h2 id="hero-title">Welcome to the Future</h2>
                 <p class="lead">A modern website template built with clean HTML, CSS, and JavaScript.</p>
                 <a href="#features" class="cta-button">Explore Features</a>
             </div>
         </section>
 
-        <section id="features" class="features">
+        <section id="features" class="features" aria-labelledby="features-title">
             <div class="container">
-                <h2>Key Features</h2>
+                <h2 id="features-title">Key Features</h2>
                 <div class="feature-grid">
                     <div class="feature-card">
                         <h3>Modern Design</h3>
@@ -79,21 +80,27 @@
             </div>
         </section>
 
-        <section id="contact" class="contact">
+        <section id="contact" class="contact" aria-labelledby="contact-title">
             <div class="container">
-                <h2>Get in Touch</h2>
-                <form id="contact-form" class="contact-form">
+                <h2 id="contact-title">Get in Touch</h2>
+                <form id="contact-form" class="contact-form" novalidate>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" required 
+                               aria-required="true" aria-describedby="name-error">
+                        <div id="name-error" class="form-error" role="alert"></div>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" required 
+                               aria-required="true" aria-describedby="email-error">
+                        <div id="email-error" class="form-error" role="alert"></div>
                     </div>
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
+                        <textarea id="message" name="message" required 
+                                aria-required="true" aria-describedby="message-error"></textarea>
+                        <div id="message-error" class="form-error" role="alert"></div>
                     </div>
                     <button type="submit" class="submit-button">Send Message</button>
                 </form>
@@ -101,7 +108,7 @@
         </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-social">
@@ -119,6 +126,6 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js" type="module"></script>
 </body>
 </html> 
