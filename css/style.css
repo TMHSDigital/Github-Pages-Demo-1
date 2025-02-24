@@ -660,11 +660,18 @@ textarea {
     justify-content: center;
     font-size: 1.5rem;
     z-index: 999;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    contain: layout style;
 }
 
 .settings-toggle:hover {
     transform: rotate(30deg);
+    background: var(--secondary-color);
+}
+
+.settings-toggle:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
 .settings-panel {
@@ -679,10 +686,39 @@ textarea {
     transform: translateX(100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-left: 1px solid var(--gray-200);
+    contain: content;
+    pointer-events: none;
+    visibility: hidden;
 }
 
 .settings-panel.active {
     transform: translateX(0);
+    pointer-events: auto;
+    visibility: visible;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .settings-toggle,
+    .settings-panel,
+    .toggle-slider,
+    .toggle-slider:before {
+        transition: none;
+    }
+    
+    .settings-toggle:hover {
+        transform: none;
+    }
+}
+
+/* Dark mode enhancements */
+[data-theme="dark"] .settings-toggle {
+    background: var(--accent-color);
+}
+
+[data-theme="dark"] .settings-panel {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
 }
 
 .settings-header {

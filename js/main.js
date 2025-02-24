@@ -211,43 +211,57 @@ const app = {
         const settingsPanel = document.querySelector('.settings-panel');
         const settingsClose = document.querySelector('.settings-close');
         const darkModeToggle = document.getElementById('darkModeToggle');
+        let isSettingsOpen = false;
+        let previousActiveElement = null;
+
+        const updatePanelState = (isOpen) => {
+            isSettingsOpen = isOpen;
+            settingsPanel.classList.toggle('active', isOpen);
+            settingsToggle.setAttribute('aria-expanded', isOpen.toString());
+            settingsPanel.setAttribute('aria-hidden', (!isOpen).toString());
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+
+            if (isOpen) {
+                previousActiveElement = document.activeElement;
+                this.trapFocus(settingsPanel);
+            } else {
+                previousActiveElement?.focus();
+            }
+        };
 
         // Toggle settings panel
         settingsToggle.addEventListener('click', () => {
-            settingsPanel.classList.add('active');
-            settingsToggle.setAttribute('aria-expanded', 'true');
-            // Trap focus in settings panel
-            this.trapFocus(settingsPanel);
+            updatePanelState(!isSettingsOpen);
         });
 
         // Close settings panel
         settingsClose.addEventListener('click', () => {
-            settingsPanel.classList.remove('active');
-            settingsToggle.setAttribute('aria-expanded', 'false');
+            updatePanelState(false);
         });
 
         // Close on escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
-                settingsPanel.classList.remove('active');
-                settingsToggle.setAttribute('aria-expanded', 'false');
+            if (e.key === 'Escape' && isSettingsOpen) {
+                updatePanelState(false);
             }
         });
 
         // Click outside to close
         document.addEventListener('click', (e) => {
-            if (settingsPanel.classList.contains('active') &&
-                !settingsPanel.contains(e.target) &&
+            if (isSettingsOpen && 
+                !settingsPanel.contains(e.target) && 
                 !settingsToggle.contains(e.target)) {
-                settingsPanel.classList.remove('active');
-                settingsToggle.setAttribute('aria-expanded', 'false');
+                updatePanelState(false);
             }
         });
 
-        // Handle dark mode toggle
+        // Handle dark mode toggle with animation frame for performance
         darkModeToggle.addEventListener('change', () => {
-            document.documentElement.setAttribute('data-theme', darkModeToggle.checked ? 'dark' : 'light');
-            localStorage.setItem('theme', darkModeToggle.checked ? 'dark' : 'light');
+            requestAnimationFrame(() => {
+                const isDark = darkModeToggle.checked;
+                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
         });
     },
 

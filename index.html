@@ -127,24 +127,36 @@
     </footer>
 
     <!-- Settings Panel -->
-    <button class="settings-toggle" aria-label="Open settings" aria-expanded="false">
-        <i class="fas fa-cog"></i>
+    <button class="settings-toggle" 
+            aria-label="Open settings" 
+            aria-describedby="settings-title"
+            aria-expanded="false"
+            aria-controls="settings-panel">
+        <i class="fas fa-cog" aria-hidden="true"></i>
     </button>
 
-    <div class="settings-panel" aria-labelledby="settings-title" role="dialog" aria-modal="true">
+    <div id="settings-panel" 
+         class="settings-panel" 
+         role="dialog" 
+         aria-labelledby="settings-title" 
+         aria-modal="true"
+         aria-hidden="true">
         <div class="settings-header">
             <h3 id="settings-title">Settings</h3>
-            <button class="settings-close" aria-label="Close settings">
-                <i class="fas fa-times"></i>
+            <button class="settings-close" 
+                    aria-label="Close settings">
+                <i class="fas fa-times" aria-hidden="true"></i>
             </button>
         </div>
         <div class="settings-content">
             <div class="settings-group">
-                <label class="settings-label">
+                <label class="settings-label" for="darkModeToggle">
                     <span>Dark Mode</span>
                     <div class="toggle-switch">
-                        <input type="checkbox" id="darkModeToggle" aria-label="Toggle dark mode">
-                        <span class="toggle-slider"></span>
+                        <input type="checkbox" 
+                               id="darkModeToggle" 
+                               aria-label="Toggle dark mode">
+                        <span class="toggle-slider" aria-hidden="true"></span>
                     </div>
                 </label>
             </div>
