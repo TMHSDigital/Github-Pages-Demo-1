@@ -13,64 +13,59 @@ const app = {
     attachEventListeners() {
         let scrollTimeout;
         let ticking = false;
+        let lastScroll = 0;
         
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Site loaded!');
-            // Smooth scroll for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const target = document.querySelector(anchor.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
+        // Cache DOM elements for scroll handler
+        const header = document.querySelector('.site-header');
+        const progressBar = document.querySelector('.scroll-progress');
 
-            // Header scroll effect
-            let lastScroll = 0;
-            
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        const header = document.querySelector('.site-header');
-                        const progressBar = document.querySelector('.scroll-progress');
-                        const currentScroll = window.pageYOffset;
-                        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-                        const progress = (currentScroll / scrollHeight) * 100;
-
-                        // Update scroll progress bar
-                        progressBar.style.width = `${progress}%`;
-
-                        // Add pulse effect
-                        clearTimeout(scrollTimeout);
-                        progressBar.classList.add('pulse');
-                        scrollTimeout = setTimeout(() => {
-                            progressBar.classList.remove('pulse');
-                        }, 500);
-
-                        // Existing header scroll logic
-                        if (currentScroll <= 0) {
-                            header.classList.remove('scroll-up');
-                            return;
-                        }
-
-                        if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
-                            header.classList.remove('scroll-up');
-                            header.classList.add('scroll-down');
-                        } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
-                            header.classList.remove('scroll-down');
-                            header.classList.add('scroll-up');
-                        }
-                        lastScroll = currentScroll;
-                        ticking = false;
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(anchor.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
-                    ticking = true;
                 }
             });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScroll = window.pageYOffset;
+                    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const progress = (currentScroll / scrollHeight) * 100;
+
+                    // Update scroll progress bar
+                    progressBar.style.width = `${progress}%`;
+
+                    // Add pulse effect
+                    clearTimeout(scrollTimeout);
+                    progressBar.classList.add('pulse');
+                    scrollTimeout = setTimeout(() => {
+                        progressBar.classList.remove('pulse');
+                    }, 500);
+
+                    // Header scroll logic
+                    if (currentScroll <= 0) {
+                        header.classList.remove('scroll-up');
+                    } else if (currentScroll > lastScroll && !header.classList.contains('scroll-down')) {
+                        header.classList.remove('scroll-up');
+                        header.classList.add('scroll-down');
+                    } else if (currentScroll < lastScroll && header.classList.contains('scroll-down')) {
+                        header.classList.remove('scroll-down');
+                        header.classList.add('scroll-up');
+                    }
+                    lastScroll = currentScroll;
+                    ticking = false;
+                });
+                ticking = true;
+            }
         });
     },
 
@@ -101,36 +96,33 @@ const app = {
 
         // Reset previous errors
         Object.values(errorElements).forEach(el => el.textContent = '');
+        ['name', 'email', 'message'].forEach(field => {
+            document.getElementById(field).setAttribute('aria-invalid', 'false');
+        });
 
-        if (!data.name || data.name.trim() === '') {
+        if (!data.name?.trim()) {
             errors.push({ field: 'name', message: 'Name is required' });
         }
-
         if (!data.email || !this.isValidEmail(data.email)) {
             errors.push({ field: 'email', message: 'Valid email is required' });
         }
-
-        if (!data.message || data.message.trim() === '') {
+        if (!data.message?.trim()) {
             errors.push({ field: 'message', message: 'Message is required' });
         }
 
         if (errors.length > 0) {
-            errors.forEach(error => {
+            // Show all errors but only focus the first field
+            errors.forEach((error, index) => {
                 const element = errorElements[error.field];
-                if (element) {
+                const input = document.getElementById(error.field);
+                if (element && input) {
                     element.textContent = error.message;
-                    const input = document.getElementById(error.field);
                     input.setAttribute('aria-invalid', 'true');
-                    input.focus();
+                    if (index === 0) input.focus();
                 }
             });
             return false;
         }
-
-        // Reset aria-invalid
-        ['name', 'email', 'message'].forEach(field => {
-            document.getElementById(field).setAttribute('aria-invalid', 'false');
-        });
 
         return true;
     },
@@ -379,4 +371,8 @@ const app = {
     }
 };
 
-app.init(); 
+// Single DOMContentLoaded listener
+document.addEventListener('DOMContentLoaded', () => {
+    app.init();
+    console.log('Site loaded!');
+}); 
