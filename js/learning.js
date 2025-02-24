@@ -31,6 +31,12 @@ class LearningCore {
     }
 
     setupFeatureCards() {
+        // Add mouse tracking for tooltip parallax
+        document.addEventListener('mousemove', (e) => {
+            this.root.style.setProperty('--mouse-x', e.clientX);
+            this.root.style.setProperty('--mouse-y', e.clientY);
+        }, { passive: true });
+
         const cards = document.querySelectorAll('.feature-card');
         cards.forEach(card => {
             // Create tooltip if it doesn't exist
