@@ -1030,8 +1030,10 @@ textarea:focus {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
-    border: none;
+    border: 1px solid var(--glass-border);
     cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     box-shadow: var(--shadow-lg),
                 0 0 15px rgba(37, 99, 235, 0.3);
     display: flex;
@@ -1039,20 +1041,26 @@ textarea:focus {
     justify-content: center;
     font-size: 1.5rem;
     z-index: 999;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.3s ease;
+    will-change: transform, backdrop-filter;
     contain: layout style;
 }
 
 .settings-toggle:hover {
-    transform: rotate(30deg) scale(1.1);
-    box-shadow: var(--shadow-lg),
-                0 0 20px rgba(37, 99, 235, 0.4);
+    transform: rotate(90deg) scale(1.15);
+    box-shadow: 0 0 25px rgba(37, 99, 235, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.settings-toggle.active {
+    transform: rotate(135deg) scale(0.9);
+    background: var(--accent-color);
 }
 
 .settings-toggle:focus-visible {
     outline: 3px solid var(--accent-color);
     outline-offset: 2px;
-    transform: scale(1.1);
 }
 
 .settings-panel {
@@ -1073,12 +1081,20 @@ textarea:focus {
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
+    will-change: transform, opacity;
 }
 
 .settings-panel.active {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1) rotate(0.5deg);
     opacity: 1;
     visibility: visible;
+    animation: panelSpring 0.6s cubic-bezier(.5,-0.5,.3,1.5);
+}
+
+@keyframes panelSpring {
+    0% { transform: translateY(-20px) scale(0.98); }
+    50% { transform: translateY(5px) scale(1.02); }
+    100% { transform: translateY(0) scale(1); }
 }
 
 .settings-header {
@@ -1115,6 +1131,7 @@ textarea:focus {
 .settings-close:hover {
     background: rgba(0, 0, 0, 0.05);
     color: var(--accent-color);
+    transform: rotate(90deg);
 }
 
 .settings-content {
@@ -1127,12 +1144,14 @@ textarea:focus {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 0.75rem;
     border: 1px solid var(--glass-border);
-    transition: all 0.2s ease;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background 0.2s ease;
 }
 
 .settings-group:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
+    transform: translateX(8px);
+    background: rgba(255, 255, 255, 0.08);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -1246,18 +1265,20 @@ input:focus-visible + .toggle-slider {
 @media (max-width: 768px) {
     .settings-panel {
         top: auto;
-        bottom: 5rem;
+        bottom: 5.5rem;
         right: 1rem;
-        max-height: calc(100vh - 7rem);
+        max-height: 70vh;
         overflow-y: auto;
+        overscroll-behavior: contain;
     }
     
     .settings-toggle {
-        bottom: 1rem;
-        right: 1rem;
+        bottom: 1.5rem;
+        right: 1.5rem;
         width: 3rem;
         height: 3rem;
         font-size: 1.25rem;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
     }
 }
 
@@ -1267,12 +1288,10 @@ input:focus-visible + .toggle-slider {
     .settings-toggle,
     .settings-group {
         transition: none;
+        animation: none;
     }
     
-    .settings-toggle:hover {
-        transform: none;
-    }
-    
+    .settings-toggle:hover,
     .settings-group:hover {
         transform: none;
     }
@@ -1577,8 +1596,6 @@ body.theme-transitioning,
     will-change: opacity, transform;
     contain: layout style paint;
     backface-visibility: hidden;
-    transform-style: preserve-3d;
-    perspective: 1000px;
 }
 
 .fade-in.visible {
