@@ -560,6 +560,19 @@ const app = {
                 this.updateTheme(prefersDark, false);
             }
 
+            // Load high contrast preference
+            const highContrastToggle = document.getElementById('highContrastToggle');
+            if (highContrastToggle) {
+                const savedHighContrast = localStorage.getItem('highContrast') === 'true';
+                highContrastToggle.checked = savedHighContrast;
+                this.updateHighContrast(savedHighContrast, false);
+                
+                // Add event listener for high contrast toggle
+                highContrastToggle.addEventListener('change', (e) => {
+                    this.updateHighContrast(e.target.checked);
+                });
+            }
+
             // Load font size preference
             const fontSizeRange = document.getElementById('fontSizeRange');
             const fontSizeValue = document.getElementById('fontSizeValue');
@@ -969,6 +982,14 @@ const app = {
                 this.darkModeToggle.checked = prefersDark;
             }
             
+            // Reset high contrast
+            localStorage.removeItem('highContrast');
+            const highContrastToggle = document.getElementById('highContrastToggle');
+            if (highContrastToggle) {
+                highContrastToggle.checked = false;
+                this.updateHighContrast(false, true);
+            }
+            
             // Reset font size to 100%
             localStorage.removeItem('fontSize');
             const fontSizeRange = document.getElementById('fontSizeRange');
@@ -983,6 +1004,34 @@ const app = {
             this.announceMessage('Settings reset to defaults');
         } catch (error) {
             console.warn('Error resetting settings:', error);
+        }
+    },
+
+    // Add this new method to handle high contrast updates
+    updateHighContrast(isHighContrast, animate = true) {
+        const root = document.documentElement;
+        
+        // Save preference
+        try {
+            localStorage.setItem('highContrast', isHighContrast);
+        } catch (error) {
+            console.warn('Could not save high contrast preference:', error);
+        }
+        
+        if (animate) {
+            root.classList.add('contrast-transitioning');
+            setTimeout(() => {
+                root.classList.remove('contrast-transitioning');
+            }, 500);
+        }
+        
+        // Apply high contrast
+        if (isHighContrast) {
+            root.setAttribute('data-high-contrast', 'true');
+            this.announceMessage('High contrast mode enabled');
+        } else {
+            root.removeAttribute('data-high-contrast');
+            this.announceMessage('High contrast mode disabled');
         }
     }
 };
