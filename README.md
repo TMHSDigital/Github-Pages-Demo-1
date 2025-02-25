@@ -352,6 +352,7 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
 
 - Typography: [Inter](https://fonts.google.com/specimen/Inter) by Rasmus Andersson
 - Icons: [Font Awesome](https://fontawesome.com/)
+- Images: [Unsplash](https://unsplash.com/) - All images used in the portfolio section are from Unsplash and are used under their [license](https://unsplash.com/license) (free to use for commercial and non-commercial purposes)
 - Inspiration: Modern web design trends and best practices
 
 ---
