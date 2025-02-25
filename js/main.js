@@ -6,6 +6,32 @@
 
 const app = {
     init() {
+        // Wait for DOM content to be loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.initNavigation();
+                this.loadSettings();
+                this.initHero();
+                this.initSettingsPanel();
+                this.initPortfolio();
+                this.initAnimations();
+                this.setupKeyboardShortcuts();
+                this.announcePageLoaded();
+            });
+        } else {
+            // DOM already loaded
+            this.initNavigation();
+            this.loadSettings();
+            this.initHero();
+            this.initSettingsPanel();
+            this.initPortfolio();
+            this.initAnimations();
+            this.setupKeyboardShortcuts();
+            this.announcePageLoaded();
+        }
+    },
+
+    initNavigation() {
         // Cache DOM elements
         this.header = document.querySelector('.site-header');
         this.progressBar = document.querySelector('.scroll-progress');
@@ -25,7 +51,6 @@ const app = {
         if (this.form) this.setupFormHandling();
         if (this.menuButton && this.nav) this.setupMobileMenu();
         if (this.settingsToggle && this.settingsPanel) this.setupSettings();
-        this.loadSettings();
 
         // Remove learning mode initialization
         // this.learningCore = new LearningCore();
@@ -45,11 +70,6 @@ const app = {
 
         this.setupThemeManagement();
         this.setupIntersectionObserver();
-
-        // Announce when the page is fully loaded
-        window.addEventListener('load', () => {
-            this.announcePageLoaded();
-        });
     },
 
     setupScrollHandling() {
@@ -685,6 +705,99 @@ const app = {
                 }
             }
         });
+    },
+
+    initSettingsPanel() {
+        const settingsToggle = document.querySelector('.settings-toggle');
+        const settingsPanel = document.querySelector('.settings-panel');
+        const closeSettings = document.querySelector('.close-settings');
+
+        if (settingsToggle && settingsPanel) {
+            settingsToggle.addEventListener('click', () => {
+                settingsPanel.classList.toggle('open');
+            });
+        }
+
+        if (closeSettings && settingsPanel) {
+            closeSettings.addEventListener('click', () => {
+                settingsPanel.classList.remove('open');
+            });
+        }
+    },
+
+    initPortfolio() {
+        // Check if we're on a page with the portfolio section
+        const portfolioSection = document.getElementById('portfolio');
+        if (!portfolioSection) return;
+
+        // Add category filters if they don't exist yet
+        if (!document.querySelector('.portfolio-filters')) {
+            const filtersHTML = `
+                <div class="portfolio-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="web">Web Design</button>
+                    <button class="filter-btn" data-filter="app">App Development</button>
+                    <button class="filter-btn" data-filter="ui">UI/UX</button>
+                </div>
+            `;
+            
+            const sectionIntro = portfolioSection.querySelector('.section-intro');
+            if (sectionIntro) {
+                sectionIntro.insertAdjacentHTML('afterend', filtersHTML);
+            }
+            
+            // Add data-category attributes to portfolio items
+            const portfolioItems = portfolioSection.querySelectorAll('.portfolio-item');
+            
+            // No need to assign categories as they're already in HTML
+            
+            // Add click event listener to filter buttons
+            const filterBtns = portfolioSection.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    // Get filter value
+                    const filter = btn.getAttribute('data-filter');
+                    
+                    // Filter items
+                    portfolioItems.forEach(item => {
+                        if (filter === 'all') {
+                            item.style.display = 'block';
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                                item.style.transform = 'translateY(0)';
+                            }, 50);
+                        } else {
+                            if (item.getAttribute('data-category') === filter) {
+                                item.style.display = 'block';
+                                setTimeout(() => {
+                                    item.style.opacity = '1';
+                                    item.style.transform = 'translateY(0)';
+                                }, 50);
+                            } else {
+                                item.style.opacity = '0';
+                                item.style.transform = 'translateY(20px)';
+                                setTimeout(() => {
+                                    item.style.display = 'none';
+                                }, 300);
+                            }
+                        }
+                    });
+                });
+            });
+            
+            // Initialize with 'all' filter
+            portfolioItems.forEach(item => {
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+                item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            });
+        }
     }
 };
 
