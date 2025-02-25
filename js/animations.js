@@ -814,16 +814,21 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
      * Announce changes for screen readers
      */
     announceChange(message) {
-        const announcer = document.getElementById('a11y-announcer') || (() => {
-            const el = document.createElement('div');
-            el.id = 'a11y-announcer';
-            el.className = 'sr-only';
-            el.setAttribute('aria-live', 'polite');
-            document.body.appendChild(el);
-            return el;
-        })();
-        
-        announcer.textContent = message;
+        // Use the Utilities module if available, otherwise fallback to local implementation
+        if (window.Utilities && typeof window.Utilities.announceMessage === 'function') {
+            window.Utilities.announceMessage(message);
+        } else {
+            const announcer = document.getElementById('a11y-announcer') || (() => {
+                const el = document.createElement('div');
+                el.id = 'a11y-announcer';
+                el.className = 'sr-only';
+                el.setAttribute('aria-live', 'polite');
+                document.body.appendChild(el);
+                return el;
+            })();
+            
+            announcer.textContent = message;
+        }
     }
 };
 

@@ -118,7 +118,7 @@ body {
     border-bottom: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
     transition: transform var(--transition-speed) ease,
-                border-color var(--theme-transition-timing);
+                border-color 0.3s ease;
     contain: layout;
     padding: 0.5rem 0;
 }
@@ -2463,5 +2463,85 @@ body.settings-open {
     .contrast-transitioning,
     .contrast-transitioning * {
         transition: none !important;
+    }
+}
+
+/* Fallbacks for browsers without feature support */
+.no-backdrop-filter .site-header,
+.no-backdrop-filter .settings-panel,
+.no-backdrop-filter .feature-card {
+    /* Increase background opacity when backdrop-filter isn't available */
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="dark"] .no-backdrop-filter .site-header,
+[data-theme="dark"] .no-backdrop-filter .settings-panel,
+[data-theme="dark"] .no-backdrop-filter .feature-card {
+    background-color: rgba(15, 23, 42, 0.95);
+}
+
+.no-clip-path .features,
+.no-clip-path .contact {
+    /* Use padding instead of clip-path for section shapes */
+    clip-path: none;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    position: relative;
+}
+
+.no-clip-path .features::before,
+.no-clip-path .contact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5vw;
+    background: var(--bg-color);
+    clip-path: polygon(0 0, 100% 100%, 100% 0);
+}
+
+.no-clip-path .contact::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5vw;
+    background: var(--bg-color);
+    clip-path: polygon(0 100%, 100% 0, 0 0);
+}
+
+.no-css-variables {
+    /* Fallback colors for browsers without CSS variable support */
+    color: #1e293b;
+    background-color: #ffffff;
+}
+
+[data-theme="dark"].no-css-variables {
+    color: #e2e8f0;
+    background-color: #0f172a;
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    
+    .reduced-motion *,
+    .reduced-motion .feature-card,
+    .reduced-motion .scroll-progress,
+    .reduced-motion .cta-button,
+    .reduced-motion .animation-card,
+    .reduced-motion .site-header {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .reduced-motion .feature-card:hover,
+    .reduced-motion .cta-button:hover,
+    .reduced-motion .animation-card:hover {
+        transform: none !important;
     }
 }

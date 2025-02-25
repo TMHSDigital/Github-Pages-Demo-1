@@ -380,4 +380,39 @@ The animation library showcase provides ready-to-use animations you can add to y
 6. Paste the code into your project
 
 You can also use left/right arrow keys to navigate between animation categories.
+
+### Advanced Usage
+
+For more complex implementations:
+
+- **Combining animations**: Apply multiple animation classes to create compound effects
+- **JavaScript triggers**: Use the JS examples to trigger animations based on user events
+- **Customization API**: Modify the provided CSS variables to match your project's color scheme
+- **Performance optimization**: For animations used extensively, consider adding the `will-change` property
+
+### Using animations with React, Vue, or Angular
+
+When using the animations in component-based frameworks:
+
+```jsx
+// React example
+import './animations.css';
+
+function AnimatedButton() {
+  const handleClick = () => {
+    const button = document.getElementById('animated-button');
+    button.classList.remove('shake');
+    void button.offsetWidth; // Force reflow
+    button.classList.add('shake');
+  };
+
+  return (
+    <button id="animated-button" className="shake" onClick={handleClick}>
+      Click me!
+    </button>
+  );
+}
+```
+
+With proper adaptation, all animations can be integrated into any modern framework.
 </details> 

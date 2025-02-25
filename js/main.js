@@ -1,34 +1,40 @@
 'use strict';
 
 // Example of a modern JavaScript module
-// Remove learning mode import
-// import { LearningCore } from './learning.js';
-
 const app = {
     init() {
+        // Initialize browser feature detection
+        if (window.Utilities) {
+            this.features = window.Utilities.detectFeatures();
+            window.Utilities.applyFeatureFallbacks();
+        } else {
+            this.features = {
+                intersectionObserver: 'IntersectionObserver' in window,
+                localStorage: true,
+                reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            };
+        }
+        
         // Wait for DOM content to be loaded
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                this.initNavigation();
-                this.loadSettings();
-                this.initHero();
-                this.initPortfolio();
-                this.initAnimations();
-                this.setupKeyboardShortcuts();
-                this.initSideNav();
-                this.announcePageLoaded();
+                this.initComponents();
             });
         } else {
             // DOM already loaded
-            this.initNavigation();
-            this.loadSettings();
-            this.initHero();
-            this.initPortfolio();
-            this.initAnimations();
-            this.setupKeyboardShortcuts();
-            this.initSideNav();
-            this.announcePageLoaded();
+            this.initComponents();
         }
+    },
+    
+    initComponents() {
+        this.initNavigation();
+        this.loadSettings();
+        this.initHero();
+        this.initPortfolio();
+        this.initAnimations();
+        this.setupKeyboardShortcuts();
+        this.initSideNav();
+        this.announcePageLoaded();
     },
 
     initNavigation() {
@@ -42,8 +48,6 @@ const app = {
         this.settingsPanel = document.querySelector('.settings-panel');
         this.settingsClose = document.querySelector('.settings-close');
         this.darkModeToggle = document.getElementById('darkModeToggle');
-        // Remove learning mode toggle reference
-        // this.learningModeToggle = document.getElementById('learningModeToggle');
 
         // Initialize components
         this.setupScrollHandling();
@@ -51,13 +55,6 @@ const app = {
         if (this.form) this.setupFormHandling();
         if (this.menuButton && this.nav) this.setupMobileMenu();
         if (this.settingsToggle && this.settingsPanel) this.setupSettings();
-
-        // Remove learning mode initialization
-        // this.learningCore = new LearningCore();
-        // this.learningCore.init();
-        
-        // Remove keyboard shortcut for learning mode
-        // this.setupKeyboardShortcuts();
 
         // Initialize theme management with improved memory handling
         this.themeState = {
@@ -478,15 +475,20 @@ const app = {
     },
 
     announceMessage(message) {
-        const announcer = document.getElementById('a11y-announcer') || (() => {
-            const el = document.createElement('div');
-            el.id = 'a11y-announcer';
-            el.setAttribute('aria-live', 'polite');
-            el.className = 'sr-only';
-            document.body.appendChild(el);
-            return el;
-        })();
-        announcer.textContent = message;
+        // Use the Utilities module if available, otherwise fallback to local implementation
+        if (window.Utilities && typeof window.Utilities.announceMessage === 'function') {
+            window.Utilities.announceMessage(message);
+        } else {
+            const announcer = document.getElementById('a11y-announcer') || (() => {
+                const el = document.createElement('div');
+                el.id = 'a11y-announcer';
+                el.setAttribute('aria-live', 'polite');
+                el.className = 'sr-only';
+                document.body.appendChild(el);
+                return el;
+            })();
+            announcer.textContent = message;
+        }
     },
 
     announcePageLoaded() {
@@ -515,23 +517,18 @@ const app = {
         this.themeState.currentTheme = newTheme;
         
         // Safely store theme preference in localStorage
-        try {
-            localStorage.setItem('theme', newTheme);
-        } catch (error) {
-            console.warn('Could not save theme preference:', error);
-            // Continue with theme change even if storage fails
+        if (this.features?.localStorage !== false) {
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (error) {
+                console.warn('Could not save theme preference:', error);
+                // Continue with theme change even if storage fails
+            }
         }
 
         const applyTheme = () => {
             root.setAttribute('data-theme', newTheme);
             if (this.darkModeToggle) this.darkModeToggle.checked = isDark;
-            
-            // Remove learning mode specific notification code
-            // Update notification container theme if it exists
-            // const notificationContainer = document.querySelector('.notifications-container');
-            // if (notificationContainer) {
-            //     notificationContainer.setAttribute('data-theme', newTheme);
-            // }
         };
 
         if (enableTransition) {
@@ -551,50 +548,58 @@ const app = {
 
     loadSettings() {
         try {
-            // Load theme preference
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                this.updateTheme(savedTheme === 'dark', false);
-            } else {
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                this.updateTheme(prefersDark, false);
-            }
-
-            // Load high contrast preference
-            const highContrastToggle = document.getElementById('highContrastToggle');
-            if (highContrastToggle) {
-                const savedHighContrast = localStorage.getItem('highContrast') === 'true';
-                highContrastToggle.checked = savedHighContrast;
-                this.updateHighContrast(savedHighContrast, false);
+            // Load theme preference from localStorage if available
+            if (this.features?.localStorage !== false) {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    this.updateTheme(savedTheme === 'dark', false);
+                } else {
+                    const prefersDark = this.features?.reducedMotion || window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    this.updateTheme(prefersDark, false);
+                }
                 
-                // Add event listener for high contrast toggle
-                highContrastToggle.addEventListener('change', (e) => {
-                    this.updateHighContrast(e.target.checked);
-                });
-            }
-
-            // Load font size preference
-            const fontSizeRange = document.getElementById('fontSizeRange');
-            const fontSizeValue = document.getElementById('fontSizeValue');
-            
-            if (fontSizeRange && fontSizeValue) {
-                const savedFontSize = localStorage.getItem('fontSize') || '100';
-                fontSizeRange.value = savedFontSize;
-                fontSizeValue.textContent = `${savedFontSize}%`;
-                this.updateFontSize(savedFontSize);
-                
-                // Add event listener for font size changes
-                fontSizeRange.addEventListener('input', (e) => {
-                    const newSize = e.target.value;
-                    fontSizeValue.textContent = `${newSize}%`;
-                    this.updateFontSize(newSize);
+                // Load high contrast preference
+                const highContrastToggle = document.getElementById('highContrastToggle');
+                if (highContrastToggle) {
+                    const savedHighContrast = localStorage.getItem('highContrast') === 'true';
+                    highContrastToggle.checked = savedHighContrast;
+                    this.updateHighContrast(savedHighContrast, false);
                     
-                    try {
-                        localStorage.setItem('fontSize', newSize);
-                    } catch (error) {
-                        console.warn('Could not save font size preference:', error);
-                    }
-                });
+                    // Add event listener for high contrast toggle
+                    highContrastToggle.addEventListener('change', (e) => {
+                        this.updateHighContrast(e.target.checked);
+                    });
+                }
+                
+                // Load font size preference
+                const fontSizeRange = document.getElementById('fontSizeRange');
+                const fontSizeValue = document.getElementById('fontSizeValue');
+                
+                if (fontSizeRange && fontSizeValue) {
+                    const savedFontSize = localStorage.getItem('fontSize') || '100';
+                    fontSizeRange.value = savedFontSize;
+                    fontSizeValue.textContent = `${savedFontSize}%`;
+                    this.updateFontSize(savedFontSize);
+                    
+                    // Add event listener for font size changes
+                    fontSizeRange.addEventListener('input', (e) => {
+                        const newSize = e.target.value;
+                        fontSizeValue.textContent = `${newSize}%`;
+                        this.updateFontSize(newSize);
+                        
+                        if (this.features?.localStorage !== false) {
+                            try {
+                                localStorage.setItem('fontSize', newSize);
+                            } catch (error) {
+                                console.warn('Could not save font size preference:', error);
+                            }
+                        }
+                    });
+                }
+            } else {
+                // Fallback if localStorage isn't available - use system preference
+                const prefersDark = this.features?.reducedMotion || window.matchMedia('(prefers-color-scheme: dark)').matches;
+                this.updateTheme(prefersDark, false);
             }
             
             // Setup reset button
@@ -612,7 +617,7 @@ const app = {
         } catch (error) {
             console.warn('Error loading settings:', error);
             // Fallback to system preference
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const prefersDark = this.features?.reducedMotion || window.matchMedia('(prefers-color-scheme: dark)').matches;
             this.updateTheme(prefersDark, false);
         }
 
@@ -646,7 +651,26 @@ const app = {
     },
 
     showFormError(message) {
-        alert(message); // Replace with better UI feedback in production
+        // Create a better error message UI instead of alert
+        const form = document.getElementById('contact-form');
+        const errorEl = document.createElement('div');
+        errorEl.className = 'form-error-message';
+        errorEl.setAttribute('role', 'alert');
+        errorEl.setAttribute('aria-live', 'assertive');
+        errorEl.textContent = message;
+        
+        // Remove any existing error messages
+        const existing = form.querySelector('.form-error-message');
+        if (existing) existing.remove();
+        
+        // Add the new error message
+        form.insertBefore(errorEl, form.firstChild);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => errorEl.remove(), 5000);
+        
+        // Also announce to screen readers
+        this.announceMessage(message);
     },
 
     showFormSuccess() {
@@ -692,6 +716,16 @@ const app = {
     },
 
     setupIntersectionObserver() {
+        // Skip if IntersectionObserver is not supported
+        if (!this.features?.intersectionObserver) {
+            // Make all elements visible immediately
+            document.querySelectorAll('.feature-card, section').forEach(el => {
+                el.classList.add('fade-in');
+                el.classList.add('visible');
+            });
+            return;
+        }
+        
         const options = {
             root: null,
             rootMargin: '0px',
@@ -713,41 +747,6 @@ const app = {
             observer.observe(el);
         });
     },
-
-    // Remove keyboard shortcuts function that handled learning mode
-    // setupKeyboardShortcuts() {
-    //     // Add keyboard shortcuts (L for learning mode, D for dark mode)
-    //     document.addEventListener('keydown', (e) => {
-    //         // Only trigger if no input elements are focused
-    //         if (document.activeElement.tagName === 'INPUT' || 
-    //             document.activeElement.tagName === 'TEXTAREA' ||
-    //             document.activeElement.isContentEditable) {
-    //             return;
-    //         }
-    //         
-    //         // L key for learning mode
-    //         if (e.key.toLowerCase() === 'l') {
-    //             if (this.learningModeToggle) {
-    //                 this.learningModeToggle.checked = !this.learningModeToggle.checked;
-    //                 
-    //                 // Trigger the change event
-    //                 const event = new Event('change');
-    //                 this.learningModeToggle.dispatchEvent(event);
-    //             }
-    //         }
-    //         
-    //         // D key for dark mode
-    //         if (e.key.toLowerCase() === 'd') {
-    //             if (this.darkModeToggle) {
-    //                 this.darkModeToggle.checked = !this.darkModeToggle.checked;
-    //                 
-    //                 // Trigger the change event
-    //                 const event = new Event('change');
-    //                 this.darkModeToggle.dispatchEvent(event);
-    //             }
-    //         }
-    //     });
-    // }
 
     // Add dark mode keyboard shortcut only
     setupKeyboardShortcuts() {
