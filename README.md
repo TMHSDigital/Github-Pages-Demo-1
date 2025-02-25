@@ -51,7 +51,7 @@
 Experience the future of web design in three simple steps:
 
 1. **Quick Start**: Visit our [live demo](https://tmhsdigital.github.io/Github-Pages-Demo-1/)
-2. **Explore Features**: Test the dark mode, responsive layouts, and animations
+2. **Explore Features**: Test the dark mode, responsive layouts, and animations library
 3. **Make It Yours**: Fork the repository and customize to your needs
 
 Watch our brief introduction:
@@ -108,6 +108,28 @@ Watch our brief introduction:
 
     </td>
   </tr>
+  <tr>
+    <td>
+
+### Animation Library
+- 20+ ready-to-use animations
+- Interactive code playground
+- Copy-paste implementation
+- Customization controls
+- Keyboard navigation support
+
+    </td>
+    <td>
+
+### Accessibility
+- Keyboard shortcuts (D for dark mode, A for animations)
+- Screen reader announcements
+- Focus management
+- Reduced motion settings
+- ARIA attributes
+
+    </td>
+  </tr>
 </table>
 
 ## Documentation
@@ -152,9 +174,11 @@ Watch our brief introduction:
 Github-Pages-Demo-1/
 ├── index.html          # Entry point
 ├── css/               # Styles
-│   └── style.css      # Main stylesheet
+│   ├── style.css      # Main stylesheet
+│   └── animations.css # Animation library styles
 ├── js/                # Scripts
-│   └── main.js        # Core functionality
+│   ├── main.js        # Core functionality
+│   └── animations.js  # Animation library functionality
 ├── assets/            # Static files
 │   └── favicon.ico    # Site favicon
 └── README.md          # Documentation
@@ -227,6 +251,13 @@ The type system uses [Inter](https://fonts.google.com/specimen/Inter) for optima
 - Staggered animations
 - Glass morphism effects
 - Interactive hover states
+
+### Animation Library
+- Categorized animation examples (Transitions, Keyframes, Scroll, Interactive, Text)
+- Live interactive demos
+- Customizable parameters
+- Syntax-highlighted code snippets
+- One-click code copying
 
 ### Contact Form
 - Real-time validation
@@ -333,4 +364,19 @@ Released under the MIT License. See [LICENSE](LICENSE) for details.
   </p>
   
   <sub>Designed and developed by TMHSDigital</sub>
-</div> 
+</div>
+
+<details>
+<summary>How do I use the animation library?</summary>
+
+The animation library showcase provides ready-to-use animations you can add to your projects:
+
+1. Navigate to the Animations section (press 'A' key for quick access)
+2. Browse different animation categories using the tabs
+3. Click the "Replay" button to see the animation in action
+4. Customize the animation using the duration and easing controls
+5. Click "Copy Code" to copy the CSS, HTML, or JavaScript code
+6. Paste the code into your project
+
+You can also use left/right arrow keys to navigate between animation categories.
+</details> 
