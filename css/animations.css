@@ -172,6 +172,26 @@
     100% { opacity: 0; }
 }
 
+/* Error Message Styles */
+.error-message {
+    padding: 2rem;
+    text-align: center;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 1rem;
+    color: #b91c1c;
+    margin: 2rem auto;
+    max-width: 90%;
+    grid-column: 1 / -1;
+    font-weight: 500;
+}
+
+[data-theme="dark"] .error-message {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
 /* Loading Indicator */
 .loading-indicator {
     display: flex;
@@ -216,8 +236,21 @@
     perspective: 1000px;
 }
 
-.animation-card:hover {
-    transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+/* Animation card hover effects */
+.animation-card:hover .animation-title {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.animation-card.collapsed:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+        0 15px 35px -10px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+        0 0 30px rgba(var(--accent-color-rgb), 0.15);
+}
+
+.animation-card.expanded:hover {
+    transform: translateY(-5px);
     box-shadow: 
         0 20px 40px -10px rgba(0, 0, 0, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.3) inset,
@@ -239,10 +272,16 @@
         0 0 30px rgba(var(--accent-color-rgb), 0.2);
 }
 
+[data-theme="dark"] .animation-card:hover .animation-title {
+    background: rgba(30, 41, 59, 0.9);
+}
+
 /* Animation Card Collapsible States */
 .animation-header {
     position: relative;
     z-index: 2;
+    display: flex;
+    flex-direction: column;
 }
 
 .animation-title {
@@ -255,18 +294,21 @@
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
+/* Make text unselectable in title to improve UX when clicking */
 .animation-title h3 {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 700;
-    cursor: pointer;
     color: var(--primary-color);
     transition: color 0.2s ease;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-.animation-title h3:hover {
+.animation-title:hover h3 {
     color: var(--accent-color);
 }
 
@@ -351,13 +393,12 @@
 
 /* Animation Preview */
 .animation-preview {
-    min-height: 230px;
+    min-height: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    border-radius: 1rem 1rem 0 0;
     overflow: hidden;
     background: radial-gradient(circle at top right, 
         rgba(var(--secondary-color-rgb), 0.05),
@@ -370,6 +411,7 @@
             rgba(var(--gray-300-rgb), 0.05) 20px
         );
     border: none;
+    padding: 2rem;
 }
 
 .animation-preview::before {

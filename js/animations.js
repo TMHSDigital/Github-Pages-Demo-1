@@ -438,10 +438,24 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
             ]
         };
         
-        // Create and append animations for initial category
         if (this.container) {
-            this.loadAnimations(this.activeCategory);
+            // Set up event listeners first
             this.setupEventListeners();
+            
+            // Then load animations
+            try {
+                this.loadAnimations(this.activeCategory);
+                console.log('Animation showcase initialized successfully');
+            } catch (err) {
+                console.error('Error loading animations:', err);
+                this.container.innerHTML = `
+                    <div class="error-message">
+                        There was an error loading animations. Please try refreshing the page.
+                    </div>
+                `;
+            }
+        } else {
+            console.warn('Animation gallery container not found');
         }
     },
     
@@ -449,39 +463,61 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
      * Load animations for the selected category
      */
     loadAnimations(category) {
-        // Show loading indicator
         if (!this.container) return;
         
-        this.container.innerHTML = `
-            <div class="loading-indicator">
-                <div class="spinner"></div>
-                <p>Loading animations...</p>
-            </div>
-        `;
+        // Clear any existing content
+        this.container.innerHTML = '';
         
-        // Simulate loading delay (remove in production)
+        // Show loading indicator
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'loading-indicator';
+        loadingIndicator.innerHTML = `
+            <div class="spinner"></div>
+            <p>Loading animations...</p>
+        `;
+        this.container.appendChild(loadingIndicator);
+        
+        // Load animations (with minimal delay for smoother UX)
         setTimeout(() => {
+            // Clear loading indicator
             this.container.innerHTML = '';
+            
+            // Get animations for the category
             const animations = this.animationLibrary[category] || [];
             
             if (animations.length === 0) {
-                this.container.innerHTML = `<p class="no-results">No animations found for ${category}</p>`;
+                this.container.innerHTML = `<p class="no-results">No animations found for "${category}"</p>`;
                 return;
             }
             
             // Create and append animation cards
             animations.forEach(animation => {
-                const card = this.createAnimationCard(animation);
-                this.container.appendChild(card);
+                try {
+                    const card = this.createAnimationCard(animation);
+                    this.container.appendChild(card);
+                } catch (err) {
+                    console.error(`Error creating card for "${animation.name}":`, err);
+                }
             });
             
-            // Add a flash effect to the gallery when changing categories
-            document.body.classList.add('category-tab-changing');
-            setTimeout(() => {
-                document.body.classList.remove('category-tab-changing');
-            }, 500);
+            // Add flash effect for category change
+            const showcaseSection = this.container.closest('.showcase-section');
+            if (showcaseSection) {
+                showcaseSection.classList.add('category-tab-changing');
+                setTimeout(() => {
+                    showcaseSection.classList.remove('category-tab-changing');
+                }, 300);
+            }
             
-        }, 300); // Simulated loading time
+            // Init syntax highlighting if Prism is available
+            if (window.Prism) {
+                try {
+                    window.Prism.highlightAllUnder(this.container);
+                } catch (e) {
+                    console.warn('Prism syntax highlighting error:', e);
+                }
+            }
+        }, 100);
     },
     
     /**
@@ -557,8 +593,10 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
         // Category tab selection
         this.categoryTabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // Update active tab
-                document.querySelector('.category-tab.active').classList.remove('active');
+                const currentActive = document.querySelector('.category-tab.active');
+                if (currentActive) {
+                    currentActive.classList.remove('active');
+                }
                 tab.classList.add('active');
                 
                 // Load animations for category
@@ -638,7 +676,11 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
             
             // Force syntax highlighting to re-run after expansion
             if (window.Prism && card.querySelector('pre code')) {
-                window.Prism.highlightElement(card.querySelector('pre code'));
+                try {
+                    window.Prism.highlightElement(card.querySelector('pre code'));
+                } catch (e) {
+                    console.warn('Prism highlighting error:', e);
+                }
             }
         } else {
             // Collapse
@@ -698,7 +740,11 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
         
         // Apply syntax highlighting if Prism is available
         if (window.Prism) {
-            window.Prism.highlightElement(codePanel.querySelector('code'));
+            try {
+                window.Prism.highlightElement(codePanel.querySelector('code'));
+            } catch (e) {
+                console.warn('Prism syntax highlighting error:', e);
+            }
         }
     },
     
@@ -794,7 +840,11 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
         
         // Apply syntax highlighting if Prism is available
         if (window.Prism) {
-            window.Prism.highlightElement(codePanel.querySelector('code'));
+            try {
+                window.Prism.highlightElement(codePanel.querySelector('code'));
+            } catch (e) {
+                console.warn('Prism syntax highlighting error:', e);
+            }
         }
     },
     
@@ -845,6 +895,20 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    AnimationShowcase.init();
-}); 
+    console.log('DOM loaded - initializing Animation Showcase');
+    try {
+        AnimationShowcase.init();
+    } catch (err) {
+        console.error('Error initializing Animation Showcase:', err);
+        // Attempt to display a fallback error message
+        const container = document.querySelector('.animation-gallery');
+        if (container) {
+            container.innerHTML = `
+                <div class="error-message">
+                    There was an error loading the animation showcase. 
+                    Please check the console for details or refresh the page.
+                </div>
+            `;
+        }
+    }
 }); 

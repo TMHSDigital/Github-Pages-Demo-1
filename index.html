@@ -379,10 +379,14 @@
 
     <!-- Load theme settings before main content -->
     <script src="js/utilities.js"></script>
-    <script src="js/main.js" type="module"></script>
-    <script src="js/animations.js" type="module"></script>
+    <script src="js/main.js"></script>
+    
+    <!-- Load Prism.js for syntax highlighting before animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    
+    <!-- Load animations library after dependencies -->
+    <script src="js/animations.js"></script>
 </body>
 </html> 
