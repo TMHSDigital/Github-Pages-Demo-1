@@ -1,9 +1,11 @@
 // Learning Mode Core Implementation
-class LearningCore {
+export class LearningCore {
     constructor() {
         this.enabled = localStorage.getItem('learning_mode') === 'true';
         this.root = document.documentElement;
-        this.init();
+        this.notifications = {
+            show: this.announceMessage.bind(this)
+        };
     }
 
     init() {
@@ -60,24 +62,34 @@ class LearningCore {
         if (!container) {
             container = document.createElement('div');
             container.className = 'notifications-container';
+            
+            // Set the container's theme to match current theme
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            container.setAttribute('data-theme', currentTheme);
+            
             document.body.appendChild(container);
         }
 
         // Create and show notification
         const notification = document.createElement('div');
-        notification.className = 'notification info fade-in';
+        notification.className = 'notification info';
         notification.textContent = message;
+        notification.setAttribute('role', 'status');
+        notification.setAttribute('aria-live', 'polite');
 
         container.appendChild(notification);
-
-        // Remove notification after delay
-        setTimeout(() => {
-            notification.classList.replace('fade-in', 'fade-out');
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
+        
+        // Trigger animation on next frame for better performance
+        requestAnimationFrame(() => {
+            notification.classList.add('fade-in');
+            
+            // Remove notification after delay
+            setTimeout(() => {
+                notification.classList.remove('fade-in');
+                notification.classList.add('fade-out');
+                
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        });
     }
-}
-
-// Initialize learning mode
-const learningCore = new LearningCore();
-export default learningCore; 
+} 

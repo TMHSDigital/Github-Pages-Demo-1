@@ -1,6 +1,8 @@
 'use strict';
 
 // Example of a modern JavaScript module
+import { LearningCore } from './learning.js';
+
 const app = {
     init() {
         // Cache DOM elements
@@ -26,6 +28,9 @@ const app = {
         // Initialize Learning Mode
         this.learningCore = new LearningCore();
         this.learningCore.init();
+        
+        // Add keyboard shortcut for learning mode
+        this.setupKeyboardShortcuts();
 
         // Initialize theme management with improved memory handling
         this.themeState = {
@@ -501,9 +506,17 @@ const app = {
             this.learningModeToggle.addEventListener('change', (e) => {
                 const enabled = e.target.checked;
                 localStorage.setItem('learning_mode', enabled);
+                
+                // Dispatch event for learning mode toggle
                 document.dispatchEvent(new CustomEvent('learning-mode-toggle', { 
                     detail: { enabled } 
                 }));
+                
+                // Show feedback message
+                const message = enabled ? 'Learning mode enabled (Press L to toggle)' : 'Learning mode disabled';
+                if (this.learningCore && this.learningCore.notifications) {
+                    this.learningCore.notifications.show(message);
+                }
             });
         }
 
@@ -595,6 +608,40 @@ const app = {
         document.querySelectorAll('.feature-card, section').forEach(el => {
             el.classList.add('fade-in');
             observer.observe(el);
+        });
+    },
+
+    setupKeyboardShortcuts() {
+        // Add keyboard shortcuts (L for learning mode, D for dark mode)
+        document.addEventListener('keydown', (e) => {
+            // Only trigger if no input elements are focused
+            if (document.activeElement.tagName === 'INPUT' || 
+                document.activeElement.tagName === 'TEXTAREA' ||
+                document.activeElement.isContentEditable) {
+                return;
+            }
+            
+            // L key for learning mode
+            if (e.key.toLowerCase() === 'l') {
+                if (this.learningModeToggle) {
+                    this.learningModeToggle.checked = !this.learningModeToggle.checked;
+                    
+                    // Trigger the change event
+                    const event = new Event('change');
+                    this.learningModeToggle.dispatchEvent(event);
+                }
+            }
+            
+            // D key for dark mode
+            if (e.key.toLowerCase() === 'd') {
+                if (this.darkModeToggle) {
+                    this.darkModeToggle.checked = !this.darkModeToggle.checked;
+                    
+                    // Trigger the change event
+                    const event = new Event('change');
+                    this.darkModeToggle.dispatchEvent(event);
+                }
+            }
         });
     }
 };
