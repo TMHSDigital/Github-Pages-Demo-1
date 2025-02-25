@@ -16,6 +16,7 @@ const app = {
                 this.initPortfolio();
                 this.initAnimations();
                 this.setupKeyboardShortcuts();
+                this.initSideNav();
                 this.announcePageLoaded();
             });
         } else {
@@ -27,6 +28,7 @@ const app = {
             this.initPortfolio();
             this.initAnimations();
             this.setupKeyboardShortcuts();
+            this.initSideNav();
             this.announcePageLoaded();
         }
     },
@@ -798,6 +800,113 @@ const app = {
                 item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             });
         }
+    },
+
+    initSideNav() {
+        const sections = document.querySelectorAll('section[id]');
+        const sideNavLinks = document.querySelectorAll('.side-nav a');
+        const sideNav = document.querySelector('.side-nav');
+        
+        // Update active link and progress line on scroll
+        const updateActiveLink = () => {
+            let currentSection = '';
+            let passed = false;
+            
+            // Calculate total scroll progress for the progress line
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            
+            // Update progress line height
+            if (sideNav) {
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    // For mobile (horizontal orientation)
+                    const totalWidth = sideNav.querySelector('ul').offsetWidth;
+                    const progressWidth = (scrollProgress / 100) * totalWidth;
+                    sideNav.style.setProperty('--pseudo-height', `${Math.min(progressWidth, totalWidth)}px`);
+                } else {
+                    // For desktop (vertical orientation)
+                    const totalHeight = sideNav.querySelector('ul').offsetHeight - 32; // Accounting for padding
+                    const progressHeight = (scrollProgress / 100) * totalHeight;
+                    sideNav.style.setProperty('--pseudo-height', `${Math.min(progressHeight, totalHeight)}px`);
+                }
+            }
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    currentSection = sectionId;
+                    passed = true;
+                }
+            });
+            
+            // If at the bottom of the page, activate last section
+            if (!passed && window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                currentSection = sections[sections.length - 1].getAttribute('id');
+            }
+            
+            // Update active classes
+            sideNavLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        };
+        
+        // Initial state
+        updateActiveLink();
+        
+        // Update on scroll (with requestAnimationFrame for performance)
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                window.cancelAnimationFrame(scrollTimeout);
+            }
+            scrollTimeout = window.requestAnimationFrame(updateActiveLink);
+        }, { passive: true });
+        
+        // Update on resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            if (resizeTimeout) {
+                window.cancelAnimationFrame(resizeTimeout);
+            }
+            resizeTimeout = window.requestAnimationFrame(updateActiveLink);
+        }, { passive: true });
+        
+        // Handle click events
+        sideNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Get offset for fixed header
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    // Smooth scroll to target
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update URL hash without scrolling
+                    history.pushState(null, null, targetId);
+                    
+                    // Update active state manually
+                    sideNavLinks.forEach(navLink => navLink.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            });
+        });
     }
 };
 
