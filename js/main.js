@@ -691,5 +691,41 @@ const app = {
 // Single DOMContentLoaded listener
 document.addEventListener('DOMContentLoaded', () => {
     app.init();
+    
+    // Set active navigation link based on current URL
+    const setActiveNavLink = () => {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            
+            // Get the path from the href
+            const linkPath = new URL(link.href, window.location.origin).pathname;
+            
+            // Check if this link matches the current path
+            if (currentPath === linkPath) {
+                link.classList.add('active');
+            } else if (currentPath === '/' && link.getAttribute('href') === '#home') {
+                // Special case for home page
+                link.classList.add('active');
+            } else {
+                // Check if the link's href is a fragment that matches the current hash
+                const fragment = link.getAttribute('href');
+                if (fragment && fragment.startsWith('#') && 
+                    (window.location.hash === fragment || 
+                     (!window.location.hash && currentPath === '/' && fragment === '#home'))) {
+                    link.classList.add('active');
+                }
+            }
+        });
+    };
+    
+    // Set active link on page load
+    setActiveNavLink();
+    
+    // Update active link when hash changes
+    window.addEventListener('hashchange', setActiveNavLink);
+    
     console.log('Site loaded!');
 }); 
