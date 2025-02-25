@@ -511,6 +511,13 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
     loadAnimations(category) {
         if (!this.container) return;
         
+        // Add category-tab-changing class to create a flash effect
+        const showcase = this.container.closest('.showcase-section');
+        showcase.classList.add('category-tab-changing');
+        setTimeout(() => {
+            showcase.classList.remove('category-tab-changing');
+        }, 500);
+        
         // Show loading indicator
         this.container.innerHTML = `
             <div class="loading-indicator">
