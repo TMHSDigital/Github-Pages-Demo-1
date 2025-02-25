@@ -272,6 +272,80 @@ document.querySelectorAll('.reveal-from-right').forEach(el => {
 });`
                 }
             ],
+            text: [
+                {
+                    name: 'Typewriter',
+                    id: 'typewriter',
+                    description: 'Simulates text being typed out character by character.',
+                    css: `@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40) forwards;
+}`,
+                    html: `<span class="typewriter">Typing animation effect</span>`,
+                    js: ''
+                },
+                {
+                    name: 'Gradient Text',
+                    id: 'gradient-text',
+                    description: 'Creates a flowing gradient color effect for text.',
+                    css: `@keyframes gradient-text {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, 
+    var(--secondary-color), 
+    var(--accent-color), 
+    var(--secondary-color));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-text 3s linear infinite;
+}`,
+                    html: `<span class="gradient-text">Gradient Text Animation</span>`,
+                    js: ''
+                },
+                {
+                    name: 'Letter Spacing',
+                    id: 'letter-spacing',
+                    description: 'Increases the spacing between letters on hover.',
+                    css: `.letter-spacing {
+  transition: letter-spacing 0.5s ease;
+}
+
+.letter-spacing:hover {
+  letter-spacing: 4px;
+}`,
+                    html: `<span class="letter-spacing">Hover to expand</span>`,
+                    js: ''
+                },
+                {
+                    name: 'Text Blur',
+                    id: 'text-blur',
+                    description: 'Creates a pulsating blur effect on text.',
+                    css: `@keyframes text-blur {
+  0% { filter: blur(0); }
+  50% { filter: blur(4px); }
+  100% { filter: blur(0); }
+}
+
+.text-blur {
+  animation: text-blur 2s infinite;
+}`,
+                    html: `<span class="text-blur">Blurry Text Effect</span>`,
+                    js: ''
+                }
+            ],
             interactive: [
                 {
                     name: 'Hover Float',
@@ -361,195 +435,53 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
   this.classList.add('animate');
 });`
                 }
-            ],
-            text: [
-                {
-                    name: 'Typewriter',
-                    id: 'typewriter',
-                    description: 'Simulates text being typed out character by character.',
-                    css: `@keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-.typewriter {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  animation: typewriter 2s steps(40) forwards;
-}`,
-                    html: `<span class="typewriter">Typing animation effect</span>`,
-                    js: ''
-                },
-                {
-                    name: 'Gradient Text',
-                    id: 'gradient-text',
-                    description: 'Creates a flowing gradient color effect for text.',
-                    css: `@keyframes gradient-text {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, 
-    var(--secondary-color), 
-    var(--accent-color), 
-    var(--secondary-color));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradient-text 3s linear infinite;
-}`,
-                    html: `<span class="gradient-text">Gradient Text Animation</span>`,
-                    js: ''
-                },
-                {
-                    name: 'Letter Spacing',
-                    id: 'letter-spacing',
-                    description: 'Increases the spacing between letters on hover.',
-                    css: `.letter-spacing {
-  transition: letter-spacing 0.5s ease;
-}
-
-.letter-spacing:hover {
-  letter-spacing: 4px;
-}`,
-                    html: `<span class="letter-spacing">Hover to expand</span>`,
-                    js: ''
-                },
-                {
-                    name: 'Text Blur',
-                    id: 'text-blur',
-                    description: 'Creates a pulsating blur effect on text.',
-                    css: `@keyframes text-blur {
-  0% { filter: blur(0); }
-  50% { filter: blur(4px); }
-  100% { filter: blur(0); }
-}
-
-.text-blur {
-  animation: text-blur 2s infinite;
-}`,
-                    html: `<span class="text-blur">Blurry Text Effect</span>`,
-                    js: ''
-                }
             ]
         };
         
-        // Set up event listeners
-        this.setupEventListeners();
-        
-        // Load initial animations
-        this.loadAnimations(this.activeCategory);
-    },
-    
-    /**
-     * Set up event listeners for category tabs and animation cards
-     */
-    setupEventListeners() {
-        // Category tab selection
-        this.categoryTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Update active tab
-                document.querySelector('.category-tab.active').classList.remove('active');
-                tab.classList.add('active');
-                
-                // Load animations for category
-                this.activeCategory = tab.dataset.category;
-                this.loadAnimations(this.activeCategory);
-                
-                // Announce category change for screen readers
-                this.announceChange(`Showing ${this.activeCategory} animations`);
-            });
-        });
-        
-        // Use event delegation for animation card interactions
+        // Create and append animations for initial category
         if (this.container) {
-            this.container.addEventListener('click', (e) => {
-                // Replay animation button
-                if (e.target.classList.contains('replay-animation')) {
-                    const card = e.target.closest('.animation-card');
-                    this.replayAnimation(card);
-                } 
-                // Copy code button
-                else if (e.target.classList.contains('copy-code-btn')) {
-                    const card = e.target.closest('.animation-card');
-                    this.copyCode(card);
-                }
-                // Code tabs
-                else if (e.target.classList.contains('code-tab')) {
-                    const card = e.target.closest('.animation-card');
-                    const tabs = card.querySelectorAll('.code-tab');
-                    tabs.forEach(tab => tab.classList.remove('active'));
-                    e.target.classList.add('active');
-                    this.updateCodePanel(card, e.target.dataset.code);
-                }
-            });
-            
-            // Handle customization inputs
-            this.container.addEventListener('input', (e) => {
-                if (e.target.classList.contains('duration-slider')) {
-                    const card = e.target.closest('.animation-card');
-                    const value = e.target.value;
-                    const valueDisplay = card.querySelector('.slider-value');
-                    valueDisplay.textContent = `${value}s`;
-                    this.updateCustomization(card, { duration: value });
-                }
-                else if (e.target.classList.contains('easing-select')) {
-                    const card = e.target.closest('.animation-card');
-                    this.updateCustomization(card, { easing: e.target.value });
-                }
-            });
+            this.loadAnimations(this.activeCategory);
+            this.setupEventListeners();
         }
     },
     
     /**
-     * Load animations for a specific category
+     * Load animations for the selected category
      */
     loadAnimations(category) {
+        // Show loading indicator
         if (!this.container) return;
         
-        // Add category-tab-changing class to create a flash effect
-        const showcase = this.container.closest('.showcase-section');
-        showcase.classList.add('category-tab-changing');
-        setTimeout(() => {
-            showcase.classList.remove('category-tab-changing');
-        }, 500);
-        
-        // Show loading indicator
         this.container.innerHTML = `
             <div class="loading-indicator">
                 <div class="spinner"></div>
-                <p>Loading ${category} animations...</p>
+                <p>Loading animations...</p>
             </div>
         `;
         
-        // Short timeout to show loading state (for demo purposes)
+        // Simulate loading delay (remove in production)
         setTimeout(() => {
             this.container.innerHTML = '';
+            const animations = this.animationLibrary[category] || [];
             
-            if (!this.animationLibrary[category] || this.animationLibrary[category].length === 0) {
-                this.container.innerHTML = `
-                    <div class="empty-state">
-                        <p>No animations found in this category.</p>
-                    </div>
-                `;
+            if (animations.length === 0) {
+                this.container.innerHTML = `<p class="no-results">No animations found for ${category}</p>`;
                 return;
             }
             
-            // Create cards for each animation in the category
-            this.animationLibrary[category].forEach(animation => {
+            // Create and append animation cards
+            animations.forEach(animation => {
                 const card = this.createAnimationCard(animation);
                 this.container.appendChild(card);
             });
             
-            // Initialize syntax highlighting
-            if (window.Prism) {
-                Prism.highlightAll();
-            }
-        }, 500);
+            // Add a flash effect to the gallery when changing categories
+            document.body.classList.add('category-tab-changing');
+            setTimeout(() => {
+                document.body.classList.remove('category-tab-changing');
+            }, 500);
+            
+        }, 300); // Simulated loading time
     },
     
     /**
@@ -557,21 +489,29 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
      */
     createAnimationCard(animation) {
         const card = document.createElement('div');
-        card.className = 'animation-card';
+        card.className = 'animation-card collapsed';
         card.dataset.animation = animation.id;
         
         // Create card HTML
         card.innerHTML = `
-            <div class="animation-preview">
-                <div class="demo-element ${animation.id}">
-                    ${animation.id.includes('text') || animation.id.includes('typewriter') || animation.id.includes('gradient') || animation.id.includes('letter') ? 
-                      animation.id : 'Demo'}
+            <div class="animation-header">
+                <div class="animation-preview">
+                    <div class="demo-element ${animation.id}">
+                        ${animation.id.includes('text') || animation.id.includes('typewriter') || animation.id.includes('gradient') || animation.id.includes('letter') ? 
+                          animation.id : 'Demo'}
+                    </div>
+                    <button class="replay-animation" aria-label="Replay ${animation.name} animation">Replay</button>
                 </div>
-                <button class="replay-animation" aria-label="Replay ${animation.name} animation">Replay</button>
+                
+                <div class="animation-title">
+                    <h3>${animation.name}</h3>
+                    <button class="toggle-details" aria-expanded="false" aria-label="Toggle details for ${animation.name}">
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
             
             <div class="animation-details">
-                <h3>${animation.name}</h3>
                 <p>${animation.description}</p>
                 
                 <div class="code-tabs">
@@ -611,139 +551,154 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
     },
     
     /**
-     * Update code panel with the specified code type
+     * Set up event listeners for category tabs and animation cards
+     */
+    setupEventListeners() {
+        // Category tab selection
+        this.categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                document.querySelector('.category-tab.active').classList.remove('active');
+                tab.classList.add('active');
+                
+                // Load animations for category
+                this.activeCategory = tab.dataset.category;
+                this.loadAnimations(this.activeCategory);
+                
+                // Announce category change for screen readers
+                this.announceChange(`Showing ${this.activeCategory} animations`);
+            });
+        });
+        
+        // Use event delegation for animation card interactions
+        if (this.container) {
+            this.container.addEventListener('click', (e) => {
+                // Replay animation button
+                if (e.target.classList.contains('replay-animation')) {
+                    const card = e.target.closest('.animation-card');
+                    this.replayAnimation(card);
+                } 
+                // Toggle details button
+                else if (e.target.classList.contains('toggle-details') || e.target.closest('.toggle-details')) {
+                    const card = e.target.closest('.animation-card');
+                    this.toggleCardDetails(card);
+                }
+                // Copy code button
+                else if (e.target.classList.contains('copy-code-btn')) {
+                    const card = e.target.closest('.animation-card');
+                    this.copyCode(card);
+                }
+                // Code tabs
+                else if (e.target.classList.contains('code-tab')) {
+                    const card = e.target.closest('.animation-card');
+                    const tabs = card.querySelectorAll('.code-tab');
+                    tabs.forEach(tab => tab.classList.remove('active'));
+                    e.target.classList.add('active');
+                    this.updateCodePanel(card, e.target.dataset.code);
+                }
+                // Animation title (also toggles details)
+                else if (e.target.closest('.animation-title h3')) {
+                    const card = e.target.closest('.animation-card');
+                    this.toggleCardDetails(card);
+                }
+            });
+            
+            // Handle customization inputs
+            this.container.addEventListener('input', (e) => {
+                if (e.target.classList.contains('duration-slider')) {
+                    const card = e.target.closest('.animation-card');
+                    const value = e.target.value;
+                    const valueDisplay = card.querySelector('.slider-value');
+                    valueDisplay.textContent = `${value}s`;
+                    this.updateCustomization(card, { duration: value });
+                }
+                else if (e.target.classList.contains('easing-select')) {
+                    const card = e.target.closest('.animation-card');
+                    this.updateCustomization(card, { easing: e.target.value });
+                }
+            });
+        }
+    },
+    
+    /**
+     * Toggle animation card details visibility
+     */
+    toggleCardDetails(card) {
+        const isCollapsed = card.classList.contains('collapsed');
+        const toggleBtn = card.querySelector('.toggle-details');
+        const chevron = toggleBtn.querySelector('i');
+        
+        if (isCollapsed) {
+            // Expand
+            card.classList.remove('collapsed');
+            card.classList.add('expanded');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            chevron.classList.remove('fa-chevron-down');
+            chevron.classList.add('fa-chevron-up');
+            
+            // Force syntax highlighting to re-run after expansion
+            if (window.Prism && card.querySelector('pre code')) {
+                window.Prism.highlightElement(card.querySelector('pre code'));
+            }
+        } else {
+            // Collapse
+            card.classList.remove('expanded');
+            card.classList.add('collapsed');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            chevron.classList.remove('fa-chevron-up');
+            chevron.classList.add('fa-chevron-down');
+        }
+        
+        // Announce state change for screen readers
+        this.announceChange(`Details ${isCollapsed ? 'expanded' : 'collapsed'} for ${card.querySelector('h3').textContent}`);
+    },
+    
+    /**
+     * Replay animation in demo element
+     */
+    replayAnimation(card) {
+        const demoElement = card.querySelector('.demo-element');
+        const animationName = card.dataset.animation;
+        
+        // Remove class to reset animation
+        demoElement.classList.remove(animationName);
+        void demoElement.offsetWidth; // Force reflow
+        
+        // Add class back to restart animation
+        demoElement.classList.add(animationName);
+        
+        // Announce for screen readers
+        this.announceChange(`Replaying ${card.querySelector('h3').textContent} animation`);
+    },
+    
+    /**
+     * Update code panel content based on tab
      */
     updateCodePanel(card, codeType) {
-        const animation = this.getAnimationFromCard(card);
+        const animationId = card.dataset.animation;
+        const animation = this.getAnimationById(animationId);
         if (!animation) return;
         
         const codePanel = card.querySelector('.code-panel');
-        let code = '';
-        let language = '';
+        let codeContent = '';
         
         switch (codeType) {
             case 'css':
-                code = animation.css;
-                language = 'css';
+                codeContent = animation.css;
                 break;
             case 'html':
-                code = animation.html;
-                language = 'html';
+                codeContent = animation.html;
                 break;
             case 'js':
-                code = animation.js;
-                language = 'javascript';
+                codeContent = animation.js || '// No JavaScript required for this animation';
                 break;
         }
         
-        // Update code panel content
-        codePanel.innerHTML = `<pre><code class="language-${language}">${this.escapeHtml(code)}</code></pre>`;
+        codePanel.innerHTML = `<pre><code class="language-${codeType}">${this.escapeHtml(codeContent)}</code></pre>`;
         
-        // Re-initialize syntax highlighting
+        // Apply syntax highlighting if Prism is available
         if (window.Prism) {
-            Prism.highlightAll();
-        }
-    },
-    
-    /**
-     * Get animation data based on the card's data-animation attribute
-     */
-    getAnimationFromCard(card) {
-        const animationId = card.dataset.animation;
-        
-        // Search in all categories
-        for (const category in this.animationLibrary) {
-            const animation = this.animationLibrary[category].find(a => a.id === animationId);
-            if (animation) return animation;
-        }
-        
-        return null;
-    },
-    
-    /**
-     * Replay animation on a demo element
-     */
-    replayAnimation(card) {
-        const demoEl = card.querySelector('.demo-element');
-        const animationId = card.dataset.animation;
-        
-        // For animations that rely on class toggling
-        if (['shake', 'fade-in-scale', 'click-ripple'].includes(animationId)) {
-            demoEl.classList.remove(animationId);
-            void demoEl.offsetWidth; // Force reflow
-            demoEl.classList.add(animationId);
-        } 
-        // For animation that already have infinite animation, we'll restart it
-        else if (['pulse', 'bounce', 'spin', 'text-blur', 'gradient-text'].includes(animationId)) {
-            demoEl.style.animation = 'none';
-            void demoEl.offsetWidth; // Force reflow
-            demoEl.style.animation = '';
-        }
-        // For typewriter animation
-        else if (animationId === 'typewriter') {
-            const parent = demoEl.parentNode;
-            const clone = demoEl.cloneNode(true);
-            parent.replaceChild(clone, demoEl);
-        }
-        // For hover simulations, add and remove a class
-        else {
-            demoEl.classList.add('simulate-hover');
-            setTimeout(() => {
-                demoEl.classList.remove('simulate-hover');
-            }, 1500);
-        }
-    },
-    
-    /**
-     * Update animation customization based on user input
-     */
-    updateCustomization(card, options) {
-        const demoEl = card.querySelector('.demo-element');
-        const animationId = card.dataset.animation;
-        
-        // For animations that use transitions
-        if (['fade-in-out', 'scale-up', 'slide-left', 'slide-up', 'rotate-360', 'color-shift', 
-             'hover-float', 'hover-grow', 'hover-glow', 'letter-spacing'].includes(animationId)) {
-            
-            // Get current customization values
-            const durationInput = card.querySelector('.duration-slider');
-            const easingSelect = card.querySelector('.easing-select');
-            const duration = options.duration || durationInput.value;
-            const easing = options.easing || easingSelect.value;
-            
-            // Apply custom transition
-            demoEl.style.transition = `all ${duration}s ${easing}`;
-            
-            // Update the CSS code panel to reflect changes
-            this.updateCustomCode(card, {duration, easing});
-        }
-    },
-    
-    /**
-     * Update code to reflect customizations
-     */
-    updateCustomCode(card, options) {
-        const animation = this.getAnimationFromCard(card);
-        if (!animation) return;
-        
-        const codePanel = card.querySelector('.code-panel');
-        const activeTab = card.querySelector('.code-tab.active');
-        
-        // Only update if viewing CSS
-        if (activeTab.dataset.code === 'css') {
-            // Create updated CSS with custom values
-            let updatedCss = animation.css.replace(
-                /transition:.*?;/g, 
-                `transition: all ${options.duration}s ${options.easing};`
-            );
-            
-            // Update code panel
-            codePanel.innerHTML = `<pre><code class="language-css">${this.escapeHtml(updatedCss)}</code></pre>`;
-            
-            // Re-initialize syntax highlighting
-            if (window.Prism) {
-                Prism.highlightAll();
-            }
+            window.Prism.highlightElement(codePanel.querySelector('code'));
         }
     },
     
@@ -751,105 +706,145 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
      * Copy code snippet to clipboard
      */
     copyCode(card) {
-        const activeTab = card.querySelector('.code-tab.active');
-        const codeType = activeTab.dataset.code;
-        const animation = this.getAnimationFromCard(card);
+        const codePanel = card.querySelector('.code-panel');
+        const code = codePanel.textContent.trim();
+        const copyBtn = card.querySelector('.copy-code-btn');
+        const originalText = copyBtn.textContent;
         
-        if (!animation) return;
-        
-        let code = '';
-        switch (codeType) {
-            case 'css':
-                const durationInput = card.querySelector('.duration-slider');
-                const easingSelect = card.querySelector('.easing-select');
+        navigator.clipboard.writeText(code)
+            .then(() => {
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('copied');
                 
-                // If we're dealing with a transition animation and customizations have been made
-                if (['fade-in-out', 'scale-up', 'slide-left', 'slide-up', 'rotate-360', 'color-shift',
-                     'hover-float', 'hover-grow', 'hover-glow', 'letter-spacing'].includes(animation.id)) {
-                    code = animation.css.replace(
-                        /transition:.*?;/g, 
-                        `transition: all ${durationInput.value}s ${easingSelect.value};`
-                    );
-                } else {
-                    code = animation.css;
-                }
-                break;
-            case 'html':
-                code = animation.html;
-                break;
-            case 'js':
-                code = animation.js;
-                break;
-        }
-        
-        // Copy to clipboard
-        navigator.clipboard.writeText(code).then(() => {
-            const copyBtn = card.querySelector('.copy-code-btn');
-            copyBtn.textContent = 'Copied!';
-            setTimeout(() => {
-                copyBtn.textContent = 'Copy Code';
-            }, 2000);
-            
-            // Announce for screen readers
-            this.announceChange('Code copied to clipboard');
-        }).catch(err => {
-            console.error('Could not copy code: ', err);
-            this.announceChange('Failed to copy code');
-        });
+                // Announce for screen readers
+                this.announceChange('Code copied to clipboard');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Could not copy text: ', err);
+                copyBtn.textContent = 'Copy failed';
+                copyBtn.classList.add('error');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('error');
+                }, 2000);
+            });
     },
     
     /**
-     * Escape HTML characters to prevent XSS
+     * Update animation customization
      */
-    escapeHtml(unsafe) {
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+    updateCustomization(card, options) {
+        const demoElement = card.querySelector('.demo-element');
+        const animationId = card.dataset.animation;
+        const animation = this.getAnimationById(animationId);
+        
+        if (!animation) return;
+        
+        // Get current customizations or defaults
+        const duration = options.duration || card.querySelector('.duration-slider').value || 0.5;
+        const easing = options.easing || card.querySelector('.easing-select').value || 'ease';
+        
+        // Apply customization based on animation type
+        if (animation.id.includes('hover') || animation.id.includes('scale') || animation.id.includes('slide') || animation.id.includes('rotate') || animation.id.includes('color-shift')) {
+            // For CSS transitions
+            demoElement.style.transition = `all ${duration}s ${easing}`;
+        } else {
+            // For CSS animations
+            demoElement.style.animationDuration = `${duration}s`;
+            demoElement.style.animationTimingFunction = easing;
+        }
+        
+        // Update code panel with new customizations
+        const activeCodeTab = card.querySelector('.code-tab.active');
+        if (activeCodeTab && activeCodeTab.dataset.code === 'css') {
+            this.updateCodePanelWithCustomization(card, animation, duration, easing);
+        }
+    },
+    
+    /**
+     * Update code panel with customization values
+     */
+    updateCodePanelWithCustomization(card, animation, duration, easing) {
+        let updatedCss = animation.css;
+        
+        if (animation.id.includes('hover') || animation.id.includes('scale') || animation.id.includes('slide') || animation.id.includes('rotate') || animation.id.includes('color-shift')) {
+            // Update transition property in CSS
+            updatedCss = updatedCss.replace(
+                /transition:.*?;/g, 
+                `transition: all ${duration}s ${easing};`
+            );
+        } else {
+            // Update animation properties in CSS
+            updatedCss = updatedCss.replace(
+                /animation:.*?;/g, 
+                (match) => match.replace(/\d+(\.\d+)?s/, `${duration}s`).replace(/ease.*?[,;]/, `${easing},`)
+            );
+        }
+        
+        const codePanel = card.querySelector('.code-panel');
+        codePanel.innerHTML = `<pre><code class="language-css">${this.escapeHtml(updatedCss)}</code></pre>`;
+        
+        // Apply syntax highlighting if Prism is available
+        if (window.Prism) {
+            window.Prism.highlightElement(codePanel.querySelector('code'));
+        }
+    },
+    
+    /**
+     * Get animation object by ID
+     */
+    getAnimationById(id) {
+        for (const category in this.animationLibrary) {
+            const animation = this.animationLibrary[category].find(anim => anim.id === id);
+            if (animation) return animation;
+        }
+        return null;
+    },
+    
+    /**
+     * Escape HTML to prevent XSS
+     */
+    escapeHtml(str) {
+        return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     },
     
     /**
      * Announce changes for screen readers
      */
     announceChange(message) {
-        // Use the Utilities module if available, otherwise fallback to local implementation
+        // Use the Utilities module if available
         if (window.Utilities && typeof window.Utilities.announceMessage === 'function') {
             window.Utilities.announceMessage(message);
-        } else {
-            const announcer = document.getElementById('a11y-announcer') || (() => {
-                const el = document.createElement('div');
-                el.id = 'a11y-announcer';
-                el.className = 'sr-only';
-                el.setAttribute('aria-live', 'polite');
-                document.body.appendChild(el);
-                return el;
-            })();
-            
-            announcer.textContent = message;
+            return;
         }
+        
+        // Fallback method
+        const announcer = document.getElementById('a11y-announcer') || (() => {
+            const el = document.createElement('div');
+            el.id = 'a11y-announcer';
+            el.setAttribute('aria-live', 'polite');
+            el.className = 'sr-only';
+            document.body.appendChild(el);
+            return el;
+        })();
+        announcer.textContent = message;
     }
 };
 
-// Initialize the animation showcase when DOM is loaded
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     AnimationShowcase.init();
-    
-    // Add keyboard support for navigating animation categories
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-            const tabs = Array.from(document.querySelectorAll('.category-tab'));
-            const activeTab = document.querySelector('.category-tab.active');
-            const activeIndex = tabs.indexOf(activeTab);
-            
-            if (e.key === 'ArrowRight') {
-                const nextTab = tabs[(activeIndex + 1) % tabs.length];
-                nextTab.click();
-            } else {
-                const prevTab = tabs[(activeIndex - 1 + tabs.length) % tabs.length];
-                prevTab.click();
-            }
-        }
-    });
+}); 
 }); 
