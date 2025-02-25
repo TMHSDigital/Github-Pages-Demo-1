@@ -12,6 +12,8 @@
     <!-- Preload critical assets -->
     <link rel="preload" href="css/style.css" as="style">
     <link rel="preload" href="js/main.js" as="script">
+    <link rel="preload" href="css/animations.css" as="style">
+    <link rel="preload" href="js/animations.js" as="script">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
     
     <!-- Preconnect to external domains -->
@@ -50,6 +52,7 @@
     
     <!-- Load styles -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
     
     <!-- Load icons asynchronously -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
@@ -58,6 +61,9 @@
     </noscript>
     
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" />
 </head>
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
@@ -73,6 +79,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#about">About</a></li>
+                    <li><a href="#animation-showcase">Animations</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -127,6 +134,30 @@
                     <div class="about-text">
                         <p>We're passionate about creating modern, efficient websites that deliver real value. Our approach combines the latest web technologies with time-tested design principles.</p>
                         <p>Whether you're building a personal blog, business website, or web application, our template provides a solid foundation to build upon.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Animation Showcase Section -->
+        <section id="animation-showcase" class="showcase-section" aria-labelledby="animations-title">
+            <div class="container">
+                <h2 id="animations-title">Animation Library</h2>
+                <p class="section-intro">Explore and implement these animations in your own projects with simple copy-paste code.</p>
+                
+                <div class="animation-categories">
+                    <button class="category-tab active" data-category="transitions">CSS Transitions</button>
+                    <button class="category-tab" data-category="keyframes">CSS Keyframes</button>
+                    <button class="category-tab" data-category="scroll">Scroll Animations</button>
+                    <button class="category-tab" data-category="interactive">Interactive Effects</button>
+                    <button class="category-tab" data-category="text">Text Animations</button>
+                </div>
+                
+                <div class="animation-gallery" role="region" aria-live="polite">
+                    <!-- Dynamic content will be loaded here by JavaScript -->
+                    <div class="loading-indicator">
+                        <div class="spinner"></div>
+                        <p>Loading animations...</p>
                     </div>
                 </div>
             </div>
@@ -217,5 +248,9 @@
     </div>
 
     <script src="js/main.js" type="module"></script>
+    <script src="js/animations.js" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
 </body>
 </html> 

@@ -656,7 +656,7 @@ const app = {
 
     // Add dark mode keyboard shortcut only
     setupKeyboardShortcuts() {
-        // Add keyboard shortcut (D for dark mode)
+        // Add keyboard shortcuts (D for dark mode, A for animations)
         document.addEventListener('keydown', (e) => {
             // Only trigger if no input elements are focused
             if (document.activeElement.tagName === 'INPUT' || 
@@ -673,6 +673,15 @@ const app = {
                     // Trigger the change event
                     const event = new Event('change');
                     this.darkModeToggle.dispatchEvent(event);
+                }
+            }
+            
+            // A key for animations section
+            if (e.key.toLowerCase() === 'a') {
+                const animationsSection = document.getElementById('animation-showcase');
+                if (animationsSection) {
+                    animationsSection.scrollIntoView({ behavior: 'smooth' });
+                    this.announceMessage('Navigated to Animations section');
                 }
             }
         });
