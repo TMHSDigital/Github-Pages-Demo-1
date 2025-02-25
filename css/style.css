@@ -1597,7 +1597,7 @@ textarea.is-invalid:focus-visible {
     outline-color: #f87171;
 }
 
-/* Learning Mode Styles */
+/* Learning Mode Enhanced Styles */
 .learning-mode .feature-card {
     position: relative;
     cursor: help;
@@ -1622,11 +1622,309 @@ textarea.is-invalid:focus-visible {
     transform: scale(0.98);
 }
 
-/* Keyboard focus indicator */
-.learning-mode .feature-card:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--secondary-color), var(--shadow-lg);
-    transform: scale(1.02);
+/* Highlight animation for elements in learning mode */
+.learning-highlight {
+    position: relative;
+    animation: pulseHighlight 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    z-index: 10;
+    box-shadow: 0 0 0 3px var(--accent-color), var(--shadow-lg);
+}
+
+@keyframes pulseHighlight {
+    0% { box-shadow: 0 0 0 3px var(--accent-color), var(--shadow-lg); }
+    50% { box-shadow: 0 0 0 6px var(--accent-color), var(--shadow-lg); }
+    100% { box-shadow: 0 0 0 3px var(--accent-color), var(--shadow-lg); }
+}
+
+/* Learning modal */
+.learning-modal {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    width: min(90vw, 500px);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1010;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.3s ease;
+}
+
+.learning-modal.active {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.learning-modal-content {
+    padding: 1.5rem;
+}
+
+.learning-modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.learning-modal-content p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.learning-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.learning-modal-actions button {
+    padding: 0.5rem 1rem;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.learning-modal-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Learning prompt */
+.learning-prompt {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 1rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    width: min(90vw, 400px);
+    z-index: 1010;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.3s ease;
+}
+
+.learning-prompt.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.learning-prompt-content {
+    padding: 1.5rem;
+}
+
+.learning-prompt-content h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.learning-prompt-content p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.learning-prompt-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.learning-prompt-actions button {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.learning-prompt-actions .start-tour {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+}
+
+.learning-prompt-actions .dismiss-prompt {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+}
+
+.learning-prompt-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Tour UI */
+.learning-tour-ui {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 2rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+    padding: 0.75rem 1.5rem;
+    z-index: 1010;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tour-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tour-controls button {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.tour-controls button:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+}
+
+.tour-progress {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0 0.5rem;
+}
+
+.tour-close {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.tour-close:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+    color: #ef4444;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .learning-modal,
+[data-theme="dark"] .learning-prompt,
+[data-theme="dark"] .learning-tour-ui {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+[data-theme="dark"] .learning-modal-content h3,
+[data-theme="dark"] .learning-prompt-content h3 {
+    color: var(--gray-100);
+}
+
+[data-theme="dark"] .learning-modal-content p,
+[data-theme="dark"] .learning-prompt-content p {
+    color: var(--gray-300);
+}
+
+[data-theme="dark"] .learning-prompt-actions .dismiss-prompt {
+    border-color: var(--glass-border);
+    color: var(--gray-300);
+}
+
+[data-theme="dark"] .tour-controls button,
+[data-theme="dark"] .tour-close {
+    color: var(--gray-100);
+}
+
+[data-theme="dark"] .tour-controls button:hover,
+[data-theme="dark"] .tour-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .tour-progress {
+    color: var(--gray-300);
+}
+
+[data-theme="dark"] .tour-close:hover {
+    color: #f87171;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .learning-modal {
+        width: 95vw;
+        max-height: 50vh;
+    }
+    
+    .learning-prompt {
+        width: 95vw;
+    }
+    
+    .learning-tour-ui {
+        width: 95vw;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+    
+    .tour-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .learning-modal,
+    .learning-prompt,
+    .learning-modal.active,
+    .learning-prompt.active,
+    .learning-highlight {
+        transition: none;
+        animation: none;
+    }
 }
 
 /* Feature Tooltip */
@@ -1740,14 +2038,14 @@ textarea.is-invalid:focus-visible {
     }
 }
 
-/* Dark theme adjustments */
-[data-theme="dark"] .notification,
-[data-theme="dark"] .feature-tooltip {
-    background: var(--glass-bg);
-    border-color: var(--glass-border);
+/* Keyboard focus indicator */
+.learning-mode .feature-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--secondary-color), var(--shadow-lg);
+    transform: scale(1.02);
 }
 
-/* Mobile adjustments */
+/* Mobile tooltip adjustments */
 @media (max-width: 768px) {
     .feature-tooltip {
         position: fixed;
@@ -1758,38 +2056,19 @@ textarea.is-invalid:focus-visible {
         width: auto;
         max-width: none;
     }
-
+    
     .learning-mode .feature-card:hover .feature-tooltip,
     .learning-mode .feature-card:focus .feature-tooltip {
         transform: translateY(0);
     }
-
+    
     .notifications-container {
         left: 1rem;
         right: 1rem;
         align-items: center;
     }
-
+    
     .notification {
         width: 100%;
-    }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    .learning-mode .feature-card {
-        transform: none !important;
-        transition: outline-color 0.2s ease;
-    }
-
-    .feature-tooltip,
-    .notification {
-        transition: opacity 0.2s ease;
-    }
-
-    .notification.fade-in,
-    .notification.fade-out {
-        animation: none;
-        opacity: 1;
     }
 } 
