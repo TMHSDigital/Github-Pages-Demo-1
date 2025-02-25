@@ -12,7 +12,6 @@ const app = {
                 this.initNavigation();
                 this.loadSettings();
                 this.initHero();
-                this.initSettingsPanel();
                 this.initPortfolio();
                 this.initAnimations();
                 this.setupKeyboardShortcuts();
@@ -24,7 +23,6 @@ const app = {
             this.initNavigation();
             this.loadSettings();
             this.initHero();
-            this.initSettingsPanel();
             this.initPortfolio();
             this.initAnimations();
             this.setupKeyboardShortcuts();
@@ -369,55 +367,83 @@ const app = {
     },
 
     setupSettings() {
+        const settingsToggle = this.settingsToggle;
+        const settingsPanel = this.settingsPanel;
+        const closeSettings = document.querySelector('.settings-close');
+
+        if (!settingsToggle || !settingsPanel) return;
+
         const updateSettingsState = (isOpen) => {
-            this.settingsPanel.classList.toggle('active', isOpen);
-            this.settingsToggle.setAttribute('aria-expanded', isOpen);
-            this.settingsPanel.setAttribute('aria-hidden', !isOpen);
-            
-            // Remove learning mode code
-            // if (isOpen) {
-            //     this.trapFocus(this.settingsPanel);
-            //     // Update learning mode toggle state
-            //     if (this.learningModeToggle) {
-            //         this.learningModeToggle.checked = this.learningCore.enabled;
-            //     }
-            // }
-            if (isOpen) {
-                this.trapFocus(this.settingsPanel);
-            }
+            // Use animation frames for smooth transitions
+            requestAnimationFrame(() => {
+                settingsPanel.classList.toggle('active', isOpen);
+                settingsToggle.classList.toggle('active', isOpen);
+                settingsToggle.setAttribute('aria-expanded', isOpen.toString());
+                settingsPanel.setAttribute('aria-hidden', (!isOpen).toString());
+                
+                if (isOpen) {
+                    this.trapFocus(settingsPanel);
+                    // Announce for screen readers
+                    this.announceMessage('Settings panel opened');
+                    
+                    // Add class to body to prevent background scrolling
+                    document.body.classList.add('settings-open');
+                } else {
+                    // Remove class from body
+                    document.body.classList.remove('settings-open');
+                    this.announceMessage('Settings panel closed');
+                    
+                    // Return focus to toggle button after closing
+                    setTimeout(() => {
+                        settingsToggle.focus();
+                    }, 100);
+                }
+            });
         };
 
-        this.settingsToggle.addEventListener('click', () => {
-            const isOpen = !this.settingsPanel.classList.contains('active');
+        // Toggle when clicking the settings button
+        settingsToggle.addEventListener('click', () => {
+            const isOpen = !settingsPanel.classList.contains('active');
             updateSettingsState(isOpen);
         });
 
-        this.settingsClose.addEventListener('click', () => {
-            updateSettingsState(false);
+        // Close when clicking the close button
+        if (closeSettings) {
+            closeSettings.addEventListener('click', () => {
+                updateSettingsState(false);
+            });
+        }
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && settingsPanel.classList.contains('active')) {
+                updateSettingsState(false);
+                settingsToggle.focus(); // Return focus to toggle button
+            }
         });
 
-        // Remove learning mode toggle handler
-        // if (this.learningModeToggle) {
-        //     this.learningModeToggle.addEventListener('change', () => {
-        //         document.dispatchEvent(new CustomEvent('learning-mode-toggle', {
-        //             detail: { enabled: this.learningModeToggle.checked }
-        //         }));
-        //     });
-        // }
-
-        // Close on escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.settingsPanel.classList.contains('active')) {
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (settingsPanel.classList.contains('active') && 
+                !settingsPanel.contains(e.target) && 
+                !settingsToggle.contains(e.target)) {
                 updateSettingsState(false);
             }
         });
 
-        // Close on outside click
-        document.addEventListener('click', (e) => {
-            if (!this.settingsPanel.contains(e.target) && 
-                !this.settingsToggle.contains(e.target) && 
-                this.settingsPanel.classList.contains('active')) {
-                updateSettingsState(false);
+        // Add keyboard shortcut for settings (S key)
+        document.addEventListener('keydown', (e) => {
+            // Only trigger if no input elements are focused
+            if (document.activeElement.tagName === 'INPUT' || 
+                document.activeElement.tagName === 'TEXTAREA' ||
+                document.activeElement.isContentEditable) {
+                return;
+            }
+            
+            if (e.key.toLowerCase() === 's') {
+                e.preventDefault(); // Prevent potential browser shortcuts
+                const isOpen = !settingsPanel.classList.contains('active');
+                updateSettingsState(isOpen);
             }
         });
     },
@@ -487,7 +513,14 @@ const app = {
 
         // Immediate state update
         this.themeState.currentTheme = newTheme;
-        localStorage.setItem('theme', newTheme);
+        
+        // Safely store theme preference in localStorage
+        try {
+            localStorage.setItem('theme', newTheme);
+        } catch (error) {
+            console.warn('Could not save theme preference:', error);
+            // Continue with theme change even if storage fails
+        }
 
         const applyTheme = () => {
             root.setAttribute('data-theme', newTheme);
@@ -517,55 +550,82 @@ const app = {
     },
 
     loadSettings() {
-        // Load theme preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            this.updateTheme(savedTheme === 'dark', false);
-        } else {
+        try {
+            // Load theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                this.updateTheme(savedTheme === 'dark', false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                this.updateTheme(prefersDark, false);
+            }
+
+            // Load font size preference
+            const fontSizeRange = document.getElementById('fontSizeRange');
+            const fontSizeValue = document.getElementById('fontSizeValue');
+            
+            if (fontSizeRange && fontSizeValue) {
+                const savedFontSize = localStorage.getItem('fontSize') || '100';
+                fontSizeRange.value = savedFontSize;
+                fontSizeValue.textContent = `${savedFontSize}%`;
+                this.updateFontSize(savedFontSize);
+                
+                // Add event listener for font size changes
+                fontSizeRange.addEventListener('input', (e) => {
+                    const newSize = e.target.value;
+                    fontSizeValue.textContent = `${newSize}%`;
+                    this.updateFontSize(newSize);
+                    
+                    try {
+                        localStorage.setItem('fontSize', newSize);
+                    } catch (error) {
+                        console.warn('Could not save font size preference:', error);
+                    }
+                });
+            }
+            
+            // Setup reset button
+            const resetButton = document.getElementById('resetSettings');
+            if (resetButton) {
+                resetButton.addEventListener('click', () => this.resetSettings());
+            }
+
+            // Set up dark mode toggle handler
+            if (this.darkModeToggle) {
+                this.darkModeToggle.addEventListener('change', (e) => {
+                    this.updateTheme(e.target.checked);
+                });
+            }
+        } catch (error) {
+            console.warn('Error loading settings:', error);
+            // Fallback to system preference
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             this.updateTheme(prefersDark, false);
         }
 
-        // Remove learning mode code
-        // Load learning mode state and set up toggle handler
-        // if (this.learningModeToggle) {
-        //     const learningEnabled = localStorage.getItem('learning_mode') === 'true';
-        //     this.learningModeToggle.checked = learningEnabled;
-        //     
-        //     // Add learning mode toggle handler
-        //     this.learningModeToggle.addEventListener('change', (e) => {
-        //         const enabled = e.target.checked;
-        //         localStorage.setItem('learning_mode', enabled);
-        //         
-        //         // Dispatch event for learning mode toggle
-        //         document.dispatchEvent(new CustomEvent('learning-mode-toggle', { 
-        //             detail: { enabled } 
-        //         }));
-        //         
-        //         // Show feedback message
-        //         const message = enabled ? 'Learning mode enabled (Press L to toggle)' : 'Learning mode disabled';
-        //         if (this.learningCore && this.learningCore.notifications) {
-        //             this.learningCore.notifications.show(message);
-        //         }
-        //     });
-        // }
-
-        // Set up dark mode toggle handler
-        if (this.darkModeToggle) {
-            this.darkModeToggle.addEventListener('change', (e) => {
-                this.updateTheme(e.target.checked);
-            });
-        }
-
         // Watch for system theme changes
         const handleSystemThemeChange = (e) => {
-            if (!localStorage.getItem('theme')) {
+            try {
+                if (!localStorage.getItem('theme')) {
+                    this.updateTheme(e.matches, false);
+                }
+            } catch (error) {
+                console.warn('Error handling system theme change:', error);
                 this.updateTheme(e.matches, false);
             }
         };
 
-        window.matchMedia('(prefers-color-scheme: dark)')
-            .addEventListener('change', handleSystemThemeChange);
+        try {
+            window.matchMedia('(prefers-color-scheme: dark)')
+                .addEventListener('change', handleSystemThemeChange);
+        } catch (error) {
+            console.warn('Error setting up media query listener:', error);
+            // Fallback for older browsers
+            const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            if (darkModeMediaQuery.addListener) {
+                darkModeMediaQuery.addListener(handleSystemThemeChange);
+            }
+        }
     },
 
     isValidEmail(email) {
@@ -707,24 +767,6 @@ const app = {
                 }
             }
         });
-    },
-
-    initSettingsPanel() {
-        const settingsToggle = document.querySelector('.settings-toggle');
-        const settingsPanel = document.querySelector('.settings-panel');
-        const closeSettings = document.querySelector('.close-settings');
-
-        if (settingsToggle && settingsPanel) {
-            settingsToggle.addEventListener('click', () => {
-                settingsPanel.classList.toggle('open');
-            });
-        }
-
-        if (closeSettings && settingsPanel) {
-            closeSettings.addEventListener('click', () => {
-                settingsPanel.classList.remove('open');
-            });
-        }
     },
 
     initPortfolio() {
@@ -907,6 +949,41 @@ const app = {
                 }
             });
         });
+    },
+
+    updateFontSize(size) {
+        // Apply font size as a percentage to html element
+        document.documentElement.style.fontSize = `${size}%`;
+        
+        // Announce the change for screen readers
+        this.announceMessage(`Font size changed to ${size} percent`);
+    },
+    
+    resetSettings() {
+        try {
+            // Reset theme to system preference
+            localStorage.removeItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            this.updateTheme(prefersDark, true);
+            if (this.darkModeToggle) {
+                this.darkModeToggle.checked = prefersDark;
+            }
+            
+            // Reset font size to 100%
+            localStorage.removeItem('fontSize');
+            const fontSizeRange = document.getElementById('fontSizeRange');
+            const fontSizeValue = document.getElementById('fontSizeValue');
+            if (fontSizeRange && fontSizeValue) {
+                fontSizeRange.value = '100';
+                fontSizeValue.textContent = '100%';
+                this.updateFontSize(100);
+            }
+            
+            // Confirm reset to user
+            this.announceMessage('Settings reset to defaults');
+        } catch (error) {
+            console.warn('Error resetting settings:', error);
+        }
     }
 };
 

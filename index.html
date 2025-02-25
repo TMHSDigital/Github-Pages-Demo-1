@@ -335,6 +335,29 @@
                     </div>
                 </label>
             </div>
+            
+            <div class="settings-group">
+                <label class="settings-label" for="fontSizeRange">
+                    <span>Font Size</span>
+                    <div class="range-control">
+                        <input type="range" 
+                               id="fontSizeRange" 
+                               min="80" 
+                               max="120" 
+                               step="10"
+                               value="100" 
+                               aria-label="Adjust font size">
+                        <span class="range-value" id="fontSizeValue">100%</span>
+                    </div>
+                </label>
+                <div class="setting-description">
+                    Adjust the font size for better readability
+                </div>
+            </div>
+            
+            <div class="settings-footer">
+                <button class="reset-settings" id="resetSettings">Reset to Defaults</button>
+            </div>
         </div>
     </div>
 
