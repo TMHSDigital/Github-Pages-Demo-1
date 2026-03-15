@@ -1073,6 +1073,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Update active link when hash changes
     window.addEventListener('hashchange', setActiveNavLink);
-    
+
+    // Keep copyright year current
+    const yearEl = document.getElementById('copyright-year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
     console.log('Site loaded!');
 }); 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tmhsdigital.github.io/Github-Pages-Demo-1/sitemap.xml
