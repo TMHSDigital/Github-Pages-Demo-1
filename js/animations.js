@@ -468,56 +468,37 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
         // Clear any existing content
         this.container.innerHTML = '';
         
-        // Show loading indicator
-        const loadingIndicator = document.createElement('div');
-        loadingIndicator.className = 'loading-indicator';
-        loadingIndicator.innerHTML = `
-            <div class="spinner"></div>
-            <p>Loading animations...</p>
-        `;
-        this.container.appendChild(loadingIndicator);
-        
-        // Load animations (with minimal delay for smoother UX)
-        setTimeout(() => {
-            // Clear loading indicator
-            this.container.innerHTML = '';
-            
-            // Get animations for the category
-            const animations = this.animationLibrary[category] || [];
-            
-            if (animations.length === 0) {
-                this.container.innerHTML = `<p class="no-results">No animations found for "${category}"</p>`;
-                return;
+        const animations = this.animationLibrary[category] || [];
+
+        if (animations.length === 0) {
+            this.container.innerHTML = `<p class="no-results">No animations found for this category</p>`;
+            return;
+        }
+
+        animations.forEach(animation => {
+            try {
+                const card = this.createAnimationCard(animation);
+                this.container.appendChild(card);
+            } catch (err) {
+                console.error(`Error creating card for "${animation.name}":`, err);
             }
-            
-            // Create and append animation cards
-            animations.forEach(animation => {
-                try {
-                    const card = this.createAnimationCard(animation);
-                    this.container.appendChild(card);
-                } catch (err) {
-                    console.error(`Error creating card for "${animation.name}":`, err);
-                }
-            });
-            
-            // Add flash effect for category change
-            const showcaseSection = this.container.closest('.showcase-section');
-            if (showcaseSection) {
-                showcaseSection.classList.add('category-tab-changing');
-                setTimeout(() => {
-                    showcaseSection.classList.remove('category-tab-changing');
-                }, 300);
+        });
+
+        const showcaseSection = this.container.closest('.showcase-section');
+        if (showcaseSection) {
+            showcaseSection.classList.add('category-tab-changing');
+            setTimeout(() => {
+                showcaseSection.classList.remove('category-tab-changing');
+            }, 300);
+        }
+
+        if (window.Prism) {
+            try {
+                window.Prism.highlightAllUnder(this.container);
+            } catch (e) {
+                console.warn('Prism syntax highlighting error:', e);
             }
-            
-            // Init syntax highlighting if Prism is available
-            if (window.Prism) {
-                try {
-                    window.Prism.highlightAllUnder(this.container);
-                } catch (e) {
-                    console.warn('Prism syntax highlighting error:', e);
-                }
-            }
-        }, 100);
+        }
     },
     
     /**
@@ -641,7 +622,6 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
                 }
             });
             
-            // Handle customization inputs
             this.container.addEventListener('input', (e) => {
                 if (e.target.classList.contains('duration-slider')) {
                     const card = e.target.closest('.animation-card');
@@ -650,7 +630,10 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
                     valueDisplay.textContent = `${value}s`;
                     this.updateCustomization(card, { duration: value });
                 }
-                else if (e.target.classList.contains('easing-select')) {
+            });
+
+            this.container.addEventListener('change', (e) => {
+                if (e.target.classList.contains('easing-select')) {
                     const card = e.target.closest('.animation-card');
                     this.updateCustomization(card, { easing: e.target.value });
                 }
@@ -736,7 +719,9 @@ document.querySelector('.click-ripple').addEventListener('click', function() {
                 break;
         }
         
-        codePanel.innerHTML = `<pre><code class="language-${codeType}">${this.escapeHtml(codeContent)}</code></pre>`;
+        const langMap = { js: 'javascript', css: 'css', html: 'markup' };
+        const langClass = langMap[codeType] || codeType;
+        codePanel.innerHTML = `<pre><code class="language-${langClass}">${this.escapeHtml(codeContent)}</code></pre>`;
         
         // Apply syntax highlighting if Prism is available
         if (window.Prism) {

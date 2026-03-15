@@ -18,17 +18,14 @@
     <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
     <title>TMHSDigital — Modern Demo Site</title>
     
-    <!-- Preload critical assets -->
-    <link rel="preload" href="css/style.css" as="style">
-    <link rel="preload" href="js/main.js" as="script">
-    <link rel="preload" href="js/utilities.js" as="script">
-    <link rel="preload" href="css/animations.css" as="style">
-    <link rel="preload" href="js/animations.js" as="script">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style">
-    
     <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="js/utilities.js" as="script">
+    <link rel="preload" href="js/main.js" as="script">
     
     <!-- Inline critical theme detection -->
     <script>
@@ -78,7 +75,7 @@
 </head>
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
-    <div class="scroll-progress" role="progressbar" aria-label="Scroll progress"></div>
+    <div class="scroll-progress" role="progressbar" aria-label="Scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
     
     <!-- Side Navigation -->
     <nav class="side-nav" aria-label="Section navigation">
@@ -152,9 +149,9 @@
             </div>
         </section>
 
-        <section id="about" class="about">
+        <section id="about" class="about" aria-labelledby="about-title">
             <div class="container">
-                <h2>About</h2>
+                <h2 id="about-title">About</h2>
                 <div class="about-content">
                     <div class="about-text">
                         <p>This GitHub Pages template delivers a professional, contemporary design optimized for modern web projects. It implements responsive layouts and essential functionality with a focus on performance.</p>
@@ -166,9 +163,9 @@
         </section>
 
         <!-- Portfolio Section -->
-        <section id="portfolio" class="portfolio">
+        <section id="portfolio" class="portfolio" aria-labelledby="portfolio-title">
             <div class="container">
-                <h2>Portfolio</h2>
+                <h2 id="portfolio-title">Portfolio</h2>
                 <p class="section-intro">Explore a collection of my creative works and projects. Each piece represents my passion for design and development.</p>
                 
                 <div class="portfolio-grid">

@@ -3,7 +3,6 @@
 // Example of a modern JavaScript module
 const app = {
     init() {
-        // Initialize browser feature detection
         if (window.Utilities) {
             this.features = window.Utilities.detectFeatures();
             window.Utilities.applyFeatureFallbacks();
@@ -14,24 +13,14 @@ const app = {
                 reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
             };
         }
-        
-        // Wait for DOM content to be loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                this.initComponents();
-            });
-        } else {
-            // DOM already loaded
-            this.initComponents();
-        }
+
+        this.initComponents();
     },
     
     initComponents() {
         this.initNavigation();
         this.loadSettings();
-        this.initHero();
         this.initPortfolio();
-        this.initAnimations();
         this.setupKeyboardShortcuts();
         this.initSideNav();
         this.announcePageLoaded();
@@ -42,7 +31,7 @@ const app = {
         this.header = document.querySelector('.site-header');
         this.progressBar = document.querySelector('.scroll-progress');
         this.menuButton = document.querySelector('.menu-button');
-        this.nav = document.querySelector('nav');
+        this.nav = document.querySelector('.site-header nav');
         this.form = document.getElementById('contact-form');
         this.settingsToggle = document.querySelector('.settings-toggle');
         this.settingsPanel = document.querySelector('.settings-panel');
@@ -87,18 +76,15 @@ const app = {
                         this.progressBar.setAttribute('aria-valuenow', Math.round(progress));
                     }
 
-                    // Header visibility
+                    // Header visibility (visual only — never hide from assistive tech)
                     if (currentScroll <= 0) {
                         this.header.classList.remove('scroll-up');
-                        this.header.setAttribute('aria-hidden', 'false');
                     } else if (currentScroll > lastScroll && !this.header.classList.contains('scroll-down')) {
                         this.header.classList.remove('scroll-up');
                         this.header.classList.add('scroll-down');
-                        this.header.setAttribute('aria-hidden', 'true');
                     } else if (currentScroll < lastScroll && this.header.classList.contains('scroll-down')) {
                         this.header.classList.remove('scroll-down');
                         this.header.classList.add('scroll-up');
-                        this.header.setAttribute('aria-hidden', 'false');
                     }
 
                     lastScroll = currentScroll;
@@ -446,6 +432,10 @@ const app = {
     },
 
     trapFocus(element) {
+        if (element._trapFocusHandler) {
+            element.removeEventListener('keydown', element._trapFocusHandler);
+        }
+
         const focusableElements = element.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );
@@ -455,7 +445,7 @@ const app = {
         const firstFocusable = focusableElements[0];
         const lastFocusable = focusableElements[focusableElements.length - 1];
 
-        element.addEventListener('keydown', function(e) {
+        element._trapFocusHandler = function(e) {
             if (e.key === 'Tab') {
                 if (e.shiftKey) {
                     if (document.activeElement === firstFocusable) {
@@ -469,8 +459,9 @@ const app = {
                     }
                 }
             }
-        });
+        };
 
+        element.addEventListener('keydown', element._trapFocusHandler);
         firstFocusable.focus();
     },
 
@@ -493,15 +484,6 @@ const app = {
 
     announcePageLoaded() {
         this.announceMessage('Page loaded. Welcome to TMHSDigital.');
-    },
-
-    // Theme state management with improved memory handling
-    themeState: {
-        isTransitioning: false,
-        currentTheme: null,
-        TRANSITION_DURATION: 300,
-        transitionTimeout: null,
-        rafHandle: null
     },
 
     updateTheme(isDark, enableTransition = true) {
@@ -554,7 +536,7 @@ const app = {
                 if (savedTheme) {
                     this.updateTheme(savedTheme === 'dark', false);
                 } else {
-                    const prefersDark = this.features?.reducedMotion || window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                     this.updateTheme(prefersDark, false);
                 }
                 
@@ -597,8 +579,7 @@ const app = {
                     });
                 }
             } else {
-                // Fallback if localStorage isn't available - use system preference
-                const prefersDark = this.features?.reducedMotion || window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 this.updateTheme(prefersDark, false);
             }
             
@@ -608,69 +589,15 @@ const app = {
                 resetButton.addEventListener('click', () => this.resetSettings());
             }
 
-            // Set up dark mode toggle handler
-            if (this.darkModeToggle) {
-                this.darkModeToggle.addEventListener('change', (e) => {
-                    this.updateTheme(e.target.checked);
-                });
-            }
         } catch (error) {
             console.warn('Error loading settings:', error);
-            // Fallback to system preference
-            const prefersDark = this.features?.reducedMotion || window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             this.updateTheme(prefersDark, false);
-        }
-
-        // Watch for system theme changes
-        const handleSystemThemeChange = (e) => {
-            try {
-                if (!localStorage.getItem('theme')) {
-                    this.updateTheme(e.matches, false);
-                }
-            } catch (error) {
-                console.warn('Error handling system theme change:', error);
-                this.updateTheme(e.matches, false);
-            }
-        };
-
-        try {
-            window.matchMedia('(prefers-color-scheme: dark)')
-                .addEventListener('change', handleSystemThemeChange);
-        } catch (error) {
-            console.warn('Error setting up media query listener:', error);
-            // Fallback for older browsers
-            const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            if (darkModeMediaQuery.addListener) {
-                darkModeMediaQuery.addListener(handleSystemThemeChange);
-            }
         }
     },
 
     isValidEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    },
-
-    showFormError(message) {
-        // Create a better error message UI instead of alert
-        const form = document.getElementById('contact-form');
-        const errorEl = document.createElement('div');
-        errorEl.className = 'form-error-message';
-        errorEl.setAttribute('role', 'alert');
-        errorEl.setAttribute('aria-live', 'assertive');
-        errorEl.textContent = message;
-        
-        // Remove any existing error messages
-        const existing = form.querySelector('.form-error-message');
-        if (existing) existing.remove();
-        
-        // Add the new error message
-        form.insertBefore(errorEl, form.firstChild);
-        
-        // Auto-remove after 5 seconds
-        setTimeout(() => errorEl.remove(), 5000);
-        
-        // Also announce to screen readers
-        this.announceMessage(message);
     },
 
     showFormSuccess() {
@@ -860,30 +787,36 @@ const app = {
         const sections = document.querySelectorAll('section[id]');
         const sideNavLinks = document.querySelectorAll('.side-nav a');
         const sideNav = document.querySelector('.side-nav');
+
+        let cachedNavWidth = 0;
+        let cachedNavHeight = 0;
+
+        const cacheNavDimensions = () => {
+            if (!sideNav) return;
+            const ul = sideNav.querySelector('ul');
+            cachedNavWidth = ul.offsetWidth;
+            cachedNavHeight = ul.offsetHeight - 32;
+        };
+
+        cacheNavDimensions();
+        window.addEventListener('resize', cacheNavDimensions, { passive: true });
         
-        // Update active link and progress line on scroll
         const updateActiveLink = () => {
             let currentSection = '';
             let passed = false;
             
-            // Calculate total scroll progress for the progress line
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrollProgress = (scrollTop / scrollHeight) * 100;
             
-            // Update progress line height
             if (sideNav) {
                 const isMobile = window.innerWidth <= 768;
                 if (isMobile) {
-                    // For mobile (horizontal orientation)
-                    const totalWidth = sideNav.querySelector('ul').offsetWidth;
-                    const progressWidth = (scrollProgress / 100) * totalWidth;
-                    sideNav.style.setProperty('--pseudo-height', `${Math.min(progressWidth, totalWidth)}px`);
+                    const progressWidth = (scrollProgress / 100) * cachedNavWidth;
+                    sideNav.style.setProperty('--pseudo-height', `${Math.min(progressWidth, cachedNavWidth)}px`);
                 } else {
-                    // For desktop (vertical orientation)
-                    const totalHeight = sideNav.querySelector('ul').offsetHeight - 32; // Accounting for padding
-                    const progressHeight = (scrollProgress / 100) * totalHeight;
-                    sideNav.style.setProperty('--pseudo-height', `${Math.min(progressHeight, totalHeight)}px`);
+                    const progressHeight = (scrollProgress / 100) * cachedNavHeight;
+                    sideNav.style.setProperty('--pseudo-height', `${Math.min(progressHeight, cachedNavHeight)}px`);
                 }
             }
             

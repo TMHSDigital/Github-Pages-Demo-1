@@ -53,15 +53,6 @@
     position: relative;
 }
 
-.section-intro {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 3rem;
-    font-size: 1.25rem;
-    color: var(--text-color);
-    opacity: 0.9;
-}
-
 /* Animation Categories */
 .animation-categories {
     display: flex;
@@ -141,11 +132,6 @@
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 450px), 1fr));
     gap: 2.5rem;
     margin-top: 2rem;
-    position: relative;
-}
-
-/* Animation Gallery flash effect on category change */
-.animation-gallery {
     position: relative;
 }
 
@@ -1010,12 +996,6 @@
     }
 }
 
-/* Performance Optimizations */
-.animation-card,
-.demo-element {
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-}
 
 /* Simulate hover state for demos */
 .demo-element.simulate-hover {
@@ -1037,6 +1017,21 @@
         transition: none !important;
         animation: none !important;
         transform: none !important;
+    }
+
+    .pulse,
+    .bounce,
+    .spin,
+    .text-blur,
+    .shake,
+    .typewriter,
+    .gradient-text,
+    .spinner {
+        animation: none !important;
+    }
+
+    .typewriter {
+        width: 100%;
     }
 }
 
