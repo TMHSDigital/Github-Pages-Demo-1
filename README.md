@@ -34,7 +34,7 @@ The official marketing site: a fast, accessible, single-page build with no frame
 
 ## Contents
 
-<table>
+<table width="100%">
   <tr>
     <td width="33%" valign="top">
 
@@ -76,7 +76,7 @@ The official marketing site: a fast, accessible, single-page build with no frame
 
 <br>
 
-<table>
+<table width="100%">
   <tr>
     <td width="50%" align="center" valign="top">
       <img src="docs/screenshots/services.png" alt="Services section with four cards">
@@ -127,13 +127,13 @@ The official marketing site: a fast, accessible, single-page build with no frame
 
 Tokens live at the top of [`css/style.css`](css/style.css) and follow the TM Hospitality Strategies Canva brand kit and logo.
 
-<table>
+<table width="100%">
   <tr>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-0E1A33?style=for-the-badge" alt="Navy swatch"><br><sub><b>Navy</b><br><code>#0E1A33</code></sub></td>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-203164?style=for-the-badge" alt="Brand navy swatch"><br><sub><b>Brand</b><br><code>#203164</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-336193?style=for-the-badge" alt="Brand blue swatch"><br><sub><b>Brand blue</b><br><code>#336193</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-336193?style=for-the-badge" alt="Brand blue swatch"><br><sub><b>Brand&nbsp;blue</b><br><code>#336193</code></sub></td>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-1F4E8C?style=for-the-badge" alt="Button blue swatch"><br><sub><b>Action</b><br><code>#1F4E8C</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-00A5F6?style=for-the-badge" alt="Logo blue swatch"><br><sub><b>Logo blue</b><br><code>#00A5F6</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-00A5F6?style=for-the-badge" alt="Logo blue swatch"><br><sub><b>Logo&nbsp;blue</b><br><code>#00A5F6</code></sub></td>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-F7F8FA?style=for-the-badge" alt="Background swatch"><br><sub><b>Canvas</b><br><code>#F7F8FA</code></sub></td>
   </tr>
 </table>

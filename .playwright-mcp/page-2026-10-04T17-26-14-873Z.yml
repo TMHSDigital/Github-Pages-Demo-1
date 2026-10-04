@@ -1,0 +1,708 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - link "Skip to content" [ref=f1e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=f1e9]:
+      - heading "Navigation Menu" [level=2] [ref=f1e10]
+      - generic [ref=f1e12]:
+        - button "Toggle navigation" [ref=f1e14] [cursor=pointer]
+        - link "Homepage" [ref=f1e18] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f1e21]:
+          - link "Sign in" [ref=f1e22] [cursor=pointer]:
+            - /url: /login?return_to=https%3A%2F%2Fgithub.com%2FTMHSDigital%2FGithub-Pages-Demo-1
+          - button "Appearance settings" [ref=f1e25] [cursor=pointer]
+  - main [ref=f1e32]:
+    - generic [ref=f1e33]:
+      - generic [ref=f1e36]:
+        - link "TMHSDigital" [ref=f1e40] [cursor=pointer]:
+          - /url: /TMHSDigital
+        - generic [ref=f1e41]: /
+        - strong [ref=f1e42]:
+          - link "Github-Pages-Demo-1" [ref=f1e43] [cursor=pointer]:
+            - /url: /TMHSDigital/Github-Pages-Demo-1
+        - generic [ref=f1e44]: Public
+      - navigation "Repository" [ref=f1e45]:
+        - list [ref=f1e46]:
+          - listitem [ref=f1e47]:
+            - link "Code" [ref=f1e48] [cursor=pointer]:
+              - /url: /TMHSDigital/Github-Pages-Demo-1
+          - listitem [ref=f1e52]:
+            - link "Issues 8" [ref=f1e53] [cursor=pointer]:
+              - /url: /TMHSDigital/Github-Pages-Demo-1/issues
+              - generic [ref=f1e57]: Issues
+              - generic "8" [ref=f1e58]
+          - listitem [ref=f1e59]
+          - listitem [ref=f1e60]
+          - listitem [ref=f1e61]
+          - listitem [ref=f1e62]
+          - listitem [ref=f1e63]
+        - button "Additional navigation options" [ref=f1e67] [cursor=pointer]
+    - generic [ref=f1e81]:
+      - generic [ref=f1e84]:
+        - generic [ref=f1e85]:
+          - button "main branch" [ref=f1e88] [cursor=pointer]:
+            - generic [ref=f1e89]: main
+          - generic [ref=f1e93]:
+            - button "Code" [ref=f1e94] [cursor=pointer]
+            - button "Open more actions menu" [ref=f1e98] [cursor=pointer]
+        - generic [ref=f1e101]:
+          - generic [ref=f1e102]:
+            - generic [ref=f1e104]:
+              - heading "Latest commit" [level=2] [ref=f1e105]
+              - generic [ref=f1e108]:
+                - heading "History" [level=2] [ref=f1e109]
+                - link "View commit history for this file." [ref=f1e111] [cursor=pointer]:
+                  - /url: /TMHSDigital/Github-Pages-Demo-1/commits/main/
+            - heading "Folders and files" [level=2] [ref=f1e113]
+            - table "Folders and files" [ref=f1e114]:
+              - rowgroup:
+                - row "Name Last commit date":
+                  - columnheader "Name"
+                  - columnheader "Last commit date"
+              - rowgroup [ref=f1e115]:
+                - row ".github, (Directory)" [ref=f1e116]:
+                  - cell [ref=f1e117]:
+                    - link ".github, (Directory)" [ref=f1e124] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/tree/main/.github
+                      - text: .github
+                  - cell [ref=f1e125]
+                - row "assets, (Directory)" [ref=f1e128]:
+                  - cell [ref=f1e129]:
+                    - link "assets, (Directory)" [ref=f1e136] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/tree/main/assets
+                      - text: assets
+                  - cell [ref=f1e137]
+                - row "css, (Directory)" [ref=f1e140]:
+                  - cell [ref=f1e141]:
+                    - link "css, (Directory)" [ref=f1e148] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/tree/main/css
+                      - text: css
+                  - cell [ref=f1e149]
+                - row "docs/screenshots, (Directory)" [ref=f1e152]:
+                  - cell [ref=f1e153]:
+                    - link "docs/screenshots, (Directory)" [ref=f1e160] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/tree/main/docs/screenshots
+                      - text: docs/screenshots
+                  - cell [ref=f1e161]
+                - row "js, (Directory)" [ref=f1e164]:
+                  - cell [ref=f1e165]:
+                    - link "js, (Directory)" [ref=f1e172] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/tree/main/js
+                      - text: js
+                  - cell [ref=f1e173]
+                - row "scripts, (Directory)" [ref=f1e176]:
+                  - cell [ref=f1e177]:
+                    - link "scripts, (Directory)" [ref=f1e184] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/tree/main/scripts
+                      - text: scripts
+                  - cell [ref=f1e185]
+                - row "tests, (Directory)" [ref=f1e188]:
+                  - cell [ref=f1e189]:
+                    - link "tests, (Directory)" [ref=f1e196] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/tree/main/tests
+                      - text: tests
+                  - cell [ref=f1e197]
+                - row ".cursorrules, (File)" [ref=f1e200]:
+                  - cell [ref=f1e201]:
+                    - link ".cursorrules, (File)" [ref=f1e208] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/.cursorrules
+                      - text: .cursorrules
+                  - cell [ref=f1e209]
+                - row ".gitignore, (File)" [ref=f1e212]:
+                  - cell [ref=f1e213]:
+                    - link ".gitignore, (File)" [ref=f1e220] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/.gitignore
+                      - text: .gitignore
+                  - cell [ref=f1e221]
+                - row "404.html, (File)" [ref=f1e224]:
+                  - cell [ref=f1e225]:
+                    - link "404.html, (File)" [ref=f1e232] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/404.html
+                      - text: 404.html
+                  - cell [ref=f1e233]
+                - row [ref=f1e236]:
+                  - cell [ref=f1e237] [cursor=pointer]:
+                    - button "View all files" [ref=f1e239]
+          - generic [ref=f1e241]:
+            - generic [ref=f1e242]:
+              - heading "Repository files navigation" [level=2] [ref=f1e243]
+              - navigation "Repository files" [ref=f1e244]:
+                - list [ref=f1e245]:
+                  - listitem [ref=f1e246]:
+                    - link "README" [ref=f1e247] [cursor=pointer]:
+                      - /url: "#"
+                  - listitem [ref=f1e249]:
+                    - link "MIT license" [ref=f1e250] [cursor=pointer]:
+                      - /url: "#"
+              - button "Outline" [ref=f1e252] [cursor=pointer]
+            - article [ref=f1e256]:
+              - generic [ref=f1e257]:
+                - link [ref=f1e258] [cursor=pointer]:
+                  - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/assets/images/tmhs-logo.png
+                  - img "TM Hospitality Strategies logo" [ref=f1e259]
+                - generic [ref=f1e260]:
+                  - heading "TM Hospitality Strategies" [level=1] [ref=f1e261]
+                  - 'link "Permalink: TM Hospitality Strategies" [ref=f1e262] [cursor=pointer]':
+                    - /url: "#tm-hospitality-strategies"
+                - paragraph [ref=f1e265]:
+                  - strong [ref=f1e266]: Strategy and operations consulting for restaurants and hospitality.
+                  - text: "The official marketing site: a fast, accessible, single-page build with no framework and no build step."
+                - paragraph [ref=f1e267]:
+                  - link [ref=f1e268] [cursor=pointer]:
+                    - /url: https://tmhsdigital.github.io/Github-Pages-Demo-1/
+                    - img "Live site" [ref=f1e269]
+                - paragraph [ref=f1e270]:
+                  - link [ref=f1e271] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/pages.yml
+                    - img "Deploy" [ref=f1e272]
+                  - link [ref=f1e273] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml
+                    - img "CI" [ref=f1e274]
+                  - link [ref=f1e275] [cursor=pointer]:
+                    - /url: "#quality-gates"
+                    - img "Lighthouse" [ref=f1e276]
+                  - link [ref=f1e277] [cursor=pointer]:
+                    - /url: "#quality-gates"
+                    - img "axe" [ref=f1e278]
+                  - link [ref=f1e279] [cursor=pointer]:
+                    - /url: "#quality-gates"
+                    - img "WCAG" [ref=f1e280]
+                  - link [ref=f1e281] [cursor=pointer]:
+                    - /url: "#tech-stack"
+                    - img "Dependencies" [ref=f1e282]
+                  - link [ref=f1e283] [cursor=pointer]:
+                    - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/LICENSE
+                    - img "License" [ref=f1e284]
+                - paragraph [ref=f1e285]:
+                  - link [ref=f1e286] [cursor=pointer]:
+                    - /url: https://tmhsdigital.github.io/Github-Pages-Demo-1/
+                    - strong [ref=f1e287]: Live site
+                  - text: ·
+                  - link "Preview" [ref=f1e288] [cursor=pointer]:
+                    - /url: "#preview"
+                  - text: ·
+                  - link "Quick start" [ref=f1e289] [cursor=pointer]:
+                    - /url: "#quick-start"
+                  - text: ·
+                  - link "Customize" [ref=f1e290] [cursor=pointer]:
+                    - /url: "#customize"
+                  - text: ·
+                  - link "Quality gates" [ref=f1e291] [cursor=pointer]:
+                    - /url: "#quality-gates"
+                  - text: ·
+                  - link "Open issues" [ref=f1e292] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues
+              - generic [ref=f1e293]:
+                - paragraph [ref=f1e294]: Note
+                - paragraph [ref=f1e297]:
+                  - strong [ref=f1e298]: Content status.
+                  - text: The About, Services, Approach, Selected work and FAQ copy is
+                  - strong [ref=f1e299]: placeholder text
+                  - text: drafted for layout review. Each spot that needs real information is marked
+                  - code [ref=f1e300]: TODO(verify)
+                  - text: in
+                  - link [ref=f1e301] [cursor=pointer]:
+                    - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/index.html
+                    - code [ref=f1e302]: index.html
+                  - text: ", and no testimonials, statistics or client names have been invented. Tracked in"
+                  - link "#14" [ref=f1e303] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14
+                  - text: .
+              - generic [ref=f1e304]:
+                - heading "Contents" [level=2] [ref=f1e305]
+                - 'link "Permalink: Contents" [ref=f1e306] [cursor=pointer]':
+                  - /url: "#contents"
+              - table [ref=f1e310]:
+                - rowgroup [ref=f1e311]:
+                  - row [ref=f1e312]:
+                    - cell [ref=f1e313]:
+                      - paragraph [ref=f1e314]:
+                        - strong [ref=f1e315]: The site
+                        - link "Preview" [ref=f1e316] [cursor=pointer]:
+                          - /url: "#preview"
+                        - link "What's on the page" [ref=f1e317] [cursor=pointer]:
+                          - /url: "#whats-on-the-page"
+                        - link "Design system" [ref=f1e318] [cursor=pointer]:
+                          - /url: "#design-system"
+                    - cell [ref=f1e319]:
+                      - paragraph [ref=f1e320]:
+                        - strong [ref=f1e321]: Build and run
+                        - link "Quick start" [ref=f1e322] [cursor=pointer]:
+                          - /url: "#quick-start"
+                        - link "Project structure" [ref=f1e323] [cursor=pointer]:
+                          - /url: "#project-structure"
+                        - link "Customize" [ref=f1e324] [cursor=pointer]:
+                          - /url: "#customize"
+                        - link "Deployment" [ref=f1e325] [cursor=pointer]:
+                          - /url: "#deployment"
+                    - cell [ref=f1e326]:
+                      - paragraph [ref=f1e327]:
+                        - strong [ref=f1e328]: Quality
+                        - link "Quality gates" [ref=f1e329] [cursor=pointer]:
+                          - /url: "#quality-gates"
+                        - link "Tech stack" [ref=f1e330] [cursor=pointer]:
+                          - /url: "#tech-stack"
+                        - link "Privacy" [ref=f1e331] [cursor=pointer]:
+                          - /url: "#privacy"
+                        - link "Roadmap" [ref=f1e332] [cursor=pointer]:
+                          - /url: "#roadmap"
+              - generic [ref=f1e333]:
+                - heading "Preview" [level=2] [ref=f1e334]
+                - 'link "Permalink: Preview" [ref=f1e335] [cursor=pointer]':
+                  - /url: "#preview"
+              - generic [ref=f1e338]:
+                - link [ref=f1e339] [cursor=pointer]:
+                  - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/docs/screenshots/hero.png
+                  - 'img "Desktop hero: ''Sharper concepts. Tighter operations. Better margins.'' with the TMHS logo on a navy background" [ref=f1e340]'
+                - subscript [ref=f1e341]: Hero · desktop 1280px
+              - table [ref=f1e343]:
+                - rowgroup [ref=f1e344]:
+                  - row [ref=f1e345]:
+                    - cell [ref=f1e346]:
+                      - link [ref=f1e347] [cursor=pointer]:
+                        - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/docs/screenshots/services.png
+                        - img "Services section with four cards" [ref=f1e348]
+                      - subscript [ref=f1e349]: Services · four focused offers
+                    - cell [ref=f1e350]:
+                      - link [ref=f1e351] [cursor=pointer]:
+                        - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/docs/screenshots/approach.png
+                        - 'img "Approach section: Listen, Diagnose, Build, Sustain" [ref=f1e352]'
+                      - subscript [ref=f1e353]: Approach · a four-step process
+              - table [ref=f1e355]:
+                - rowgroup [ref=f1e356]:
+                  - row [ref=f1e357]:
+                    - cell [ref=f1e358]:
+                      - link [ref=f1e359] [cursor=pointer]:
+                        - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/docs/screenshots/mobile.png
+                        - img "Mobile hero at 390px wide" [ref=f1e360]
+                      - subscript [ref=f1e361]: Mobile · 390px
+                    - cell [ref=f1e362]:
+                      - link [ref=f1e363] [cursor=pointer]:
+                        - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/docs/screenshots/mobile-menu.png
+                        - img "Mobile navigation menu open" [ref=f1e364]
+                      - subscript [ref=f1e365]: Mobile menu · keyboard operable
+              - paragraph [ref=f1e366]:
+                - subscript [ref=f1e367]:
+                  - text: Screenshots are generated by
+                  - link [ref=f1e368] [cursor=pointer]:
+                    - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/scripts/screenshots.cjs
+                    - code [ref=f1e369]: scripts/screenshots.cjs
+                  - text: .
+              - generic [ref=f1e370]:
+                - heading "What's on the page" [level=2] [ref=f1e371]
+                - 'link "Permalink: What''s on the page" [ref=f1e372] [cursor=pointer]':
+                  - /url: "#whats-on-the-page"
+              - table [ref=f1e376]:
+                - rowgroup [ref=f1e377]:
+                  - row [ref=f1e378]:
+                    - columnheader "Section" [ref=f1e379]
+                    - columnheader "Purpose" [ref=f1e380]
+                - rowgroup [ref=f1e381]:
+                  - row [ref=f1e382]:
+                    - cell [ref=f1e383]:
+                      - strong [ref=f1e384]: Hero
+                    - cell "States the value proposition and one clear next step." [ref=f1e385]
+                  - row [ref=f1e386]:
+                    - cell [ref=f1e387]:
+                      - strong [ref=f1e388]: About
+                    - cell "Introduces the person and approach behind the brand." [ref=f1e389]
+                  - row [ref=f1e390]:
+                    - cell [ref=f1e391]:
+                      - strong [ref=f1e392]: Services
+                    - cell "Concept and positioning, operations and systems, financial performance, growth and openings." [ref=f1e393]
+                  - row [ref=f1e394]:
+                    - cell [ref=f1e395]:
+                      - strong [ref=f1e396]: Approach
+                    - cell "Listen, diagnose, build, sustain." [ref=f1e397]
+                  - row [ref=f1e398]:
+                    - cell [ref=f1e399]:
+                      - strong [ref=f1e400]: Selected work
+                    - cell "Case-study cards, currently labeled placeholders." [ref=f1e401]
+                  - row [ref=f1e402]:
+                    - cell [ref=f1e403]:
+                      - strong [ref=f1e404]: FAQ
+                    - cell [ref=f1e405]:
+                      - text: Native
+                      - code [ref=f1e406]: <details>
+                      - text: accordion, fully keyboard operable with no JavaScript.
+                  - row [ref=f1e407]:
+                    - cell [ref=f1e408]:
+                      - strong [ref=f1e409]: Contact
+                    - cell [ref=f1e410]:
+                      - text: LinkedIn and Instagram, with an optional
+                      - code [ref=f1e411]: "mailto:"
+                      - text: once an email is configured.
+                  - row [ref=f1e412]:
+                    - cell [ref=f1e413]:
+                      - strong [ref=f1e414]: "404"
+                    - cell "Branded error page that resolves its assets correctly from any nested URL." [ref=f1e415]
+              - generic [ref=f1e416]:
+                - heading "Design system" [level=2] [ref=f1e417]
+                - 'link "Permalink: Design system" [ref=f1e418] [cursor=pointer]':
+                  - /url: "#design-system"
+              - paragraph [ref=f1e421]:
+                - text: Tokens live at the top of
+                - link [ref=f1e422] [cursor=pointer]:
+                  - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/css/style.css
+                  - code [ref=f1e423]: css/style.css
+                - text: and follow the TM Hospitality Strategies Canva brand kit and logo.
+              - table [ref=f1e425]:
+                - rowgroup [ref=f1e426]:
+                  - row [ref=f1e427]:
+                    - cell [ref=f1e428]:
+                      - link [ref=f1e429] [cursor=pointer]:
+                        - /url: https://camo.githubusercontent.com/378864d9035a2b8db990e6b0cc04d07f3565c27dd4f2f281a6a0f79d0285b94c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d2532302d3045314133333f7374796c653d666f722d7468652d6261646765
+                        - img "Navy swatch" [ref=f1e430]
+                      - subscript [ref=f1e431]:
+                        - text: Navy
+                        - code [ref=f1e432]: "#0E1A33"
+                    - cell [ref=f1e433]:
+                      - link [ref=f1e434] [cursor=pointer]:
+                        - /url: https://camo.githubusercontent.com/ae79a53ebf9e05e6a3432b5637e4dda3f3a37350cd1242dca8d3dd7a2e61ab11/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d2532302d3230333136343f7374796c653d666f722d7468652d6261646765
+                        - img "Brand navy swatch" [ref=f1e435]
+                      - subscript [ref=f1e436]:
+                        - text: Brand
+                        - code [ref=f1e437]: "#203164"
+                    - cell [ref=f1e438]:
+                      - link [ref=f1e439] [cursor=pointer]:
+                        - /url: https://camo.githubusercontent.com/07d35c86318697cd147e33f72947006f279ba7ba86c2da3c84034884803dc2be/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d2532302d3333363139333f7374796c653d666f722d7468652d6261646765
+                        - img "Brand blue swatch" [ref=f1e440]
+                      - subscript [ref=f1e441]:
+                        - text: Brand blue
+                        - code [ref=f1e442]: "#336193"
+                    - cell [ref=f1e443]:
+                      - link [ref=f1e444] [cursor=pointer]:
+                        - /url: https://camo.githubusercontent.com/577ccdb735f325d4c1d72fe83b8e76e0f2d279f6239f1c255a20f596e3ac079a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d2532302d3146344538433f7374796c653d666f722d7468652d6261646765
+                        - img "Button blue swatch" [ref=f1e445]
+                      - subscript [ref=f1e446]:
+                        - text: Action
+                        - code [ref=f1e447]: "#1F4E8C"
+                    - cell [ref=f1e448]:
+                      - link [ref=f1e449] [cursor=pointer]:
+                        - /url: https://camo.githubusercontent.com/782a09f5a177019f4584541ab2bdfd74c3bdf7517f4004a97b4d69c9419df73c/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d2532302d3030413546363f7374796c653d666f722d7468652d6261646765
+                        - img "Logo blue swatch" [ref=f1e450]
+                      - subscript [ref=f1e451]:
+                        - text: Logo blue
+                        - code [ref=f1e452]: "#00A5F6"
+                    - cell [ref=f1e453]:
+                      - link [ref=f1e454] [cursor=pointer]:
+                        - /url: https://camo.githubusercontent.com/7533c876bba0f7001c636057d63640b26e36dcb007290f5f84c9dd9784ad01e0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2532302d2532302d4637463846413f7374796c653d666f722d7468652d6261646765
+                        - img "Background swatch" [ref=f1e455]
+                      - subscript [ref=f1e456]:
+                        - text: Canvas
+                        - code [ref=f1e457]: "#F7F8FA"
+              - list [ref=f1e458]:
+                - listitem [ref=f1e459]:
+                  - strong [ref=f1e460]: "Type:"
+                  - text: Fraunces for headings, Inter for text. Both are self-hosted variable fonts.
+                - listitem [ref=f1e461]:
+                  - strong [ref=f1e462]: "Contrast:"
+                  - text: text pairings are chosen for WCAG AA. The bright logo blue is decorative, or used for text only on navy.
+                - listitem [ref=f1e463]:
+                  - strong [ref=f1e464]: "Motion:"
+                  - text: minimal, and disabled under
+                  - code [ref=f1e465]: prefers-reduced-motion
+                  - text: .
+              - generic [ref=f1e466]:
+                - heading "Quick start" [level=2] [ref=f1e467]
+                - 'link "Permalink: Quick start" [ref=f1e468] [cursor=pointer]':
+                  - /url: "#quick-start"
+              - generic [ref=f1e471]:
+                - paragraph [ref=f1e472]: Tip
+                - paragraph [ref=f1e475]: There is nothing to install. Any static file server works.
+              - generic [ref=f1e476]:
+                - generic [ref=f1e477]:
+                  - text: git clone https://github.com/TMHSDigital/Github-Pages-Demo-1.git cd Github-Pages-Demo-1 python -m http.server 8000
+                  - generic [ref=f1e478]: "# or: npx serve"
+                - button "Copy code to clipboard" [ref=f1e480] [cursor=pointer]
+              - paragraph [ref=f1e484]:
+                - text: Then open
+                - link "http://localhost:8000" [ref=f1e485] [cursor=pointer]:
+                  - /url: http://localhost:8000
+                - text: .
+              - generic [ref=f1e486]:
+                - heading "Project structure" [level=2] [ref=f1e487]
+                - 'link "Permalink: Project structure" [ref=f1e488] [cursor=pointer]':
+                  - /url: "#project-structure"
+              - generic [ref=f1e491]:
+                - code [ref=f1e493]: ". ├── index.html Single page: hero, about, services, approach, work, FAQ, contact ├── 404.html Branded error page (uses <base> for the repo path) ├── css/style.css Fonts, brand tokens (:root) and all styles ├── js/main.js Mobile menu, footer year, optional CONTACT_EMAIL mailto ├── assets/ │ ├── fonts/ Self-hosted Fraunces and Inter (latin, variable woff2) │ └── images/ Logo, favicon, apple-touch icon, social preview ├── tests/smoke.cjs Layout, keyboard and axe accessibility checks ├── scripts/ │ ├── check-links.cjs External link checker │ └── screenshots.cjs Regenerates docs/screenshots ├── docs/screenshots/ README images └── .github/ ├── workflows/pages.yml Deploys site files to GitHub Pages ├── workflows/ci.yml Validation, tests, Lighthouse, link checks └── dependabot.yml Weekly GitHub Actions updates"
+                - button "Copy code to clipboard" [ref=f1e495] [cursor=pointer]
+              - generic [ref=f1e499]:
+                - heading "Customize" [level=2] [ref=f1e500]
+                - 'link "Permalink: Customize" [ref=f1e501] [cursor=pointer]':
+                  - /url: "#customize"
+              - table [ref=f1e505]:
+                - rowgroup [ref=f1e506]:
+                  - row [ref=f1e507]:
+                    - columnheader "To change" [ref=f1e508]
+                    - columnheader "Do this" [ref=f1e509]
+                - rowgroup [ref=f1e510]:
+                  - row [ref=f1e511]:
+                    - cell [ref=f1e512]:
+                      - strong [ref=f1e513]: Copy and sections
+                    - cell [ref=f1e514]:
+                      - text: Edit
+                      - link [ref=f1e515] [cursor=pointer]:
+                        - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/index.html
+                        - code [ref=f1e516]: index.html
+                      - text: . Search for
+                      - code [ref=f1e517]: TODO(verify)
+                      - text: to find placeholder text.
+                  - row [ref=f1e518]:
+                    - cell [ref=f1e519]:
+                      - strong [ref=f1e520]: Colors and fonts
+                    - cell [ref=f1e521]:
+                      - text: Edit the tokens at the top of
+                      - link [ref=f1e522] [cursor=pointer]:
+                        - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/css/style.css
+                        - code [ref=f1e523]: css/style.css
+                      - text: .
+                  - row [ref=f1e524]:
+                    - cell [ref=f1e525]:
+                      - strong [ref=f1e526]: Contact email
+                    - cell [ref=f1e527]:
+                      - text: Set
+                      - code [ref=f1e528]: CONTACT_EMAIL
+                      - text: in
+                      - link [ref=f1e529] [cursor=pointer]:
+                        - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/js/main.js
+                        - code [ref=f1e530]: js/main.js
+                      - text: . While empty, the button links to LinkedIn.
+                  - row [ref=f1e531]:
+                    - cell [ref=f1e532]:
+                      - strong [ref=f1e533]: Logo
+                    - cell [ref=f1e534]:
+                      - text: Replace
+                      - code [ref=f1e535]: assets/images/tmhs-logo.png
+                      - text: (an SVG master is tracked in
+                      - link "#16" [ref=f1e536] [cursor=pointer]:
+                        - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16
+                      - text: ).
+                  - row [ref=f1e537]:
+                    - cell [ref=f1e538]:
+                      - strong [ref=f1e539]: Social preview
+                    - cell [ref=f1e540]:
+                      - text: Replace
+                      - code [ref=f1e541]: assets/images/og-image.png
+                      - text: (1200 × 630).
+                  - row [ref=f1e542]:
+                    - cell [ref=f1e543]:
+                      - strong [ref=f1e544]: Repo name or domain
+                    - cell [ref=f1e545]:
+                      - text: Update
+                      - code [ref=f1e546]: og:url
+                      - text: ", canonical,"
+                      - code [ref=f1e547]: sitemap.xml
+                      - text: ","
+                      - code [ref=f1e548]: robots.txt
+                      - text: and the
+                      - code [ref=f1e549]: <base>
+                      - text: in
+                      - code [ref=f1e550]: 404.html
+                      - text: .
+              - generic [ref=f1e551]:
+                - heading "Deployment" [level=2] [ref=f1e552]
+                - 'link "Permalink: Deployment" [ref=f1e553] [cursor=pointer]':
+                  - /url: "#deployment"
+              - paragraph [ref=f1e556]:
+                - text: Every push to
+                - code [ref=f1e557]: main
+                - text: runs
+                - link [ref=f1e558] [cursor=pointer]:
+                  - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/.github/workflows/pages.yml
+                  - code [ref=f1e559]: pages.yml
+                - text: ", which stages only the site files ("
+                - code [ref=f1e560]: index.html
+                - text: ","
+                - code [ref=f1e561]: 404.html
+                - text: ","
+                - code [ref=f1e562]: robots.txt
+                - text: ","
+                - code [ref=f1e563]: sitemap.xml
+                - text: ","
+                - code [ref=f1e564]: css
+                - text: ","
+                - code [ref=f1e565]: js
+                - text: ","
+                - code [ref=f1e566]: assets
+                - text: ) and publishes them to GitHub Pages.
+              - generic [ref=f1e567]:
+                - heading "Quality gates" [level=2] [ref=f1e568]
+                - 'link "Permalink: Quality gates" [ref=f1e569] [cursor=pointer]':
+                  - /url: "#quality-gates"
+              - paragraph [ref=f1e572]:
+                - link [ref=f1e573] [cursor=pointer]:
+                  - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/.github/workflows/ci.yml
+                  - code [ref=f1e574]: ci.yml
+                - text: runs on every push and pull request.
+              - table [ref=f1e576]:
+                - rowgroup [ref=f1e577]:
+                  - row [ref=f1e578]:
+                    - columnheader "Gate" [ref=f1e579]
+                    - columnheader "Tool" [ref=f1e580]
+                    - columnheader "Standard" [ref=f1e581]
+                - rowgroup [ref=f1e582]:
+                  - row [ref=f1e583]:
+                    - cell "HTML validity" [ref=f1e584]
+                    - cell [ref=f1e585]:
+                      - code [ref=f1e586]: html-validate
+                    - cell "No errors" [ref=f1e587]
+                  - row [ref=f1e588]:
+                    - cell "JavaScript lint" [ref=f1e589]
+                    - cell "ESLint" [ref=f1e590]
+                    - cell "No errors" [ref=f1e591]
+                  - row [ref=f1e592]:
+                    - cell "Layout" [ref=f1e593]
+                    - cell "Playwright" [ref=f1e594]
+                    - cell "No horizontal scroll at 375, 768 and 1280px; no console errors" [ref=f1e595]
+                  - row [ref=f1e596]:
+                    - cell "Keyboard" [ref=f1e597]
+                    - cell "Playwright" [ref=f1e598]
+                    - cell "Skip link first, menu and FAQ operable, Escape returns focus, visible focus rings" [ref=f1e599]
+                  - row [ref=f1e600]:
+                    - cell "Accessibility" [ref=f1e601]
+                    - cell "axe-core" [ref=f1e602]
+                    - cell "0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile, desktop and reduced motion" [ref=f1e603]
+                  - row [ref=f1e604]:
+                    - cell "Performance and quality" [ref=f1e605]
+                    - cell "Lighthouse" [ref=f1e606]
+                    - cell "95 or higher in Performance, Accessibility, Best Practices and SEO" [ref=f1e607]
+                  - row [ref=f1e608]:
+                    - cell "Links" [ref=f1e609]
+                    - cell "internal and external checkers" [ref=f1e610]
+                    - cell "No broken links" [ref=f1e611]
+              - paragraph [ref=f1e612]: "Run the browser checks locally:"
+              - generic [ref=f1e613]:
+                - generic [ref=f1e614]:
+                  - text: npm i --no-save playwright axe-core
+                  - generic [ref=f1e615]: "# uses your installed Chrome"
+                  - text: node tests/smoke.cjs node scripts/check-links.cjs
+                - button "Copy code to clipboard" [ref=f1e617] [cursor=pointer]
+              - generic [ref=f1e621]:
+                - paragraph [ref=f1e622]: Important
+                - paragraph [ref=f1e625]: Automated checks do not replace a real screen-reader review. A manual NVDA and VoiceOver pass is still recommended before launch.
+              - generic [ref=f1e626]:
+                - heading "Tech stack" [level=2] [ref=f1e627]
+                - 'link "Permalink: Tech stack" [ref=f1e628] [cursor=pointer]':
+                  - /url: "#tech-stack"
+              - paragraph [ref=f1e632]:
+                - link [ref=f1e633] [cursor=pointer]:
+                  - /url: https://camo.githubusercontent.com/351a976dae9349cdec16429ff1bc35a22fb75852bda48c10dfb907407c46ed65/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f48544d4c352d3230333136343f7374796c653d666f722d7468652d6261646765266c6f676f3d68746d6c35266c6f676f436f6c6f723d7768697465
+                  - img "HTML5" [ref=f1e634]
+                - link [ref=f1e635] [cursor=pointer]:
+                  - /url: https://camo.githubusercontent.com/484eb42666a06a2d1264321fe71726d3d930d64d68bbb9048400d303e8eb26e7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f435353332d3333363139333f7374796c653d666f722d7468652d6261646765266c6f676f3d63737333266c6f676f436f6c6f723d7768697465
+                  - img "CSS3" [ref=f1e636]
+                - link [ref=f1e637] [cursor=pointer]:
+                  - /url: https://camo.githubusercontent.com/29943d47f468afda7f9d0e1d2ba92af61cc81b6be52f112ad6be9b0979f809ca/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d3030413546363f7374796c653d666f722d7468652d6261646765266c6f676f3d6a617661736372697074266c6f676f436f6c6f723d7768697465
+                  - img "JavaScript" [ref=f1e638]
+                - link [ref=f1e639] [cursor=pointer]:
+                  - /url: https://camo.githubusercontent.com/e5bc19834f1c09885a0fdcf4a2850e7a2c757392bd42de13fbdbff55f280f919/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4769744875625f50616765732d3045314133333f7374796c653d666f722d7468652d6261646765266c6f676f3d6769746875627061676573266c6f676f436f6c6f723d7768697465
+                  - img "GitHub Pages" [ref=f1e640]
+                - link [ref=f1e641] [cursor=pointer]:
+                  - /url: https://camo.githubusercontent.com/13fbfb8c4ab3f320e94a5dd6785a4845d4f523bbf0e0f5d4fc5b9f0e98602f18/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4769744875625f416374696f6e732d3146344538433f7374796c653d666f722d7468652d6261646765266c6f676f3d676974687562616374696f6e73266c6f676f436f6c6f723d7768697465
+                  - img "GitHub Actions" [ref=f1e642]
+              - paragraph [ref=f1e643]: No framework, no bundler and no runtime dependencies. Playwright and axe-core are used only for testing and are never shipped.
+              - generic [ref=f1e644]:
+                - heading "Privacy" [level=2] [ref=f1e645]
+                - 'link "Permalink: Privacy" [ref=f1e646] [cursor=pointer]':
+                  - /url: "#privacy"
+              - paragraph [ref=f1e649]:
+                - text: The site makes
+                - strong [ref=f1e650]: no third-party requests
+                - text: ": fonts are self-hosted, and there are no cookies, analytics or contact forms."
+              - generic [ref=f1e651]:
+                - heading "Roadmap" [level=2] [ref=f1e652]
+                - 'link "Permalink: Roadmap" [ref=f1e653] [cursor=pointer]':
+                  - /url: "#roadmap"
+              - paragraph [ref=f1e656]:
+                - text: Open work is tracked in
+                - link "Issues" [ref=f1e657] [cursor=pointer]:
+                  - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues
+                - text: ":"
+              - list [ref=f1e658]:
+                - listitem [ref=f1e659]:
+                  - text: Real copy and case studies (
+                  - link "#14" [ref=f1e660] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14
+                  - text: )
+                - listitem [ref=f1e661]:
+                  - text: Contact method (
+                  - link "#15" [ref=f1e662] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15
+                  - text: )
+                - listitem [ref=f1e663]:
+                  - text: Vector logo (
+                  - link "#16" [ref=f1e664] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16
+                  - text: )
+                - listitem [ref=f1e665]:
+                  - text: Repo rename and housekeeping (
+                  - link "#18" [ref=f1e666] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/18
+                  - text: )
+                - listitem [ref=f1e667]:
+                  - text: Brand relationship with TMHS Digital (
+                  - link "#19" [ref=f1e668] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/19
+                  - text: )
+                - listitem [ref=f1e669]:
+                  - text: Photography (
+                  - link "#20" [ref=f1e670] [cursor=pointer]:
+                    - /url: https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20
+                  - text: )
+              - generic [ref=f1e671]:
+                - link [ref=f1e672] [cursor=pointer]:
+                  - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/assets/images/tmhs-logo.png
+                - paragraph [ref=f1e673]:
+                  - strong [ref=f1e674]: TM Hospitality Strategies
+                  - subscript [ref=f1e675]:
+                    - link "LinkedIn" [ref=f1e676] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/company/tm-hospitality-strategies/
+                    - text: ·
+                    - link "Instagram" [ref=f1e677] [cursor=pointer]:
+                      - /url: https://www.instagram.com/tmhs.ig/
+                    - text: ·
+                    - link "MIT License" [ref=f1e678] [cursor=pointer]:
+                      - /url: /TMHSDigital/Github-Pages-Demo-1/blob/main/LICENSE
+      - generic [ref=f1e681]:
+        - heading "Releases" [level=2] [ref=f1e683]
+        - heading "Packages" [level=2] [ref=f1e687]
+        - heading "Used by" [level=2] [ref=f1e690]
+        - heading "Contributors" [level=2] [ref=f1e693]
+        - heading "Languages" [level=2] [ref=f1e696]
+  - contentinfo [ref=f1e699]:
+    - heading "Footer" [level=2] [ref=f1e700]
+    - generic [ref=f1e701]:
+      - generic [ref=f1e702]:
+        - link "GitHub Homepage" [ref=f1e703] [cursor=pointer]:
+          - /url: https://github.com
+        - generic [ref=f1e706]: © 2026 GitHub, Inc.
+      - navigation "Footer" [ref=f1e707]:
+        - heading "Footer navigation" [level=3] [ref=f1e708]
+        - list "Footer navigation" [ref=f1e709]:
+          - listitem [ref=f1e710]:
+            - link "Terms" [ref=f1e711] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/github-terms/github-terms-of-service
+          - listitem [ref=f1e712]:
+            - link "Privacy" [ref=f1e713] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/privacy-policies/github-privacy-statement
+          - listitem [ref=f1e714]:
+            - link "Security" [ref=f1e715] [cursor=pointer]:
+              - /url: https://github.com/security
+          - listitem [ref=f1e716]:
+            - link "Status" [ref=f1e717] [cursor=pointer]:
+              - /url: https://www.githubstatus.com/
+          - listitem [ref=f1e718]:
+            - link "Community" [ref=f1e719] [cursor=pointer]:
+              - /url: https://github.community/
+          - listitem [ref=f1e720]:
+            - link "Docs" [ref=f1e721] [cursor=pointer]:
+              - /url: https://docs.github.com/
+          - listitem [ref=f1e722]:
+            - link "Contact" [ref=f1e723] [cursor=pointer]:
+              - /url: https://support.github.com?tags=dotcom-footer
+          - listitem [ref=f1e724]:
+            - button "Manage cookies" [ref=f1e726] [cursor=pointer]
+          - listitem [ref=f1e727]:
+            - button "Do not share my personal information" [ref=f1e729] [cursor=pointer]

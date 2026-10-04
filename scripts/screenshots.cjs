@@ -38,8 +38,8 @@ const server = http.createServer((req, res) => {
   };
 
   await shot('hero.png', { width: 1280, height: 760 });
-  await shot('services.png', { width: 1280, height: 760 }, (p) => p.evaluate(() => { document.querySelector('#services').scrollIntoView(); window.scrollBy(0, -20); }));
-  await shot('approach.png', { width: 1280, height: 600 }, (p) => p.evaluate(() => { document.querySelector('#approach').scrollIntoView(); window.scrollBy(0, 0); }));
+  await shot('services.png', { width: 1280, height: 600 }, (p) => p.evaluate(() => { window.scrollTo(0, document.querySelector('#services').offsetTop - 60); }));
+  await shot('approach.png', { width: 1280, height: 600 }, (p) => p.evaluate(() => { window.scrollTo(0, document.querySelector('#approach').offsetTop - 60); }));
   await shot('mobile.png', { width: 390, height: 844 });
   await shot('mobile-menu.png', { width: 390, height: 844 }, (p) => p.locator('.nav-toggle').click());
 
