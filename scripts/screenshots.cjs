@@ -10,7 +10,7 @@ const { chromium } = require('playwright');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'docs', 'screenshots');
-const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2' };
+const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
 
 const server = http.createServer((req, res) => {
   const rel = decodeURIComponent(req.url.split('?')[0]);
@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
   const base = `http://localhost:${server.address().port}/`;
   const browser = await chromium.launch({ channel: 'chrome' });
 
-  const shot = async (name, { viewport, theme = 'light', at, action, dir = OUT, scale = 2, clip }) => {
+  const shot = async (name, { viewport, theme = 'light', at, action, dir = OUT, scale = 1.5, clip }) => {
     const ctx = await browser.newContext({ viewport, deviceScaleFactor: scale, reducedMotion: 'reduce' });
     await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch (e) {} }, theme);
     const page = await ctx.newPage();
@@ -47,8 +47,8 @@ const server = http.createServer((req, res) => {
   await shot('approach.png', { viewport: { width: 1280, height: 560 }, at: '#approach' });
   await shot('calculator.png', { viewport: { width: 1280, height: 760 }, at: '#calculator' });
   await shot('calculator-dark.png', { viewport: { width: 1280, height: 760 }, at: '#calculator', theme: 'dark' });
-  await shot('mobile.png', { viewport: { width: 390, height: 844 } });
-  await shot('mobile-menu.png', { viewport: { width: 390, height: 844 }, action: (p) => p.locator('.nav-toggle').click() });
+  await shot('mobile.png', { viewport: { width: 390, height: 844 }, scale: 2 });
+  await shot('mobile-menu.png', { viewport: { width: 390, height: 844 }, scale: 2, action: (p) => p.locator('.nav-toggle').click() });
 
   // Social card (1200x630) built from the hero scene
   await shot('og-image.png', {
@@ -66,6 +66,17 @@ const server = http.createServer((req, res) => {
       document.querySelector('.btn-row').style.display = 'none';
     }),
   });
+
+  // README banner (rendered from docs/banner.html)
+  {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 340 }, deviceScaleFactor: 1.5 });
+    const page = await ctx.newPage();
+    await page.goto(base + 'docs/banner.html', { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: path.join(OUT, 'banner.png') });
+    await ctx.close();
+    console.log('wrote banner.png');
+  }
 
   await browser.close();
   server.close();

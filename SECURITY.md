@@ -8,7 +8,7 @@ This repository is a static marketing site. It has no server, database, accounts
 
 Please **do not open a public issue** for a security problem.
 
-Report it privately by messaging TM Hospitality Strategies on [LinkedIn](https://www.linkedin.com/company/tm-hospitality-strategies/) with a short note that you have a security report (do not include details in a public post). Once contact is established, share what you found, how to reproduce it and the impact you expect. If GitHub private vulnerability reporting is enabled on this repository, you may use the **Security** tab instead.
+Report it privately through GitHub: open the repository's **Security** tab and choose **Report a vulnerability**. Include what you found, how to reproduce it and the impact you expect.
 
 You can expect an acknowledgement within a few days. Once a fix is available it will be published and, where appropriate, credited to you.
 

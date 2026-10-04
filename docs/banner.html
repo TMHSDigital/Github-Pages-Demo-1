@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>README banner source</title>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <style>
+    html, body { margin: 0; }
+    .banner {
+      position: relative; overflow: hidden; width: 1280px; height: 340px;
+      display: flex; align-items: center; gap: 56px; padding: 0 84px;
+      background:
+        radial-gradient(620px 380px at 88% 20%, rgba(0, 165, 246, .32), transparent 62%),
+        radial-gradient(520px 320px at 0% 110%, rgba(51, 97, 147, .42), transparent 62%),
+        linear-gradient(160deg, #0F1D3F, #0A1226);
+      color: #EDF1FA;
+    }
+    .rings { position: absolute; right: -90px; top: -70px; width: 520px; height: 520px; color: #86CCF8; opacity: .9; }
+    .plate { flex: none; width: 190px; height: 190px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7), 0 0 0 10px rgba(0, 165, 246, .14); position: relative; }
+    .plate img { width: 66%; height: auto; }
+    .copy { position: relative; }
+    .eyebrow { display: inline-flex; align-items: center; gap: .6rem; font: 600 13px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #86CCF8; margin: 0 0 16px; }
+    .eyebrow::before { content: ""; width: 28px; height: 2px; background: currentColor; opacity: .7; }
+    h1 { font-size: 58px; line-height: 1.04; margin: 0 0 14px; color: #fff; letter-spacing: -.028em; }
+    .tag { font: italic 500 28px/1.25 var(--serif); color: #86CCF8; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <svg class="rings" viewBox="0 0 400 400" fill="none" stroke="currentColor" aria-hidden="true">
+      <circle cx="200" cy="200" r="190" stroke-width="1" stroke-dasharray="2 10" opacity=".5"/>
+      <circle cx="200" cy="200" r="160" stroke-width="1.2" stroke-dasharray="40 14 4 14" opacity=".35"/>
+      <circle cx="200" cy="200" r="130" stroke-width="1" opacity=".22"/>
+    </svg>
+    <div class="plate"><img src="../assets/images/tmhs-logo.png" width="335" height="310" alt=""></div>
+    <div class="copy">
+      <p class="eyebrow">Hospitality strategy &amp; operations</p>
+      <h1>TM Hospitality Strategies</h1>
+      <p class="tag">Sharper concepts. Tighter operations. Better margins.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,29 +1,43 @@
 <div align="center">
 
-<img src="assets/images/tmhs-logo.png" alt="TM Hospitality Strategies logo" width="150">
-
-# TM Hospitality Strategies
-
-**Strategy and operations consulting for restaurants and hospitality.**<br>
-The official marketing site: a fast, accessible, single-page build with no framework and no build step.
+<a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/"><img src="docs/screenshots/banner.png" alt="TM Hospitality Strategies. Sharper concepts. Tighter operations. Better margins." width="100%"></a>
 
 <br>
 
-[![Live site](https://img.shields.io/badge/LIVE_SITE-tmhsdigital.github.io-00A5F6?style=for-the-badge&labelColor=203164)](https://tmhsdigital.github.io/Github-Pages-Demo-1/)
+**The official marketing site for TM Hospitality Strategies.**<br>
+A fast, accessible, single-page build with a dark/light theme and a prime cost calculator. No framework, no runtime dependencies.
+
+<br>
+
+[![Visit the live site](https://img.shields.io/badge/VISIT_THE_LIVE_SITE-tmhsdigital.github.io-00A5F6?style=for-the-badge&labelColor=203164)](https://tmhsdigital.github.io/Github-Pages-Demo-1/)
+
+<br>
 
 [![Deploy](https://img.shields.io/github/actions/workflow/status/TMHSDigital/Github-Pages-Demo-1/pages.yml?branch=main&label=deploy&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/pages.yml)
 [![CI](https://img.shields.io/github/actions/workflow/status/TMHSDigital/Github-Pages-Demo-1/ci.yml?branch=main&label=ci&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml)
-[![Lighthouse](https://img.shields.io/badge/lighthouse-100%20%2F%20100%20%2F%20100%20%2F%20100-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
-[![axe](https://img.shields.io/badge/axe--core-0%20violations-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
+[![Lighthouse accessibility](https://img.shields.io/badge/lighthouse_a11y-100-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
+[![Lighthouse performance](https://img.shields.io/badge/lighthouse_perf-95%2B-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
+[![axe](https://img.shields.io/badge/axe--core-0_violations-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![WCAG](https://img.shields.io/badge/WCAG_2.2_AA-automated_checks-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![Dependencies](https://img.shields.io/badge/runtime_dependencies-0-00A5F6?style=flat-square&labelColor=203164)](#tech-stack)
 [![License](https://img.shields.io/github/license/TMHSDigital/Github-Pages-Demo-1?style=flat-square&labelColor=203164&color=336193)](LICENSE)
 
 <br>
 
-[**Live site**](https://tmhsdigital.github.io/Github-Pages-Demo-1/) &nbsp;·&nbsp; [Preview](#preview) &nbsp;·&nbsp; [Quick start](#quick-start) &nbsp;·&nbsp; [Customize](#customize) &nbsp;·&nbsp; [Quality gates](#quality-gates) &nbsp;·&nbsp; [Open issues](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues)
+[**Live site**](https://tmhsdigital.github.io/Github-Pages-Demo-1/) &nbsp;·&nbsp; [Preview](#preview) &nbsp;·&nbsp; [Quick start](#quick-start) &nbsp;·&nbsp; [Customize](#customize) &nbsp;·&nbsp; [Quality gates](#quality-gates) &nbsp;·&nbsp; [Issues](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues)
 
 </div>
+
+<br>
+
+<table width="100%">
+  <tr>
+    <td width="25%" align="center" valign="top"><h3>2 themes</h3><sub>Light and dark, following the system setting</sub></td>
+    <td width="25%" align="center" valign="top"><h3>0 requests</h3><sub>No third-party requests, cookies or analytics</sub></td>
+    <td width="25%" align="center" valign="top"><h3>0 violations</h3><sub>axe-core, WCAG 2.2 A/AA, both themes</sub></td>
+    <td width="25%" align="center" valign="top"><h3>22 checks</h3><sub>Automated browser tests on every push</sub></td>
+  </tr>
+</table>
 
 <br>
 
@@ -38,9 +52,9 @@ The official marketing site: a fast, accessible, single-page build with no frame
 
 **The site** &nbsp;·&nbsp; [Preview](#preview) &nbsp;·&nbsp; [What's on the page](#whats-on-the-page) &nbsp;·&nbsp; [Design system](#design-system)
 
-**Build and run** &nbsp;·&nbsp; [Quick start](#quick-start) &nbsp;·&nbsp; [Project structure](#project-structure) &nbsp;·&nbsp; [Customize](#customize) &nbsp;·&nbsp; [Deployment](#deployment)
+**Build and run** &nbsp;·&nbsp; [Quick start](#quick-start) &nbsp;·&nbsp; [Customize](#customize) &nbsp;·&nbsp; [Project structure](#project-structure) &nbsp;·&nbsp; [Deployment](#deployment)
 
-**Quality** &nbsp;·&nbsp; [Quality gates](#quality-gates) &nbsp;·&nbsp; [Tech stack](#tech-stack) &nbsp;·&nbsp; [Privacy](#privacy) &nbsp;·&nbsp; [Roadmap](#roadmap)
+**Quality** &nbsp;·&nbsp; [Quality gates](#quality-gates) &nbsp;·&nbsp; [Tech stack](#tech-stack) &nbsp;·&nbsp; [Privacy and security](#privacy-and-security) &nbsp;·&nbsp; [Roadmap](#roadmap)
 
 </div>
 
@@ -100,7 +114,7 @@ The official marketing site: a fast, accessible, single-page build with no frame
   </tr>
 </table>
 
-<sub>Screenshots and the social card are generated by [`scripts/screenshots.cjs`](scripts/screenshots.cjs).</sub>
+<div align="center"><sub>Screenshots, the banner and the social card are generated by <a href="scripts/screenshots.cjs"><code>scripts/screenshots.cjs</code></a>.</sub></div>
 
 <br>
 
@@ -124,24 +138,26 @@ The official marketing site: a fast, accessible, single-page build with no frame
 
 ## Design system
 
-Tokens live at the top of [`css/style.css`](css/style.css) and follow the TM Hospitality Strategies Canva brand kit and logo.
+Tokens live in [`css/tokens.css`](css/tokens.css) and follow the TM Hospitality Strategies Canva brand kit and logo.
 
 <table width="100%">
   <tr>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-0E1A33?style=for-the-badge" width="120" height="36" alt="Navy swatch"><br><sub><b>Navy</b><br><code>#0E1A33</code></sub></td>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-203164?style=for-the-badge" width="120" height="36" alt="Brand navy swatch"><br><sub><b>Brand</b><br><code>#203164</code></sub></td>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-336193?style=for-the-badge" width="120" height="36" alt="Brand blue swatch"><br><sub><b>Brand&nbsp;blue</b><br><code>#336193</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-1F4E8C?style=for-the-badge" width="120" height="36" alt="Button blue swatch"><br><sub><b>Action</b><br><code>#1F4E8C</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-1F4E8C?style=for-the-badge" width="120" height="36" alt="Action blue swatch"><br><sub><b>Action</b><br><code>#1F4E8C</code></sub></td>
     <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-00A5F6?style=for-the-badge" width="120" height="36" alt="Logo blue swatch"><br><sub><b>Logo&nbsp;blue</b><br><code>#00A5F6</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-F7F8FA?style=for-the-badge" width="120" height="36" alt="Background swatch"><br><sub><b>Canvas</b><br><code>#F7F8FA</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-F6F7FA?style=for-the-badge" width="120" height="36" alt="Canvas swatch"><br><sub><b>Canvas</b><br><code>#F6F7FA</code></sub></td>
   </tr>
 </table>
 
-- **Tokens:** fluid type and spacing scales, elevation and glow tokens, with complete light and dark sets in [`css/tokens.css`](css/tokens.css).
-- **Type:** Fraunces (with true italics for accent words) for headings and Inter for text. Both are self-hosted variable fonts.
-- **Theme:** follows the system setting until the visitor chooses, then remembers the choice. No flash on load.
-- **Contrast:** every text pairing is chosen for WCAG AA and verified by axe in both themes. The bright logo blue is decorative, or used for text only on navy.
-- **Motion:** transforms and opacity only, paused or disabled under `prefers-reduced-motion`, and content is fully visible without JavaScript.
+| | |
+| :-- | :-- |
+| **Tokens** | Fluid type and spacing scales, elevation and glow tokens, with complete light and dark sets. |
+| **Type** | Fraunces (with true italics for accent words) for headings and Inter for text, both self-hosted variable fonts. |
+| **Theme** | Follows the system setting until the visitor chooses, then remembers the choice. No flash on load. |
+| **Contrast** | Every text pairing is chosen for WCAG AA and verified by axe in both themes. The bright logo blue is decorative, or used for text only on navy. |
+| **Motion** | Transforms and opacity only, paused or disabled under `prefers-reduced-motion`. Content is fully visible without JavaScript. |
 
 <br>
 
@@ -160,7 +176,24 @@ Then open <http://localhost:8000>.
 
 <br>
 
+## Customize
+
+| To change | Do this |
+| :-- | :-- |
+| **Copy and sections** | Edit [`index.html`](index.html). Search for `TODO(verify)` to find placeholder text. |
+| **Colors, fonts, spacing** | Edit the tokens in [`css/tokens.css`](css/tokens.css). Light values are in `:root`, dark in `[data-theme="dark"]`. |
+| **Calculator bands** | Edit `band()` in [`js/calculator.js`](js/calculator.js) and the note under the calculator in `index.html`. Confirm the ranges before relying on them. |
+| **Contact email** | Set `CONTACT_EMAIL` in [`js/main.js`](js/main.js). While empty, the button links to LinkedIn. |
+| **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
+| **Social card, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. |
+| **Repo name or domain** | Update `og:url`, canonical, `sitemap.xml`, `robots.txt` and the `<base>` in `404.html`. |
+
+<br>
+
 ## Project structure
+
+<details>
+<summary><b>Show the file tree</b></summary>
 
 ```text
 .
@@ -181,38 +214,32 @@ Then open <http://localhost:8000>.
 ├── scripts/
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
 │   ├── check-links.cjs      External link checker
-│   └── screenshots.cjs      Regenerates docs/screenshots and the social card
-├── docs/screenshots/        README images
+│   └── screenshots.cjs      Regenerates docs/screenshots, the banner and the social card
+├── docs/                    README banner source and screenshots
+├── CONTRIBUTING.md  SECURITY.md  LICENSE
 └── .github/
-    ├── workflows/pages.yml  Deploys site files to GitHub Pages
+    ├── workflows/pages.yml  Builds and deploys the site to GitHub Pages
     ├── workflows/ci.yml     Validation, tests, Lighthouse, link checks
     └── dependabot.yml       Weekly GitHub Actions updates
 ```
 
-<br>
-
-## Customize
-
-| To change | Do this |
-| :-- | :-- |
-| **Copy and sections** | Edit [`index.html`](index.html). Search for `TODO(verify)` to find placeholder text. |
-| **Colors, fonts, spacing** | Edit the tokens in [`css/tokens.css`](css/tokens.css). Light values are in `:root`, dark in `[data-theme="dark"]`. |
-| **Calculator bands** | Edit `band()` in [`js/calculator.js`](js/calculator.js) and the note under the calculator in `index.html`. Confirm the ranges before relying on them. |
-| **Contact email** | Set `CONTACT_EMAIL` in [`js/main.js`](js/main.js). While empty, the button links to LinkedIn. |
-| **Logo** | Replace `assets/images/tmhs-logo.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
-| **Social preview** | Run `node scripts/screenshots.cjs`, or replace `assets/images/og-image.png` (1200 × 630). |
-| **Repo name or domain** | Update `og:url`, canonical, `sitemap.xml`, `robots.txt` and the `<base>` in `404.html`. |
+</details>
 
 <br>
 
 ## Deployment
 
-Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS into one file, minifies the scripts and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`); source files stay unbundled for development. To preview the published build locally:
+Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS into one file, minifies the scripts and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
+
+<details>
+<summary><b>Preview the published build locally</b></summary>
 
 ```bash
 npm i --no-save esbuild
 node scripts/stage.cjs && cd _site && python -m http.server 8000
 ```
+
+</details>
 
 <br>
 
@@ -224,24 +251,28 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 | :-- | :-- | :-- |
 | HTML validity | `html-validate` | No errors |
 | JavaScript lint | ESLint | No errors |
-| Layout | Playwright, on source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
+| Layout | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
 | Features | Playwright | Theme toggle persists and follows the system; calculator maths and live readout; marquee pauses; content visible with JavaScript off |
 | Keyboard | Playwright | Skip link first, menu and FAQ operable, Escape returns focus, visible focus rings |
-| Accessibility | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in light and dark themes, and with reduced motion |
-| Performance and quality | Lighthouse (on the staged build) | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
+| Accessibility | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion |
+| Performance and quality | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
 | Links | internal and external checkers | No broken links |
 
-Run the browser checks locally:
+<details>
+<summary><b>Run the checks locally</b></summary>
 
 ```bash
 npm i --no-save playwright axe-core esbuild    # uses your installed Chrome
+npx html-validate index.html 404.html
 node tests/smoke.cjs
 node scripts/stage.cjs && SITE_DIR=_site node tests/smoke.cjs    # the published build
 node scripts/check-links.cjs
 ```
 
+</details>
+
 > [!IMPORTANT]
-> Automated checks do not replace a real screen-reader review. A manual NVDA and VoiceOver pass is still recommended before launch.
+> Automated checks do not replace a real screen-reader review. A manual NVDA and VoiceOver pass is still recommended before launch ([#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17)).
 
 <br>
 
@@ -257,34 +288,42 @@ node scripts/check-links.cjs
 
 </div>
 
-No framework, no bundler and no runtime dependencies. Playwright and axe-core are used only for testing and are never shipped.
+No framework, no bundler in development and no runtime dependencies. Playwright, axe-core and esbuild are used only for testing and publishing and are never shipped.
 
 <br>
 
-## Privacy
+## Privacy and security
 
-The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or contact forms.
+- The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculator runs locally and never stores or sends what you enter.
+- GitHub Actions are pinned to commit SHAs and kept current by Dependabot.
+- Found a vulnerability? See [SECURITY.md](SECURITY.md) and report it privately through the repository's **Security** tab.
 
 <br>
 
 ## Roadmap
 
-Open work is tracked in [Issues](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues):
+Open work is tracked in [Issues](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues).
 
-- Real copy and case studies ([#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14))
-- Contact method ([#15](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15))
-- Vector logo ([#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16))
-- Repo rename and housekeeping ([#18](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/18))
-- Brand relationship with TMHS Digital ([#19](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/19))
-- Photography ([#20](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20))
+| Next | Issue |
+| :-- | :-- |
+| Replace placeholder copy with real content | [#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14) |
+| Choose a contact method (email or booking link) | [#15](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15) |
+| Verify the calculator's benchmark bands | [#27](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/27) |
+| Vector logo | [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16) |
+| Manual screen-reader and zoom review | [#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17) |
+| Photography and richer visuals | [#20](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20) |
+| Repo rename and domain | [#18](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/18) |
+| TMHS and TMHS Digital brand relationship | [#19](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/19) |
+| Analytics and privacy decision | [#29](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/29) |
+| Further performance gains | [#28](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/28) |
 
 <br>
 
 <div align="center">
 
-<img src="assets/images/tmhs-logo.png" alt="" width="48">
+<img src="assets/images/tmhs-logo-96.png" alt="" width="48">
 
 **TM Hospitality Strategies**<br>
-<sub>[LinkedIn](https://www.linkedin.com/company/tm-hospitality-strategies/) &nbsp;·&nbsp; [Instagram](https://www.instagram.com/tmhs.ig/) &nbsp;·&nbsp; [MIT License](LICENSE)</sub>
+<sub><a href="https://www.linkedin.com/company/tm-hospitality-strategies/">LinkedIn</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/tmhs.ig/">Instagram</a> &nbsp;·&nbsp; <a href="LICENSE">MIT License</a></sub>
 
 </div>
