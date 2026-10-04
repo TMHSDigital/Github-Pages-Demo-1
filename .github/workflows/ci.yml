@@ -39,19 +39,8 @@ jobs:
         run: SITE_DIR=_site node tests/smoke.cjs
       - name: Check external links
         run: npm run links
-      - name: Lighthouse budgets
-        run: |
-          (cd _site && python3 -m http.server 8000 >/dev/null 2>&1 &)
-          sleep 2
-          npx lighthouse http://localhost:8000/ --output=json --output-path=lh.json --chrome-flags="--headless=new --no-sandbox" --quiet
-          python3 - <<'PY'
-          import json, sys
-          cats = json.load(open('lh.json'))['categories']
-          floors = {'performance': 0.90, 'accessibility': 0.95, 'best-practices': 0.95, 'seo': 0.95}
-          bad = {k: round(v['score'] * 100) for k, v in cats.items() if k in floors and v['score'] < floors[k]}
-          print({k: round(v['score'] * 100) for k, v in cats.items()})
-          sys.exit(1 if bad else 0)
-          PY
+      - name: Lighthouse budgets (every page in the sitemap)
+        run: npm run lighthouse
       - name: Check internal links
         run: |
           python3 - <<'PY'

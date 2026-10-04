@@ -19,8 +19,8 @@ No framework, no runtime dependencies.
 
 [![Deploy](https://img.shields.io/github/deployments/TMHSDigital/Github-Pages-Demo-1/github-pages?label=deploy&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml)
 [![CI](https://img.shields.io/github/actions/workflow/status/TMHSDigital/Github-Pages-Demo-1/ci.yml?branch=main&label=ci&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml)
-[![Lighthouse accessibility](https://img.shields.io/badge/lighthouse_a11y-100-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
-[![Lighthouse performance](https://img.shields.io/badge/lighthouse_perf-95%2B-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
+[![Lighthouse accessibility](https://img.shields.io/badge/lighthouse_a11y-95%2B_enforced-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
+[![Lighthouse performance](https://img.shields.io/badge/lighthouse_perf-90%2B_enforced-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 <br>
 [![axe](https://img.shields.io/badge/axe--core-0_violations-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![WCAG](https://img.shields.io/badge/WCAG_2.2_AA-automated_checks-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
@@ -256,6 +256,7 @@ Then open <http://localhost:8000>.
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
 │   ├── sync-tool-pages.cjs  Copies the shared header, footer, sprite and tool markup from index.html into tools/*/
 │   ├── check-links.cjs      External link checker
+│   ├── lighthouse.cjs       Lighthouse floors for every page in the sitemap
 │   └── screenshots.cjs      Regenerates docs/screenshots, the banner and the social card
 ├── docs/                    README banner source and screenshots
 ├── package.json             Pinned build and test tooling (no runtime dependencies)
@@ -308,7 +309,7 @@ npm run build && cd _site && python -m http.server 8000
 | **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |
 | **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion, including the plate and cocktail tools and a filled-in message |
 | **Security** | Playwright, staged build | Content-Security-Policy present on every page and no violations while using the theme toggle, toolkit tabs, message builder and 404 page |
-| **Performance and quality** | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
+| **Performance and quality** | Lighthouse, staged build | Every page in `sitemap.xml`: Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher (a page under a floor gets one rerun). Scores are posted to the CI job summary |
 | **Links** | internal and external checkers | No broken links |
 
 <details>
@@ -318,7 +319,8 @@ npm run build && cd _site && python -m http.server 8000
 npm ci            # pinned tooling; tests use your installed Chrome
 npm run test:unit # calculator maths only, no browser needed
 npm run check     # unit tests, HTML validation, lint, browser tests on the source and on the published build
-npm run links     # external link check
+npm run links     # external link check (home, 404, README and every tool page)
+npm run build && npm run lighthouse   # Lighthouse floors for every page in the sitemap
 ```
 
 </details>

@@ -7,7 +7,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const FILES = ['index.html', '404.html', 'README.md'];
+const FILES = ['index.html', '404.html', 'README.md', ...fs.readdirSync(path.join(__dirname, '..', 'tools')).map((slug) => path.join('tools', slug, 'index.html'))]
+  .filter((f) => fs.existsSync(path.join(__dirname, '..', f)));
 const GUARDED = new Set([403, 429, 999]);
 const IGNORE = [/^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/, /img\.shields\.io/, /^https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/(assets|sitemap|tools)/];
 
