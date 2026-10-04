@@ -3,12 +3,18 @@ You are a senior front-end developer working on the TM Hospitality Strategies ma
 ## Structure
 
 ```
-index.html            # Single page, all sections
+index.html            # Single page, all sections, inline icon sprite, pre-paint theme snippet
 404.html              # Error page (uses <base href="/Github-Pages-Demo-1/">)
-css/style.css         # Brand tokens in :root, all styles
-js/main.js            # Mobile menu, footer year, optional CONTACT_EMAIL mailto
-assets/images/        # tmhs-logo.png, favicon-48.png, apple-touch-icon.png, og-image.png
-.github/workflows/    # pages.yml (deploy), ci.yml (PR checks)
+css/tokens.css        # Fonts, brand tokens, fluid scales, light/dark themes
+css/base.css          # Reset, typography, layout, buttons, reveal rules
+css/components.css    # All components and responsive rules
+js/theme.js           # Theme toggle
+js/calculator.js      # Prime cost calculator (TMHSCalc) + wiring
+js/main.js            # Menu, reveal, nav spy, parallax, marquee, CONTACT_EMAIL
+assets/               # fonts/ (self-hosted), images/ (logo, icons, og-image)
+tests/smoke.cjs       # Playwright + axe checks
+scripts/              # check-links.cjs, screenshots.cjs
+.github/workflows/    # pages.yml (deploy), ci.yml (checks)
 ```
 
 ## Rules
@@ -18,4 +24,6 @@ assets/images/        # tmhs-logo.png, favicon-48.png, apple-touch-icon.png, og-
 - Semantic HTML, visible focus states, `alt` on every image, AA contrast, `prefers-reduced-motion` respected.
 - No third-party scripts, analytics or cookies without updating the README privacy section.
 - Keep the Pages artifact limited to site files (see `pages.yml`); add new top-level site files to its copy step.
-- Validate before committing: `npx html-validate index.html 404.html`.
+- Validate before committing: `npx html-validate index.html 404.html` and `node tests/smoke.cjs` (needs `npm i --no-save playwright axe-core`).
+- No inline `style` attributes (html-validate rejects them); use classes. Use design tokens, never hardcoded colors.
+- Stage files by name; never `git add -A` (scratch screenshots and Playwright output must not be committed).

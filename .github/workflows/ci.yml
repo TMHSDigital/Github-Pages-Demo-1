@@ -20,7 +20,7 @@ jobs:
       - name: Validate HTML
         run: npx --yes html-validate index.html 404.html
       - name: Lint JS
-        run: npx --yes eslint@8 --no-eslintrc --env browser,es2021 --parser-options ecmaVersion:2021 js/main.js
+        run: npx --yes eslint@8 --no-eslintrc --env browser,es2021 --parser-options ecmaVersion:2021 js/*.js
       - name: Smoke, keyboard and accessibility tests
         run: |
           npm i --no-save playwright axe-core
