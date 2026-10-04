@@ -2,7 +2,7 @@
 /**
  * Builds the publishable site into _site/ (used by the Pages workflow and CI).
  * Source files stay unbundled for development; the published copy gets one
- * minified stylesheet and minified scripts. Fonts and images are copied as is.
+ * minified stylesheet (inlined into the home page) and minified scripts. Fonts and images are copied as is.
  *
  * Run: npm i --no-save esbuild && node scripts/stage.cjs
  */
@@ -13,7 +13,9 @@ const esbuild = require('esbuild');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, '_site');
 
-fs.rmSync(OUT, { recursive: true, force: true });
+// Empty _site rather than deleting it, so a local server running inside it keeps working
+fs.mkdirSync(OUT, { recursive: true });
+for (const entry of fs.readdirSync(OUT)) fs.rmSync(path.join(OUT, entry), { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'css'), { recursive: true });
 fs.mkdirSync(path.join(OUT, 'js'), { recursive: true });
 
@@ -42,7 +44,12 @@ const stripLinks = (html, bundle, files) => {
   });
   return out;
 };
-fs.writeFileSync(path.join(OUT, 'index.html'), stripLinks(read('index.html'), 'site', ['tokens', 'base', 'components']));
+// The home page inlines its (small) stylesheet to remove a render-blocking request.
+// Font URLs are relative to css/, so they are rewritten for the page root.
+const inlineCss = fs.readFileSync(path.join(OUT, 'css', 'site.min.css'), 'utf8').replace(/url\((['"]?)\.\.\/assets\//g, 'url($1assets/');
+const home = stripLinks(read('index.html'), 'site', ['tokens', 'base', 'components'])
+  .replace('<link rel="stylesheet" href="css/site.min.css">', () => `<style>${inlineCss}</style>`);
+fs.writeFileSync(path.join(OUT, 'index.html'), home);
 fs.writeFileSync(path.join(OUT, '404.html'), stripLinks(read('404.html'), 'base', ['tokens', 'base']));
 
 const size = (p) => fs.statSync(path.join(OUT, p)).size;

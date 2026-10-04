@@ -46,11 +46,19 @@ const CONTACT_EMAIL = '';
         const link = map.get(en.target.id);
         if (link && en.isIntersecting) {
           links.forEach((a) => a.removeAttribute('aria-current'));
-          link.setAttribute('aria-current', 'true');
+          link.setAttribute('aria-current', 'location');
         }
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     map.forEach((_, id) => { const s = document.getElementById(id); if (s) spy.observe(s); });
+  }
+
+  /* Header shadow once the page has scrolled */
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 
   /* Hero scene pointer parallax (fine pointers only) */

@@ -159,8 +159,10 @@ async function check(name, fn) {
     assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
     assert.equal(await btn.getAttribute('aria-pressed'), 'false');
     await btn.click();
-    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+    // the switch may run inside a view transition, so wait for it to land
+    await page.waitForFunction(() => document.documentElement.dataset.theme === 'dark', null, { timeout: 3000 });
     assert.equal(await btn.getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.evaluate(() => document.querySelector('meta[name="theme-color"]').content), '#0A1226');
     await page.reload({ waitUntil: 'networkidle' });
     assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
     assert.equal(await page.evaluate(() => localStorage.getItem('tmhs-theme')), 'dark');
@@ -226,6 +228,58 @@ async function check(name, fn) {
     await page.keyboard.press('ArrowRight');
     assert.equal(await page.locator('#calc-food').inputValue(), '32');
     assert.equal(await page.locator('#calc-food-out').textContent(), '32%');
+    await ctx.close();
+  });
+
+  // Header: one visible call to action per layout, shadow after scrolling
+  await check('header shows one call to action on desktop and moves it into the menu on mobile', async () => {
+    let { page, ctx } = await open({ width: 1280, height: 900 });
+    assert.equal(await page.locator('.header-cta').isVisible(), true);
+    assert.equal(await page.locator('.nav-cta').isVisible(), false);
+    await page.evaluate(() => window.scrollTo(0, 600));
+    await page.waitForFunction(() => document.querySelector('.site-header').classList.contains('is-scrolled'));
+    await ctx.close();
+    ({ page, ctx } = await open({ width: 390, height: 844 }));
+    assert.equal(await page.locator('.header-cta').isVisible(), false);
+    await page.locator('.nav-toggle').click();
+    assert.equal(await page.locator('.nav-cta').isVisible(), true);
+    await ctx.close();
+  });
+
+  await check('without JavaScript the mobile nav links are reachable and dead controls are hidden', async () => {
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    await page.goto(base);
+    assert.equal(await page.locator('#nav a[href="#services"]').isVisible(), true);
+    assert.equal(await page.locator('.nav-toggle').isVisible(), false);
+    assert.equal(await page.locator('#theme-toggle').isVisible(), false);
+    await ctx.close();
+  });
+
+  await check('structured data is valid JSON-LD for the business', async () => {
+    const { page, ctx } = await open({ width: 1280, height: 900 });
+    const data = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+    assert.equal(data['@type'], 'ProfessionalService');
+    assert.equal(data.name, 'TM Hospitality Strategies');
+    assert.ok(Array.isArray(data.sameAs) && data.sameAs.length >= 2);
+    await ctx.close();
+  });
+
+  await check('calculator keeps the caret in place while formatting and resets to the example', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    await page.goto(base, { waitUntil: 'networkidle' });
+    const input = page.locator('#calc-revenue');
+    await input.click();
+    await input.evaluate((el) => el.setSelectionRange(1, 1)); // "1|00,000"
+    await page.keyboard.type('5');
+    assert.equal(await input.inputValue(), '1,500,000');
+    assert.equal(await input.evaluate((el) => el.selectionStart), 3); // caret stays after the typed 5
+    await page.locator('#calc-food').fill('45');
+    await page.locator('#calc-reset').click();
+    assert.equal(await input.inputValue(), '100,000');
+    assert.equal(await page.locator('#calc-food').inputValue(), '31');
+    assert.equal(await page.locator('#out-prime-pct').textContent(), '63%');
     await ctx.close();
   });
 

@@ -93,12 +93,32 @@ window.TMHSCalc = TMHSCalc;
     }, 450);
   };
 
+  // Reformat with thousands separators while keeping the caret after the same digit
   revenue.addEventListener('input', () => {
+    const caret = revenue.selectionStart ?? revenue.value.length;
+    const digitsBefore = revenue.value.slice(0, caret).replace(/[^\d]/g, '').length;
     const n = TMHSCalc.parseMoney(revenue.value);
     revenue.value = n ? n.toLocaleString('en-US') : '';
+    let pos = 0;
+    for (let seen = 0; pos < revenue.value.length && seen < digitsBefore; pos++) {
+      if (/\d/.test(revenue.value[pos])) seen++;
+    }
+    if (document.activeElement === revenue) revenue.setSelectionRange(pos, pos);
     update();
   });
   Object.values(ranges).forEach((el) => el.addEventListener('input', update));
+
+  const defaults = { revenue: revenue.defaultValue, food: ranges.food.defaultValue, labor: ranges.labor.defaultValue, other: ranges.other.defaultValue };
+  const reset = $('calc-reset');
+  if (reset) {
+    reset.addEventListener('click', () => {
+      revenue.value = defaults.revenue;
+      ranges.food.value = defaults.food;
+      ranges.labor.value = defaults.labor;
+      ranges.other.value = defaults.other;
+      update();
+    });
+  }
 
   update();
 })();

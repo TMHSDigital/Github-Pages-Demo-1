@@ -67,3 +67,18 @@ em { font-style: italic; font-weight: 500; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Theme switch: the JS animates a circular reveal; disable the default cross-fade */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+/* Print: plain, ink-friendly, with link targets spelled out */
+@media print {
+  *, *::before, *::after { color: #000 !important; background: transparent !important; box-shadow: none !important; text-shadow: none !important; }
+  .site-header, .skip-link, .scene, .proof, .pause, .reset, .to-top, .cover, .site-footer ul, .theme-toggle { display: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .section { padding-block: 1.5rem; }
+  .bento, .cases, .steps, .calc, .hero-grid, .about-grid, .faq-grid { display: block; }
+  .tile, .case, .principles li, .quote, .cta-panel { border: 1px solid #999; margin-bottom: .8rem; break-inside: avoid; }
+  details p { display: block; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .8em; }
+}
