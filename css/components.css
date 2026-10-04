@@ -92,7 +92,7 @@ html:not(.js) .theme-toggle, html:not(.js) .nav-toggle { display: none; }
 .about-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: var(--space-l); align-items: start; }
 .about-side { display: grid; gap: 1.25rem; position: sticky; top: 104px; }
 .quote { margin: 0; padding: var(--space-m); border-radius: var(--radius-l); background: linear-gradient(160deg, var(--brand), var(--navy)); color: var(--on-dark); position: relative; box-shadow: var(--shadow-l); overflow: hidden; }
-.quote::before { content: "\201C"; position: absolute; top: -.1em; right: .15em; font: 600 9rem/1 var(--serif); color: rgba(255, 255, 255, .08); }
+.quote::before { content: "\201C"; content: "\201C" / ""; position: absolute; top: -.1em; right: .15em; font: 600 9rem/1 var(--serif); color: rgba(255, 255, 255, .08); }
 .quote blockquote { margin: 0; }
 .quote p { font: italic 400 var(--step-2)/1.35 var(--serif); margin: 0 0 1.2rem; position: relative; }
 .quote figcaption { font-size: .9rem; color: var(--on-dark-soft); }
@@ -148,9 +148,9 @@ html:not(.js) .theme-toggle, html:not(.js) .nav-toggle { display: none; }
 
 /* ---------- Calculator ---------- */
 .calc { display: grid; grid-template-columns: 1.05fr .95fr; gap: 0; border-radius: var(--radius-l); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-l); overflow: hidden; }
-.calc-form { padding: var(--space-m); display: grid; gap: 1.5rem; align-content: start; }
+.calc-form { padding: var(--space-m); display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; align-content: start; min-width: 0; }
 .field > label, .field .lab { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-weight: 600; font-size: .95rem; margin-bottom: .55rem; }
-.field output { font: 600 1.15rem/1 var(--serif); color: var(--accent-text); font-variant-numeric: tabular-nums; }
+.field .val { font: 600 1.15rem/1 var(--serif); color: var(--accent-text); font-variant-numeric: tabular-nums; }
 .money { display: flex; align-items: center; border: 1.5px solid var(--line); border-radius: 14px; background: var(--bg); padding: 0 1rem; transition: border-color .2s, box-shadow .2s; }
 .money:focus-within { border-color: var(--accent-text); box-shadow: 0 0 0 4px var(--glow); outline: 3px solid var(--logo-blue); outline-offset: 2px; }
 .money span { color: var(--text-soft); font-weight: 600; }
@@ -246,13 +246,15 @@ details p { color: var(--text-soft); margin: 0; padding: 0 3.5rem 1.5rem .25rem;
 .to-top svg { width: 1em; height: 1em; transform: rotate(-90deg); transition: transform .25s var(--ease); }
 .to-top:hover svg { transform: rotate(-90deg) translateX(3px); }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 1100px) {
+/* ---------- Responsive ----------
+   Breakpoints are in em so they also respond to a larger default font size
+   (68.75em = 1100px, 57.5em = 920px, 43.75em = 700px, 35em = 560px at 16px). */
+@media (max-width: 68.75em) {
   .nav ul { gap: 1.1rem; }
   .header-cta { display: none; }
 }
-@media (max-width: 920px) {
-  .hero-grid, .about-grid, .calc, .faq-grid { grid-template-columns: 1fr; }
+@media (max-width: 57.5em) {
+  .hero-grid, .about-grid, .calc, .faq-grid { grid-template-columns: minmax(0, 1fr); }
   .faq-aside { position: static; }
   .about-side { position: static; }
   .scene { width: min(100%, 420px); }
@@ -282,11 +284,11 @@ details p { color: var(--text-soft); margin: 0; padding: 0 3.5rem 1.5rem .25rem;
   html:not(.js) .nav ul a { border: 0; padding: .35rem 0; }
   html:not(.js) .nav .nav-cta { display: none; }
 }
-@media (max-width: 700px) {
+@media (max-width: 43.75em) {
   .cases { grid-template-columns: 1fr; }
   .cover { aspect-ratio: 16 / 7; }
 }
-@media (max-width: 560px) {
+@media (max-width: 35em) {
   .hero .btn-row .btn { width: 100%; }
   .trust { flex-direction: column; gap: .5rem; }
   .scene { width: min(100%, 340px); }

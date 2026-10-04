@@ -33,7 +33,7 @@ const CONTACT_EMAIL = '';
     }
   });
 
-  window.matchMedia('(min-width: 921px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+  window.matchMedia('(min-width: 57.5625em)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
 
   /* Reveal on scroll (content is visible by default without JS) */
   const reveals = document.querySelectorAll('[data-reveal]');

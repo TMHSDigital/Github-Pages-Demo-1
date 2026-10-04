@@ -317,6 +317,58 @@ async function check(name, fn) {
     await ctx.close();
   });
 
+  // WCAG 1.4.10 reflow (400% zoom = 320px, 200% = 640px) and 1.4.12 text spacing
+  const SPACING = '*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-bottom:2em!important}';
+  for (const [w, h, spacing] of [[320, 700, false], [640, 900, false], [320, 700, true], [1280, 900, true]]) {
+    await check(`reflow at ${w}px${spacing ? ' with WCAG text spacing' : ''}: nothing scrolls sideways or is cut off`, async () => {
+      // text spacing is applied the way a user extension would, so the site's CSP does not apply to it
+      const { page, ctx } = await open({ width: w, height: h }, { bypassCSP: true });
+      if (spacing) await page.addStyleTag({ content: SPACING });
+      await page.waitForTimeout(150);
+      const r = await page.evaluate(() => ({
+        over: document.documentElement.scrollWidth - innerWidth,
+        offscreen: [...document.querySelectorAll('main *, header *, footer *')]
+          .filter((el) => { const rc = el.getBoundingClientRect(); return rc.width && rc.right > innerWidth + 1 && !el.closest('.marquee, .scene, .nav'); })
+          .slice(0, 5).map((el) => el.tagName + '.' + el.className),
+      }));
+      assert.equal(r.over, 0, 'page scrolls horizontally');
+      assert.deepEqual(r.offscreen, []);
+      await ctx.close();
+    });
+  }
+
+  await check('sliders announce their value as a percent of sales', async () => {
+    const { page, ctx } = await open({ width: 1280, height: 900 });
+    assert.equal(await page.locator('#calc-labor').getAttribute('aria-valuetext'), '32% of sales');
+    await page.locator('#calc-labor').focus();
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await page.locator('#calc-labor').getAttribute('aria-valuetext'), '31% of sales');
+    await ctx.close();
+  });
+
+  // The published build carries a hash-based CSP; nothing on the page may violate it
+  if (process.env.SITE_DIR) {
+    await check('published build has a Content-Security-Policy with no violations', async () => {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+      await ctx.addInitScript(() => {
+        window.__csp = [];
+        document.addEventListener('securitypolicyviolation', (e) => window.__csp.push(`${e.violatedDirective} ${e.blockedURI}`));
+      });
+      const page = await ctx.newPage();
+      await page.goto(base, { waitUntil: 'networkidle' });
+      assert.ok(await page.locator('meta[http-equiv="Content-Security-Policy"]').count(), 'CSP meta missing');
+      // exercise the interactive parts
+      await page.locator('#theme-toggle').click();
+      await page.locator('#calc-food').fill('40');
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(600);
+      assert.deepEqual(await page.evaluate(() => window.__csp), []);
+      await page.goto(base + '404.html', { waitUntil: 'networkidle' });
+      assert.deepEqual(await page.evaluate(() => window.__csp), []);
+      await ctx.close();
+    });
+  }
+
   // Marquee pause control
   await check('marquee can be paused and resumed', async () => {
     const { page, ctx } = await open({ width: 1280, height: 900 });

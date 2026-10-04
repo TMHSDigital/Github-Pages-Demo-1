@@ -71,6 +71,7 @@ window.TMHSCalc = TMHSCalc;
 
     for (const [k, el] of Object.entries(ranges)) {
       $('calc-' + k + '-out').textContent = el.value + '%';
+      el.setAttribute('aria-valuetext', el.value + '% of sales'); // the visible % label is hidden from screen readers
       el.style.setProperty('--fill', ((el.value - el.min) / (el.max - el.min)) * 100 + '%');
     }
 

@@ -148,10 +148,10 @@
     </section>
 
     <!-- ============ CAPABILITIES MARQUEE ============ -->
-    <section class="proof" aria-label="Areas of focus">
+    <section class="proof" aria-labelledby="proof-label">
       <div class="wrap">
         <div class="proof-top">
-          <p class="proof-label">Where the work happens</p>
+          <p class="proof-label" id="proof-label">Where the work happens</p>
           <button type="button" class="pause" id="marquee-toggle" aria-pressed="false">Pause scrolling</button>
         </div>
         <div class="marquee" id="marquee">
@@ -241,10 +241,10 @@
           <p>Four steps from first conversation to results that last.</p>
         </div>
         <ol class="steps">
-          <li data-reveal><span class="num">01</span><h3>Listen</h3><p>Walk the operation, review the numbers and hear from the people who run it.</p></li>
-          <li data-reveal data-d="1"><span class="num">02</span><h3>Diagnose</h3><p>Find the few changes that will move results the most and rank them by effort and impact.</p></li>
-          <li data-reveal data-d="2"><span class="num">03</span><h3>Build</h3><p>Put the plan, tools and training in place, with your team involved at each step.</p></li>
-          <li data-reveal data-d="3"><span class="num">04</span><h3>Sustain</h3><p>Track the right measures and adjust, so the gains hold after the engagement ends.</p></li>
+          <li data-reveal><span class="num" aria-hidden="true">01</span><h3>Listen</h3><p>Walk the operation, review the numbers and hear from the people who run it.</p></li>
+          <li data-reveal data-d="1"><span class="num" aria-hidden="true">02</span><h3>Diagnose</h3><p>Find the few changes that will move results the most and rank them by effort and impact.</p></li>
+          <li data-reveal data-d="2"><span class="num" aria-hidden="true">03</span><h3>Build</h3><p>Put the plan, tools and training in place, with your team involved at each step.</p></li>
+          <li data-reveal data-d="3"><span class="num" aria-hidden="true">04</span><h3>Sustain</h3><p>Track the right measures and adjust, so the gains hold after the engagement ends.</p></li>
         </ol>
       </div>
     </section>
@@ -265,16 +265,16 @@
               <p id="calc-revenue-hint" class="sr-only">Enter your total monthly sales in dollars.</p>
             </div>
             <div class="field">
-              <div class="lab"><label for="calc-food">Food and beverage cost</label><output id="calc-food-out" for="calc-food">31%</output></div>
-              <input id="calc-food" name="food" type="range" min="15" max="50" step="1" value="31">
+              <div class="lab"><label for="calc-food">Food and beverage cost</label><span class="val" id="calc-food-out" aria-hidden="true">31%</span></div>
+              <input id="calc-food" name="food" type="range" aria-valuetext="31% of sales" min="15" max="50" step="1" value="31">
             </div>
             <div class="field">
-              <div class="lab"><label for="calc-labor">Labor cost</label><output id="calc-labor-out" for="calc-labor">32%</output></div>
-              <input id="calc-labor" name="labor" type="range" min="15" max="50" step="1" value="32">
+              <div class="lab"><label for="calc-labor">Labor cost</label><span class="val" id="calc-labor-out" aria-hidden="true">32%</span></div>
+              <input id="calc-labor" name="labor" type="range" aria-valuetext="32% of sales" min="15" max="50" step="1" value="32">
             </div>
             <div class="field">
-              <div class="lab"><label for="calc-other">Other controllable costs</label><output id="calc-other-out" for="calc-other">12%</output></div>
-              <input id="calc-other" name="other" type="range" min="0" max="30" step="1" value="12">
+              <div class="lab"><label for="calc-other">Other controllable costs</label><span class="val" id="calc-other-out" aria-hidden="true">12%</span></div>
+              <input id="calc-other" name="other" type="range" aria-valuetext="12% of sales" min="0" max="30" step="1" value="12">
             </div>
           </div>
           <div class="calc-out">
