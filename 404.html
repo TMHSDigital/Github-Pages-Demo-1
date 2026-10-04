@@ -1,182 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Page not found — TMHSDigital">
-    <meta name="robots" content="noindex">
-    <title>404 — Page Not Found | TMHSDigital</title>
-
-    <!-- Inline critical theme detection to prevent flash -->
-    <script>
-        (function() {
-            document.documentElement.setAttribute('data-theme',
-                localStorage.getItem('theme') ||
-                (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-            );
-        })();
-    </script>
-
-    <link rel="icon" type="image/png" href="assets/images/TMHS-LOGO.png">
-    <link rel="apple-touch-icon" href="assets/images/TMHS-LOGO.png">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-
-    <style>
-        .error-page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Ambient blobs matching the hero section */
-        .error-page::before,
-        .error-page::after {
-            content: '';
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.35;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .error-page::before {
-            width: var(--blob-size, 400px);
-            height: var(--blob-size, 400px);
-            background: var(--blob-1, rgba(37, 99, 235, 0.4));
-            top: -10%;
-            right: -5%;
-        }
-
-        .error-page::after {
-            width: var(--blob-size, 400px);
-            height: var(--blob-size, 400px);
-            background: var(--blob-2, rgba(8, 145, 178, 0.4));
-            bottom: -10%;
-            left: -5%;
-        }
-
-        .error-card {
-            position: relative;
-            z-index: 1;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 1.5rem;
-            padding: clamp(2.5rem, 6vw, 4rem);
-            max-width: 560px;
-            width: 100%;
-            text-align: center;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .error-code {
-            font-size: clamp(5rem, 18vw, 9rem);
-            font-weight: 800;
-            line-height: 1;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.04em;
-        }
-
-        .error-title {
-            font-size: clamp(1.25rem, 3vw, 1.75rem);
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 1rem;
-        }
-
-        .error-description {
-            color: var(--gray-500);
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-        }
-
-        .error-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.75rem;
-            background: var(--gradient-primary);
-            color: #fff;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.88;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.75rem;
-            background: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--glass-border);
-            border-radius: 0.75rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-            background: var(--gray-100);
-            transform: translateY(-2px);
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .btn-primary,
-            .btn-secondary {
-                transition: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Page not found — TM Hospitality Strategies</title>
+  <base href="/Github-Pages-Demo-1/">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/images/favicon-48.png">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { min-height: 100vh; display: grid; place-items: center; background: var(--navy); color: #C9D3E6; text-align: center; padding: 24px; }
+    .box { max-width: 460px; }
+    .box h1 { color: #fff; font-size: 2.4rem; }
+    .code { font: 600 .85rem var(--sans); letter-spacing: .14em; color: #7CC8F5; text-transform: uppercase; }
+    .logo { background: #fff; border-radius: 20px; padding: 16px; display: inline-block; margin-bottom: 24px; }
+  </style>
 </head>
 <body>
-    <main class="error-page" role="main">
-        <div class="error-card">
-            <div class="error-code" aria-label="Error 404">404</div>
-            <h1 class="error-title">Page Not Found</h1>
-            <p class="error-description">
-                The page you're looking for doesn't exist or has been moved.
-                Head back home and pick up where you left off.
-            </p>
-            <div class="error-actions">
-                <a href="./" class="btn-primary">
-                    &#8592; Back to Home
-                </a>
-                <a href="./#contact" class="btn-secondary">
-                    Get in Touch
-                </a>
-            </div>
-        </div>
-    </main>
+  <main class="box">
+    <div class="logo"><img src="assets/images/tmhs-logo.png" width="120" height="111" alt="TM Hospitality Strategies"></div>
+    <p class="code">Error 404</p>
+    <h1>This table isn't on the floor plan</h1>
+    <p>The page you're looking for doesn't exist or has moved.</p>
+    <p><a class="btn" href="./">Back to the homepage</a></p>
+  </main>
 </body>
 </html>

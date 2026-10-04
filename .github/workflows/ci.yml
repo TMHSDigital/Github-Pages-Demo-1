@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate HTML
+        run: npx --yes html-validate index.html 404.html
+      - name: Lint JS
+        run: npx --yes eslint@8 --no-eslintrc --env browser,es2021 --parser-options ecmaVersion:2021 js/main.js

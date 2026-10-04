@@ -1,399 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A modern demo site showcasing glassmorphism UI, 20+ CSS animations, dark/light theming, and accessible design — built with zero frameworks.">
-    <meta property="og:title" content="TMHSDigital — Modern Demo Site">
-    <meta property="og:description" content="Glassmorphism UI, 20+ CSS animations, adaptive theming, and full accessibility. Zero build tools, zero dependencies.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/">
-    <meta property="og:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/preview.png">
-    <meta property="og:image:alt" content="TMHSDigital Modern Demo Site preview">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="TMHSDigital — Modern Demo Site">
-    <meta name="twitter:description" content="Glassmorphism UI, 20+ CSS animations, adaptive theming, and full accessibility. Zero build tools, zero dependencies.">
-    <meta name="twitter:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/preview.png">
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
-    <title>TMHSDigital — Modern Demo Site</title>
-    
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Preload critical assets -->
-    <link rel="preload" href="css/style.css" as="style">
-    <link rel="preload" href="js/utilities.js" as="script">
-    <link rel="preload" href="js/main.js" as="script">
-    
-    <!-- Inline critical theme detection -->
-    <script>
-        (function() {
-            document.documentElement.setAttribute('data-theme', 
-                localStorage.getItem('theme') || 
-                (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-            );
-        })();
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TM Hospitality Strategies — Strategy for Restaurants &amp; Hospitality</title>
+  <meta name="description" content="TM Hospitality Strategies helps restaurant and hospitality operators sharpen their concept, systems and numbers. Strategy and operations consulting.">
+  <link rel="canonical" href="https://tmhsdigital.github.io/Github-Pages-Demo-1/">
 
-    <!-- No-JS fallback -->
-    <noscript>
-        <style>
-            /* Fallback for no JS - default to dark theme */
-            :root { 
-                --bg: #1a1a1a;
-                --text: #ffffff;
-                --card-bg: #2a2a2a;
-                --gray-700: #404040;
-            }
-            /* Hide theme toggle and settings when JS is disabled */
-            #settingsToggle, #settingsPanel { 
-                display: none !important; 
-            }
-        </style>
-    </noscript>
+  <meta property="og:site_name" content="TM Hospitality Strategies">
+  <meta property="og:title" content="TM Hospitality Strategies — Strategy for Restaurants &amp; Hospitality">
+  <meta property="og:description" content="Strategy and operations consulting for restaurant and hospitality operators.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/">
+  <meta property="og:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="TM Hospitality Strategies logo on a navy background">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0E1A33">
 
-    <!-- Load fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Load styles -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
-    
-    <!-- Load icons asynchronously -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    </noscript>
-    
-    <link rel="icon" type="image/png" href="assets/images/TMHS-LOGO.png">
-    <link rel="apple-touch-icon" href="assets/images/TMHS-LOGO.png">
-    
-    <!-- Prism.js for syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/images/favicon-48.png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <a href="#main" class="skip-link">Skip to main content</a>
-    <div class="scroll-progress" role="progressbar" aria-label="Scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
-    
-    <!-- Side Navigation -->
-    <nav class="side-nav" aria-label="Section navigation">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header" id="top">
+    <div class="wrap bar">
+      <a class="brand" href="#top" aria-label="TM Hospitality Strategies — home">
+        <span class="brand-mark"><img src="assets/images/tmhs-logo.png" width="44" height="41" alt=""></span>
+        <span class="brand-text">TM Hospitality <b>Strategies</b></span>
+      </a>
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav">
+        <span class="sr-only">Menu</span><span class="bars" aria-hidden="true"></span>
+      </button>
+      <nav id="nav" class="nav" aria-label="Main">
         <ul>
-            <li><a href="#home" class="active" aria-label="Navigate to Home section"><span class="dot"></span><span class="label">Home</span></a></li>
-            <li><a href="#features" aria-label="Navigate to Features section"><span class="dot"></span><span class="label">Features</span></a></li>
-            <li><a href="#about" aria-label="Navigate to About section"><span class="dot"></span><span class="label">About</span></a></li>
-            <li><a href="#portfolio" aria-label="Navigate to Portfolio section"><span class="dot"></span><span class="label">Portfolio</span></a></li>
-            <li><a href="#animation-showcase" aria-label="Navigate to Animation Showcase section"><span class="dot"></span><span class="label">Animations</span></a></li>
-            <li><a href="#contact" aria-label="Navigate to Contact section"><span class="dot"></span><span class="label">Contact</span></a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#approach">Approach</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
-    </nav>
-    
-    <header class="site-header" role="banner">
-        <div class="container">
-            <h1><span class="brand-primary">TMHS</span><span class="brand-secondary">Digital</span></h1>
-            <nav role="navigation" aria-label="Main navigation">
-                <button class="menu-button" aria-label="Toggle menu" aria-expanded="false">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul>
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#animation-showcase">Animations</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main id="main" role="main">
-        <section id="home" class="hero" aria-labelledby="hero-title">
-            <div class="container">
-                <h2 id="hero-title">Welcome to the Future</h2>
-                <p class="lead">A modern website template built with clean HTML, CSS, and JavaScript.</p>
-                <a href="#features" class="cta-button">Explore Features</a>
-            </div>
-        </section>
-
-        <section id="features" class="features" aria-labelledby="features-title">
-            <div class="container">
-                <h2 id="features-title">Key Features</h2>
-                <div class="feature-grid">
-                    <div class="feature-card" data-feature="modern-design" data-tooltip="Clean and responsive layout with beautiful gradients and animations">
-                        <h3>Modern Design</h3>
-                        <p>Clean and responsive layout with beautiful gradients and animations.</p>
-                    </div>
-                    <div class="feature-card" data-feature="fast-loading" data-tooltip="Optimized performance with minimal dependencies for lightning-fast page loads">
-                        <h3>Fast Loading</h3>
-                        <p>Optimized performance with minimal dependencies.</p>
-                    </div>
-                    <div class="feature-card" data-feature="seo-ready" data-tooltip="Built with search engines in mind for better visibility and rankings">
-                        <h3>SEO Ready</h3>
-                        <p>Built with search engines in mind for better visibility.</p>
-                    </div>
-                    <div class="feature-card" data-feature="customization" data-tooltip="Simple structure with modular components for easy customization">
-                        <h3>Easy to Customize</h3>
-                        <p>Simple structure with modular components for quick modifications.</p>
-                    </div>
-                    <div class="feature-card" data-feature="dark-mode" data-tooltip="Elegant dark theme with smooth transitions for better night-time viewing">
-                        <h3>Dark Mode</h3>
-                        <p>Elegant dark theme with smooth transitions for better viewing.</p>
-                    </div>
-                    <div class="feature-card" data-feature="mobile-first" data-tooltip="Fully responsive design that works perfectly on all device sizes">
-                        <h3>Mobile First</h3>
-                        <p>Fully responsive design that works perfectly on all devices.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="about" aria-labelledby="about-title">
-            <div class="container">
-                <h2 id="about-title">About</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>This GitHub Pages template delivers a professional, contemporary design optimized for modern web projects. It implements responsive layouts and essential functionality with a focus on performance.</p>
-                        <p>Built with extensibility in mind, the template features a modular architecture and systematic organization to facilitate efficient customization regardless of developer experience level.</p>
-                        <p>Core functionality includes dark mode implementation, performance optimization, and responsive design principles that ensure consistent user experience across all devices and platforms.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="portfolio" aria-labelledby="portfolio-title">
-            <div class="container">
-                <h2 id="portfolio-title">Portfolio</h2>
-                <p class="section-intro">Explore a collection of my creative works and projects. Each piece represents my passion for design and development.</p>
-                
-                <div class="portfolio-grid">
-                    <!-- Portfolio Item 1 -->
-                    <div class="portfolio-item" data-category="web">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29kaW5nfGVufDB8fDB8fHww" alt="Modern UI Design" loading="lazy">
-                            <div class="portfolio-overlay">
-                                <h3>Modern UI Design</h3>
-                                <p>A clean and modern UI design for a web application</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Portfolio Item 2 -->
-                    <div class="portfolio-item" data-category="app">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXBwfGVufDB8fDB8fHww" alt="Mobile App" loading="lazy">
-                            <div class="portfolio-overlay">
-                                <h3>Mobile App</h3>
-                                <p>A feature-rich mobile application with intuitive navigation</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Portfolio Item 3 -->
-                    <div class="portfolio-item" data-category="ui">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1557821552-17105176677c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGVjb21tZXJjZXxlbnwwfHwwfHx8MA%3D%3D" alt="E-Commerce Website" loading="lazy">
-                            <div class="portfolio-overlay">
-                                <h3>E-Commerce Website</h3>
-                                <p>A fully responsive e-commerce platform with modern features</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Portfolio Item 4 -->
-                    <div class="portfolio-item" data-category="web">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHdlYnNpdGV8ZW58MHx8MHx8fDA%3D" alt="Landing Page" loading="lazy">
-                            <div class="portfolio-overlay">
-                                <h3>Landing Page</h3>
-                                <p>A high-converting landing page with stunning visuals</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Portfolio Item 5 -->
-                    <div class="portfolio-item" data-category="ui">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGFzaGJvYXJkfGVufDB8fDB8fHww" alt="Dashboard Design" loading="lazy">
-                            <div class="portfolio-overlay">
-                                <h3>Dashboard Design</h3>
-                                <p>An intuitive admin dashboard with data visualization</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Portfolio Item 6 -->
-                    <div class="portfolio-item" data-category="app">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1545665277-5937489579f2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydGZvbGlvfGVufDB8fDB8fHww" alt="Portfolio Website" loading="lazy">
-                            <div class="portfolio-overlay">
-                                <h3>Portfolio Website</h3>
-                                <p>A creative portfolio site showcasing various projects</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Animation Showcase Section -->
-        <section id="animation-showcase" class="showcase-section" aria-labelledby="animations-title">
-            <div class="container">
-                <h2 id="animations-title">Animation Library</h2>
-                <p class="section-intro">Explore and implement these animations in your own projects with simple copy-paste code.</p>
-                
-                <div class="animation-categories">
-                    <button class="category-tab active" data-category="transitions">CSS Transitions</button>
-                    <button class="category-tab" data-category="keyframes">CSS Keyframes</button>
-                    <button class="category-tab" data-category="scroll">Scroll Animations</button>
-                    <button class="category-tab" data-category="interactive">Interactive Effects</button>
-                    <button class="category-tab" data-category="text">Text Animations</button>
-                </div>
-                
-                <div class="animation-gallery" role="region" aria-live="polite">
-                    <!-- Dynamic content will be loaded here by JavaScript -->
-                    <div class="loading-indicator">
-                        <div class="spinner"></div>
-                        <p>Loading animations...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact" aria-labelledby="contact-title">
-            <div class="container">
-                <h2 id="contact-title">Get in Touch</h2>
-                <form id="contact-form" class="contact-form" novalidate>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required 
-                               aria-required="true" aria-describedby="name-error">
-                        <div id="name-error" class="form-error" role="alert"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required 
-                               aria-required="true" aria-describedby="email-error">
-                        <div id="email-error" class="form-error" role="alert"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required 
-                                aria-required="true" aria-describedby="message-error"></textarea>
-                        <div id="message-error" class="form-error" role="alert"></div>
-                    </div>
-                    <button type="submit" class="submit-button">Send Message</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer" role="contentinfo">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-social">
-                    <a href="https://www.linkedin.com/company/tm-hospitality-strategies/?viewAsMember=true" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="https://www.instagram.com/tmhs.ig/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-                <div class="footer-info">
-                    <p>&copy; <span id="copyright-year">2025</span> <span class="brand-primary">TMHS</span><span class="brand-secondary">Digital</span>. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Settings Toggle Button -->
-    <button class="settings-toggle" 
-            aria-label="Open settings" 
-            aria-describedby="settings-title"
-            aria-expanded="false"
-            aria-controls="settings-panel">
-        <i class="fas fa-cog" aria-hidden="true"></i>
-    </button>
-
-    <!-- Settings Panel -->
-    <div id="settings-panel" 
-         class="settings-panel" 
-         role="dialog" 
-         aria-labelledby="settings-title" 
-         aria-modal="true"
-         aria-hidden="true">
-        <div class="settings-header">
-            <h3 id="settings-title">Settings</h3>
-            <button class="settings-close" 
-                    aria-label="Close settings">
-                <i class="fas fa-times" aria-hidden="true"></i>
-            </button>
-        </div>
-        <div class="settings-content">
-            <div class="settings-group">
-                <label class="settings-label" for="darkModeToggle">
-                    <span>Dark Mode</span>
-                    <div class="toggle-switch">
-                        <input type="checkbox" 
-                               id="darkModeToggle" 
-                               aria-label="Toggle dark mode">
-                        <span class="toggle-slider" aria-hidden="true"></span>
-                    </div>
-                </label>
-            </div>
-            
-            <div class="settings-group">
-                <label class="settings-label" for="highContrastToggle">
-                    <span>High Contrast</span>
-                    <div class="toggle-switch">
-                        <input type="checkbox" 
-                               id="highContrastToggle" 
-                               aria-label="Toggle high contrast mode">
-                        <span class="toggle-slider" aria-hidden="true"></span>
-                    </div>
-                </label>
-                <div class="setting-description">
-                    Enhances color contrast for better readability
-                </div>
-            </div>
-            
-            <div class="settings-group">
-                <label class="settings-label" for="fontSizeRange">
-                    <span>Font Size</span>
-                    <div class="range-control">
-                        <input type="range" 
-                               id="fontSizeRange" 
-                               min="80" 
-                               max="120" 
-                               step="10"
-                               value="100" 
-                               aria-label="Adjust font size">
-                        <span class="range-value" id="fontSizeValue">100%</span>
-                    </div>
-                </label>
-                <div class="setting-description">
-                    Adjust the font size for better readability
-                </div>
-            </div>
-            
-            <div class="settings-footer">
-                <button class="reset-settings" id="resetSettings">Reset to Defaults</button>
-            </div>
-        </div>
+        <a class="btn btn-sm" href="#contact">Start a conversation</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- Load theme settings before main content -->
-    <script src="js/utilities.js"></script>
-    <script src="js/main.js"></script>
-    
-    <!-- Load Prism.js for syntax highlighting before animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
-    
-    <!-- Load animations library after dependencies -->
-    <script src="js/animations.js"></script>
+  <main id="main">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Hospitality strategy &amp; operations</p>
+          <h1>Sharper concepts. Tighter operations. <em>Better margins.</em></h1>
+          <p class="lead">TM Hospitality Strategies partners with restaurant and hospitality operators to turn good food and good service into a business that runs well and grows on purpose.</p>
+          <div class="cta-row">
+            <a class="btn" href="#contact">Start a conversation</a>
+            <a class="btn btn-ghost" href="#services">See how I can help</a>
+          </div>
+        </div>
+        <div class="hero-card" aria-hidden="true">
+          <img src="assets/images/tmhs-logo.png" width="335" height="310" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap split">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2>Strategy built from the floor up</h2>
+        </div>
+        <div class="prose">
+          <!-- TODO(verify): replace with your real story, background and credentials -->
+          <p>Hospitality is a business of details: the menu, the shift schedule, the prep list, the P&amp;L. TM Hospitality Strategies connects those details to the bigger picture so every decision supports the guest experience and the bottom line.</p>
+          <p>The work is hands-on and practical. Expect clear priorities, simple tools, and recommendations your team can actually run on a Tuesday night.</p>
+          <p class="note"><strong>Placeholder copy.</strong> This section is a draft and should be replaced with your own story.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="services">
+      <div class="wrap">
+        <p class="eyebrow">Services</p>
+        <h2>Where I can help</h2>
+        <!-- TODO(verify): confirm the actual service list and wording -->
+        <div class="cards">
+          <article class="card">
+            <h3>Concept &amp; positioning</h3>
+            <p>Clarify who you serve, what you are known for and how the menu, brand and room tell one story.</p>
+          </article>
+          <article class="card">
+            <h3>Operations &amp; systems</h3>
+            <p>Build the playbooks, checklists and scheduling that make service consistent without burning out your team.</p>
+          </article>
+          <article class="card">
+            <h3>Financial performance</h3>
+            <p>Understand prime cost, menu margins and pricing so growth shows up in profit, not just revenue.</p>
+          </article>
+          <article class="card">
+            <h3>Growth &amp; new openings</h3>
+            <p>Plan expansion, new locations or new revenue streams with realistic numbers and a phased roadmap.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark" id="approach">
+      <div class="wrap">
+        <p class="eyebrow">Approach</p>
+        <h2>A simple process, no mystery</h2>
+        <ol class="steps">
+          <li><span class="num">01</span><h3>Listen</h3><p>Walk the operation, review the numbers and hear from the people who run it.</p></li>
+          <li><span class="num">02</span><h3>Diagnose</h3><p>Find the few changes that will move results the most and rank them by effort and impact.</p></li>
+          <li><span class="num">03</span><h3>Build</h3><p>Put the plan, tools and training in place, with your team involved at each step.</p></li>
+          <li><span class="num">04</span><h3>Sustain</h3><p>Track the right measures and adjust, so the gains hold after the engagement ends.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="wrap">
+        <p class="eyebrow">Selected work</p>
+        <h2>Case studies, coming soon</h2>
+        <p class="section-intro">Real engagements will appear here. The cards below are labeled placeholders so the layout can be reviewed.</p>
+        <div class="cards three">
+          <article class="card case">
+            <span class="tag">Placeholder</span>
+            <h3>Neighborhood restaurant</h3>
+            <p>Menu and pricing review. Replace with a real project, the challenge and the measured outcome.</p>
+          </article>
+          <article class="card case">
+            <span class="tag">Placeholder</span>
+            <h3>Multi-unit group</h3>
+            <p>Operations playbook rollout. Replace with a real project, the challenge and the measured outcome.</p>
+          </article>
+          <article class="card case">
+            <span class="tag">Placeholder</span>
+            <h3>New concept launch</h3>
+            <p>Opening plan and budget. Replace with a real project, the challenge and the measured outcome.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="faq">
+      <div class="wrap narrow">
+        <p class="eyebrow">FAQ</p>
+        <h2>Common questions</h2>
+        <!-- TODO(verify): confirm answers match how you actually work -->
+        <details><summary>Who do you work with?</summary><p>Independent restaurants, small groups and hospitality businesses that want practical, owner-level strategy.</p></details>
+        <details><summary>How does an engagement start?</summary><p>With a short conversation to understand your goals. If there is a fit, we scope a focused project with clear deliverables.</p></details>
+        <details><summary>Do you work remotely or on site?</summary><p>Both are possible. On-site time is the most valuable for operations work, and strategy work can be done remotely.</p></details>
+        <details><summary>What does it cost?</summary><p>It depends on scope. Pricing is shared after the first conversation, so there are no surprises.</p></details>
+      </div>
+    </section>
+
+    <section class="section cta" id="contact">
+      <div class="wrap narrow center">
+        <h2>Let's talk about your next move</h2>
+        <p class="lead">Tell me about your concept and what you want to change. I'll reply with honest next steps.</p>
+        <div class="cta-row center">
+          <a class="btn" id="email-cta" href="https://www.linkedin.com/company/tm-hospitality-strategies/" target="_blank" rel="noopener noreferrer">Message on LinkedIn</a>
+          <a class="btn btn-ghost" href="https://www.instagram.com/tmhs.ig/" target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <p>&copy; <span id="year">2026</span> TM Hospitality Strategies. All rights reserved.</p>
+      <p class="muted">Fonts are loaded from Google Fonts. No cookies or analytics.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
 </body>
-</html> 
+</html>
