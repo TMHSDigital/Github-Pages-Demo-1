@@ -40,7 +40,7 @@ No framework, no runtime dependencies.
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>2&nbsp;themes</h3><sub>Light&nbsp;and&nbsp;dark,<br>follows&nbsp;your&nbsp;system</sub></td>
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;requests</h3><sub>No&nbsp;third&#8209;party&nbsp;calls,<br>cookies&nbsp;or&nbsp;analytics</sub></td>
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;violations</h3><sub>axe&#8209;core,&nbsp;WCAG&nbsp;2.2&nbsp;AA,<br>in&nbsp;both&nbsp;themes</sub></td>
-    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>61&nbsp;checks</h3><sub>Browser&nbsp;tests,&nbsp;plus&nbsp;unit&nbsp;tests,<br>on&nbsp;every&nbsp;push</sub></td>
+    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>60+&nbsp;checks</h3><sub>Browser&nbsp;tests,&nbsp;plus&nbsp;unit&nbsp;tests,<br>on&nbsp;every&nbsp;push</sub></td>
   </tr>
 </table>
 
@@ -303,7 +303,7 @@ npm run build && cd _site && python -m http.server 8000
 | **HTML validity** | `html-validate` | No errors |
 | **JavaScript lint** | ESLint | No errors |
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
-| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k), decimal-comma and dot-grouped (120.000) input, negative sales flagged, per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
+| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k), decimal-comma and dot-grouped (120.000) input, negative sales flagged, per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers, the address bar then follows edits so a reload keeps them, and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
 | **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
 | **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, toolkit tabs follow the ARIA arrow/Home/End pattern, focus stays put when rows are added or removed, FAQ operable, visible focus rings |
 | **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |
@@ -352,7 +352,7 @@ npm run build && npm run lighthouse   # Lighthouse floors for every page in the 
 
 ## Privacy and security
 
-- The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculators and the message builder run locally and never store or send what you enter. A shared calculator link carries its numbers in the URL, and only to whoever you give it to.
+- The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculators and the message builder run locally and never store or send what you enter. A shared calculator link carries its numbers in the URL, and only to whoever you give it to; after opening one, the address bar keeps up with your changes (still only in the URL, never stored).
 - The published pages carry a strict Content-Security-Policy: only the site's own files run, and the few inline blocks are allowed by hash (generated in `scripts/stage.cjs`).
 - GitHub Actions are pinned to commit SHAs and kept current by Dependabot.
 - Found a vulnerability? See [SECURITY.md](SECURITY.md) and report it privately through the repository's **Security** tab.

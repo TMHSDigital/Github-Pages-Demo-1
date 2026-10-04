@@ -74,6 +74,18 @@
   };
   registry.shareUrl = () => shareUrl();
 
+  // Opened from a shared link: keep the address bar in step with the numbers on screen, so a
+  // reload or bookmark keeps the visitor's changes instead of the link's original numbers.
+  // A plain visit leaves the URL alone. Nothing is stored; the numbers live only in the URL.
+  if (shared && registry.tools[shared]) {
+    const extra = q.get('talk') === '1' ? { talk: '1' } : {};
+    let urlTimer = 0;
+    document.addEventListener('tmhs:calc', () => {
+      clearTimeout(urlTimer);
+      urlTimer = setTimeout(() => history.replaceState(history.state, '', shareUrl(location.href, location.hash.slice(1), extra)), 300);
+    });
+  }
+
   // On a tool page, "Talk through these numbers" opens the home page's message builder with them
   const talk = document.getElementById('talk-numbers');
   if (talk && talk.dataset.home) {

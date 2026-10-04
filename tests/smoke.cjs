@@ -555,6 +555,28 @@ async function check(name, fn) {
     await ctx.close();
   });
 
+  await check('after a shared link, the address bar follows edits so a reload keeps them (#36)', async () => {
+    const { page, ctx, errors } = await calm({ width: 1280, height: 900 });
+    await page.goto(base + '?tool=plate&rows=Fish_5&target=30#calculator', { waitUntil: 'networkidle' });
+    await page.fill('#plate-price', '19');
+    await page.locator('#plate-rows [data-k="name"]').first().fill('Halibut');
+    await page.waitForFunction(() => location.search.includes('price=19'));
+    assert.match(page.url(), /\?tool=plate&rows=Halibut_5&target=30&price=19#calculator$/);
+    await page.reload({ waitUntil: 'networkidle' });
+    assert.equal(await page.locator('#plate-price').inputValue(), '19.00');
+    assert.equal(await page.locator('#plate-rows [data-k="name"]').first().inputValue(), 'Halibut');
+    // switching tools follows too
+    await page.locator('#tab-prime').click();
+    await page.waitForFunction(() => location.search.startsWith('?tool=prime'));
+    // a plain visit keeps a clean address
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.locator('#calc-food').fill('40');
+    await page.waitForTimeout(500);
+    assert.equal(new URL(page.url()).search, '');
+    assert.deepEqual(errors, []);
+    await ctx.close();
+  });
+
   await check('copy link round-trips the current tool and numbers', async () => {
     const { page, ctx } = await calm({ width: 1280, height: 900 });
     await page.goto(base, { waitUntil: 'networkidle' });
