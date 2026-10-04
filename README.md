@@ -216,7 +216,8 @@ Then open <http://localhost:8000>.
 | **Contact email** | Set `CONTACT_EMAIL` in [`js/inquiry.js`](js/inquiry.js). While empty, the buttons point to LinkedIn and the message is copied instead of emailed. |
 | **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
 | **Social card, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. |
-| **Repo name or domain** | Update `og:url`, canonical, `sitemap.xml`, `robots.txt` and the `<base>` in `404.html`. |
+| **Header, footer or a calculator** | Edit it in `index.html` (the blocks between `sync:` markers), then run `npm run sync` to update the pages in `tools/`. CI fails if they drift apart. |
+| **Repo name or domain** | Update `og:url`, canonical and JSON-LD URLs (home and `tools/*/`), `sitemap.xml`, `robots.txt` and the `<base>` in `404.html`. |
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
@@ -231,6 +232,8 @@ Then open <http://localhost:8000>.
 .
 ├── index.html               Single page: hero, about, services, approach, toolkit, work, FAQ, contact
 ├── 404.html                 Branded error page (uses <base> for the repo path)
+├── tools/                   One indexable page per calculator, with a worked example:
+│                            prime-cost-calculator/, plate-cost-calculator/, pour-cost-calculator/
 ├── css/
 │   ├── tokens.css           Fonts, brand tokens, fluid scales, light and dark themes
 │   ├── base.css             Reset, typography, layout primitives, buttons, reveal rules
@@ -249,6 +252,7 @@ Then open <http://localhost:8000>.
 ├── tests/smoke.cjs          Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
 ├── scripts/
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
+│   ├── sync-tool-pages.cjs  Copies the shared header, footer, sprite and tool markup from index.html into tools/*/
 │   ├── check-links.cjs      External link checker
 │   └── screenshots.cjs      Regenerates docs/screenshots, the banner and the social card
 ├── docs/                    README banner source and screenshots
@@ -268,7 +272,7 @@ Then open <http://localhost:8000>.
 
 ## Deployment
 
-Every push to `main` runs [`ci.yml`](.github/workflows/ci.yml): it builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs), runs every quality gate against it, and only if they all pass publishes that exact `_site/` to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
+Every push to `main` runs [`ci.yml`](.github/workflows/ci.yml): it builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs), runs every quality gate against it, and only if they all pass publishes that exact `_site/` to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy and copies only site files (`index.html`, `404.html`, the calculator pages in `tools/`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
 
 <details>
 <summary><b>Preview the published build locally</b></summary>

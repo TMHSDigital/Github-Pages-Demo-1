@@ -27,6 +27,8 @@ npm run check     # html-validate, ESLint, then layout, keyboard, theme, calcula
 npm run links     # external link check
 ```
 
+If you change the header, footer, icon sprite or a calculator in `index.html`, run `npm run sync` so the pages in `tools/` match (CI checks this).
+
 If you change the page visibly, regenerate the README images and social card with `node scripts/screenshots.cjs`.
 
 ## Commits and pull requests

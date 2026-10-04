@@ -5,6 +5,7 @@ You are a senior front-end developer working on the TM Hospitality Strategies ma
 ```
 index.html            # Single page, all sections, inline icon sprite, pre-paint theme snippet
 404.html              # Error page (uses <base href="/Github-Pages-Demo-1/">)
+tools/*/index.html    # One page per calculator; shared blocks synced from index.html
 css/tokens.css        # Fonts, brand tokens, fluid scales, light/dark themes
 css/base.css          # Reset, typography, layout, buttons, reveal rules
 css/components.css    # All components and responsive rules
@@ -17,7 +18,7 @@ js/inquiry.js         # Contact message builder, CONTACT_EMAIL
 js/main.js            # Menu, reveal, nav spy, parallax, marquee, quick-contact bar
 assets/               # fonts/ (self-hosted), images/ (logo, icons, og-image)
 tests/smoke.cjs       # Playwright + axe checks
-scripts/              # stage.cjs (publishable build), check-links.cjs, screenshots.cjs
+scripts/              # stage.cjs (publishable build), sync-tool-pages.cjs, check-links.cjs, screenshots.cjs
 .github/workflows/    # ci.yml (checks, then deploy of the tested _site)
 ```
 
@@ -28,6 +29,7 @@ scripts/              # stage.cjs (publishable build), check-links.cjs, screensh
 - Semantic HTML, visible focus states, `alt` on every image, AA contrast, `prefers-reduced-motion` respected.
 - No third-party scripts, analytics or cookies without updating the README privacy section.
 - The Pages artifact is built by `scripts/stage.cjs` (site files only, CSS bundled and minified); add new top-level site files there.
+- Blocks between `<!-- sync:NAME -->` markers in index.html (sprite, header, footer, tool panels, row templates) are copied into tools/*/index.html. Edit them in index.html only, then run `npm run sync`.
 - Validate before committing: `npm ci` once, then `npm run check`.
 - No inline `style` attributes (html-validate rejects them); use classes. Use design tokens, never hardcoded colors.
 - Stage files by name; never `git add -A` (scratch screenshots and Playwright output must not be committed).

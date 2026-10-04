@@ -93,5 +93,8 @@ const CONTACT_EMAIL = '';
     });
   }
 
+  // Arriving from a tool page's "Talk through these numbers" link (?tool=...&talk=1#contact)
+  if (new URLSearchParams(location.search).get('talk') === '1') include.checked = true;
+
   refresh();
 })();

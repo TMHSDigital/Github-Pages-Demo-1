@@ -9,7 +9,7 @@ const path = require('node:path');
 
 const FILES = ['index.html', '404.html', 'README.md'];
 const GUARDED = new Set([403, 429, 999]);
-const IGNORE = [/^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/, /img\.shields\.io/, /^https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/(assets|sitemap)/];
+const IGNORE = [/^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/, /img\.shields\.io/, /^https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/(assets|sitemap|tools)/];
 
 const urls = new Set();
 for (const f of FILES) {

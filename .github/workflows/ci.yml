@@ -23,6 +23,8 @@ jobs:
           cache: npm
       - name: Install pinned tooling
         run: npm ci
+      - name: Calculator pages match the home page
+        run: node scripts/sync-tool-pages.cjs --check
       - name: Validate HTML
         run: npm run validate
       - name: Lint JS
@@ -51,13 +53,15 @@ jobs:
       - name: Check internal links
         run: |
           python3 - <<'PY'
-          import re, os, sys
+          import glob, re, os, sys
           missing = []
-          for page in ('index.html', '404.html'):
+          for page in ['index.html', '404.html'] + sorted(glob.glob('tools/*/index.html')):
               for ref in re.findall(r'(?:href|src)="([^"#:?]+)"', open(page, encoding='utf-8').read()):
                   if ref.startswith('/') or ref == './':
                       continue
-                  if not os.path.exists(ref):
+                  # 404.html resolves from the root through its <base>; other pages from their own folder
+                  target = ref if page == '404.html' else os.path.join(os.path.dirname(page), ref)
+                  if not os.path.exists(target):
                       missing.append((page, ref))
           print(missing)
           sys.exit(1 if missing else 0)

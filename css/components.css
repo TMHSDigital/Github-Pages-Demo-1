@@ -362,6 +362,27 @@ html:not(.js) .composer { display: none; }
 .to-top svg { width: 1em; height: 1em; transform: rotate(-90deg); transition: transform .25s var(--ease); }
 .to-top:hover svg { transform: rotate(-90deg) translateX(3px); }
 
+/* ---------- Calculator pages (tools/*/) ---------- */
+.section-head .tool-pages { margin-top: .9rem; font-size: var(--step-0); }
+.tool-top { padding-bottom: var(--space-l); }
+.crumbs { margin: 0 0 1.1rem; font-size: .9rem; color: var(--text-soft); }
+.crumbs a { font-weight: 600; }
+.tool-head h1 { font-size: var(--step-4); margin-bottom: .35em; }
+.tool-head h1 em { color: var(--accent-text); font-weight: 500; padding-right: .06em; }
+.nojs-note { margin: 0 0 var(--space-m); }
+html:not(.js) .tool-top .recipe { display: none; }
+.explainer { max-width: 46rem; }
+.explainer h2 { font-size: var(--step-3); }
+.explainer h3 { margin-top: var(--space-m); }
+.explainer p, .explainer li { color: var(--text-soft); line-height: 1.65; }
+.explainer ul, .explainer ol { padding-left: 1.2rem; }
+.explainer li + li { margin-top: .4rem; }
+.explainer strong { color: var(--text); }
+.formula { margin: 1rem 0; padding: .9rem 1.1rem; border: 1px solid var(--line); border-left: 3px solid var(--logo-blue); border-radius: var(--radius-s); background: var(--surface); color: var(--text); font-weight: 600; line-height: 1.5; }
+.other-tools { display: flex; flex-wrap: wrap; gap: .6rem 1.75rem; list-style: none; padding: 0; margin: 0; }
+.explainer .other-tools { padding-left: 0; }
+.explainer .other-tools li + li { margin-top: 0; }
+
 /* ---------- Responsive ----------
    Breakpoints are in em so they also respond to a larger default font size
    (68.75em = 1100px, 57.5em = 920px, 43.75em = 700px, 35em = 560px at 16px). */
@@ -430,16 +451,28 @@ html:not(.js) .composer { display: none; }
   .tab-ink { border-radius: 18px; }
   .rows-head { display: none; }
   .row { grid-template-columns: minmax(0, 1fr) minmax(0, 7rem) 2.5rem; }
-  #cocktail .row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, .85fr) 2.5rem; padding-bottom: .6rem; border-bottom: 1px dashed var(--line); }
+  #cocktail .row { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, .75fr) 2.5rem; padding-bottom: .6rem; border-bottom: 1px dashed var(--line); }
   .row .money.sm { padding: 0 .45rem; }
   .row .money.sm input { padding-inline: .15rem; }
   .r-ml { padding-inline: .3rem; font-size: .88rem; }
   .cta-panel { padding-inline: 1rem; }
   .composer { padding: 1.1rem; }
   .pick span { padding: .5rem .75rem; font-size: .86rem; }
-  #cocktail .r-name { grid-column: 1 / 4; }
-  #cocktail .r-out { grid-column: 4; grid-row: 1; text-align: center; font-size: .9rem; }
-  #cocktail .row-del { grid-column: 4; grid-row: 2; }
+  /* name, line cost and remove on the first line; price, size and pour (running into the last column) below */
+  #cocktail .r-name { grid-column: 1 / 3; }
+  #cocktail .r-out { grid-column: 3; grid-row: 1; text-align: right; font-size: .9rem; }
+  #cocktail .row-del { grid-column: 4; grid-row: 1; }
+  #cocktail .r-price { grid-column: 1; grid-row: 2; }
+  #cocktail .r-ml { grid-column: 2; grid-row: 2; }
+  #cocktail .r-oz { grid-column: 3 / 5; grid-row: 2; }
+}
+/* Very narrow screens (320px, or 400% zoom): give the bottle price the room it needs */
+@media (max-width: 22.5em) {
+  #cocktail .row { grid-template-columns: minmax(0, 1.35fr) minmax(0, .95fr) minmax(0, .7fr) 2.5rem; }
+  #cocktail .row .money.sm { padding-inline: .35rem; }
+  #cocktail .row .money.sm input { font-size: .88rem; }
+}
+@media (max-width: 35em) {
   details p { padding-right: .25rem; }
   .chip { padding: .55rem .8rem .55rem .55rem; font-size: .8rem; }
   .chip .ico { width: 32px; height: 32px; }

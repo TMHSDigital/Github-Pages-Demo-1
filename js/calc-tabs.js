@@ -1,55 +1,85 @@
 'use strict';
 
 // Toolkit tabs (ARIA tabs with automatic activation), shareable links and link copying.
+// The home page shows all tools behind tabs; each tool page (tools/*/) shows one tool and no tabs.
 (() => {
-  const list = document.getElementById('tool-tabs');
-  if (!list) return;
   const registry = window.TMHSTools;
-  const tabs = [...list.querySelectorAll('[role="tab"]')];
-  const ink = list.querySelector('.tab-ink');
+  const keys = Object.keys(registry.tools);
+  if (!keys.length) return;
+  const list = document.getElementById('tool-tabs');
+  const tabs = list ? [...list.querySelectorAll('[role="tab"]')] : [];
+  const tabFor = (key) => tabs.find((t) => t.dataset.tool === key);
+  const changed = () => document.dispatchEvent(new CustomEvent('tmhs:calc', { detail: { tool: registry.active } }));
 
-  const moveInk = () => {
-    const t = tabs.find((x) => x.getAttribute('aria-selected') === 'true');
-    if (!t || !ink) return;
-    list.style.setProperty('--ink-x', t.offsetLeft + 'px');
-    list.style.setProperty('--ink-w', t.offsetWidth + 'px');
-    list.classList.add('has-ink');
-  };
+  let select = () => {};
+  if (tabs.length) {
+    const ink = list.querySelector('.tab-ink');
+    const moveInk = () => {
+      const t = tabs.find((x) => x.getAttribute('aria-selected') === 'true');
+      if (!t || !ink) return;
+      list.style.setProperty('--ink-x', t.offsetLeft + 'px');
+      list.style.setProperty('--ink-w', t.offsetWidth + 'px');
+      list.classList.add('has-ink');
+    };
 
-  const select = (tab, focus) => {
-    tabs.forEach((t) => {
-      const on = t === tab;
-      t.setAttribute('aria-selected', String(on));
-      t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    select = (tab, focus) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      registry.active = tab.dataset.tool;
+      if (focus) tab.focus();
+      moveInk();
+      changed();
+    };
+
+    tabs.forEach((t) => t.addEventListener('click', () => select(t, false)));
+    list.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (to == null) return;
+      e.preventDefault();
+      select(tabs[(to + tabs.length) % tabs.length], true);
     });
-    registry.active = tab.dataset.tool;
-    if (focus) tab.focus();
-    moveInk();
-    document.dispatchEvent(new CustomEvent('tmhs:calc', { detail: { tool: registry.active } }));
-  };
-
-  tabs.forEach((t) => t.addEventListener('click', () => select(t, false)));
-  list.addEventListener('keydown', (e) => {
-    const i = tabs.indexOf(document.activeElement);
-    if (i < 0) return;
-    const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
-    if (to == null) return;
-    e.preventDefault();
-    select(tabs[(to + tabs.length) % tabs.length], true);
-  });
-  if ('ResizeObserver' in window) new ResizeObserver(moveInk).observe(list);
-  if (document.fonts) document.fonts.ready.then(moveInk);
+    if ('ResizeObserver' in window) new ResizeObserver(moveInk).observe(list);
+    if (document.fonts) document.fonts.ready.then(moveInk);
+  } else {
+    registry.active = keys[0];
+  }
 
   // A shared link (?tool=cocktail&rows=...) opens the toolkit with those numbers
   const q = new URLSearchParams(location.search);
   const shared = q.get('tool');
-  const tabFor = (key) => tabs.find((t) => t.dataset.tool === key);
-  if (shared && registry.tools[shared] && tabFor(shared)) {
+  if (shared && registry.tools[shared] && (tabFor(shared) || !tabs.length)) {
     registry.tools[shared].set(Object.fromEntries(q));
-    select(tabFor(shared), false);
-  } else {
+    if (tabs.length) select(tabFor(shared), false);
+  } else if (tabs.length) {
     select(tabs[0], false);
+  }
+
+  // Link to a page with the current tool and numbers: this page by default
+  const shareUrl = (base = location.href, hash = 'calculator', extra = {}) => {
+    const params = new URLSearchParams({ tool: registry.active });
+    for (const [k, v] of Object.entries(registry.tools[registry.active].get())) {
+      if (v !== '' && v != null) params.set(k, String(v));
+    }
+    for (const [k, v] of Object.entries(extra)) params.set(k, v);
+    const url = new URL(base, location.href);
+    url.search = params.toString();
+    url.hash = hash;
+    return url.href;
+  };
+  registry.shareUrl = () => shareUrl();
+
+  // On a tool page, "Talk through these numbers" opens the home page's message builder with them
+  const talk = document.getElementById('talk-numbers');
+  if (talk && talk.dataset.home) {
+    const syncTalk = () => { talk.href = shareUrl(talk.dataset.home, 'contact', { talk: '1' }); };
+    document.addEventListener('tmhs:calc', syncTalk);
+    syncTalk();
   }
 
   /* Copy a link to the current tool and numbers */
@@ -61,17 +91,6 @@
     status.textContent = text;
     clearTimeout(statusTimer);
     statusTimer = setTimeout(() => { status.textContent = ''; }, 6000);
-  };
-
-  const shareUrl = () => {
-    const params = new URLSearchParams({ tool: registry.active });
-    for (const [k, v] of Object.entries(registry.tools[registry.active].get())) {
-      if (v !== '' && v != null) params.set(k, String(v));
-    }
-    const url = new URL(location.href);
-    url.search = params.toString();
-    url.hash = 'calculator';
-    return url.href;
   };
 
   if (copy) {
@@ -91,6 +110,4 @@
       }
     });
   }
-
-  registry.shareUrl = shareUrl;
 })();

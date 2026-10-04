@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plate Cost Calculator: Price a Dish at Your Target Food Cost — TMHS</title>
+  <meta name="description" content="Free plate cost calculator: cost a dish ingredient by ingredient, get a menu price at your target food cost and see gross profit per plate.">
+  <link rel="canonical" href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/plate-cost-calculator/">
+
+  <meta property="og:site_name" content="TM Hospitality Strategies">
+  <meta property="og:title" content="Plate Cost Calculator: Price a Dish at Your Target Food Cost">
+  <meta property="og:description" content="Cost a dish ingredient by ingredient and get a menu price at your target food cost. Free, and it runs in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/plate-cost-calculator/">
+  <meta property="og:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Sharper concepts. Tighter operations. Better margins. The TM Hospitality Strategies logo on a plate, on a navy background">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0A1226" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Plate cost calculator",
+      "description": "Costs a dish ingredient by ingredient and suggests a menu price at a target food cost percentage.",
+      "url": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/plate-cost-calculator/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any (runs in the browser)",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "provider": { "@type": "ProfessionalService", "name": "TM Hospitality Strategies", "url": "https://tmhsdigital.github.io/Github-Pages-Demo-1/" }
+    }
+  </script>
+
+  <link rel="icon" type="image/png" sizes="48x48" href="../../assets/images/favicon-48.png">
+  <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+
+  <script>
+    /* Pre-paint: apply the saved or system theme; flag that JavaScript is available */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('tmhs-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+
+  <link rel="preload" href="../../assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+</head>
+<body>
+  <!-- Blocks between sync: markers come from index.html (node scripts/sync-tool-pages.cjs); edit them there -->
+  <!-- sync:sprite -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+      <symbol id="i-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-5 3 3 5-7"/></symbol>
+      <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9A2.2 2.2 0 0 0 5 15zM12 15l-3-3a22 22 0 0 1 2-4 12 12 0 0 1 11-6c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+      <symbol id="i-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/></symbol>
+      <symbol id="i-plate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></symbol>
+      <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+    </defs>
+  </svg>
+  <!-- /sync:sprite -->
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- sync:header -->
+  <header class="site-header" id="top">
+    <div class="wrap bar">
+      <a class="brand" href="../../" aria-label="TM Hospitality Strategies — home">
+        <span class="brand-mark"><img src="../../assets/images/tmhs-logo-96.png" width="34" height="31" alt=""></span>
+        <span class="brand-text">TM Hospitality <b>Strategies</b></span>
+      </a>
+      <nav id="nav" class="nav" aria-label="Main">
+        <ul>
+          <li><a href="../../#about">About</a></li>
+          <li><a href="../../#services">Services</a></li>
+          <li><a href="../../#approach">Approach</a></li>
+          <li><a href="../../#calculator">Tools</a></li>
+          <li><a href="../../#work">Work</a></li>
+          <li><a href="../../#faq">FAQ</a></li>
+        </ul>
+        <a class="btn btn-sm nav-cta" href="../../#contact">Start a conversation</a>
+      </nav>
+      <div class="header-tools">
+        <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Dark mode">
+          <svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+          <svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        </button>
+        <a class="btn btn-sm header-cta" href="../../#contact">Start a conversation</a>
+        <button type="button" class="icon-btn nav-toggle" aria-expanded="false" aria-controls="nav">
+          <span class="sr-only">Menu</span><span class="bars" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- /sync:header -->
+
+  <main id="main" tabindex="-1">
+    <section class="section tool-top" id="calculator" aria-labelledby="tool-title">
+      <div class="wrap">
+        <div class="section-head tool-head">
+          <p class="crumbs"><a href="../../">Home</a> <span aria-hidden="true">/</span> <a href="../../#calculator">Free tools</a></p>
+          <h1 id="tool-title">Plate cost <em>calculator</em></h1>
+          <p>Cost a dish ingredient by ingredient, get a menu price at the food cost you are aiming for and see what each plate earns. Nothing you enter leaves your browser.</p>
+        </div>
+        <noscript><p class="note nojs-note">This calculator needs JavaScript. The worked example below shows the same calculation by hand.</p></noscript>
+        <div class="toolkit">
+          <!-- sync:tool-plate -->
+          <div class="calc recipe" id="plate">
+            <div class="calc-form">
+              <!-- TODO(verify): the example recipe and 30% target are illustrations, not benchmarks -->
+              <fieldset class="recipe-rows">
+                <legend>Ingredients for one plate <span class="hint">Example recipe</span></legend>
+                <div class="rows-head" aria-hidden="true"><span>Ingredient</span><span>Cost</span></div>
+                <ul class="rows" id="plate-rows"></ul>
+                <p class="rows-empty" id="plate-empty" hidden>No ingredients yet. Add one to start.</p>
+                <button type="button" class="add-row" id="plate-add"><svg aria-hidden="true"><use href="#i-plus"/></svg>Add ingredient</button>
+                <p class="add-note" id="plate-add-note" role="status"></p>
+              </fieldset>
+              <div class="field">
+                <div class="lab"><label for="plate-target">Target food cost</label><span class="val" id="plate-target-out" aria-hidden="true">30%</span></div>
+                <input id="plate-target" type="range" min="15" max="50" step="1" value="30" aria-valuetext="30% food cost">
+              </div>
+              <div class="field">
+                <label for="plate-price">Your menu price <span class="opt">optional</span></label>
+                <div class="money"><span aria-hidden="true">$</span><input id="plate-price" type="text" inputmode="decimal" autocomplete="off" value="22.00"></div>
+              </div>
+            </div>
+            <div class="calc-out" data-band="strong">
+              <div class="readout"><span class="readout-k">Suggested menu price</span><b id="plate-out-price">$20.67</b><span id="plate-out-target">at 30% food cost</span></div>
+              <span class="band" id="plate-band">At or under target</span>
+              <dl class="stats stats-3">
+                <div><dt>Plate cost</dt><dd id="plate-out-cost">$6.20</dd></div>
+                <div><dt>Food cost at your price</dt><dd id="plate-out-pct">28.2%</dd></div>
+                <div><dt>Gross profit <span id="plate-profit-at">at your price</span></dt><dd id="plate-out-profit">$15.80</dd></div>
+              </dl>
+              <p class="calc-summary" id="plate-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="plate-reset">Reset to the example</button>
+            </div>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example recipe and target are placeholders, so set your own. Suggested price is plate cost divided by your target food cost.</p>
+          </div>
+          <!-- /sync:tool-plate -->
+          <div class="tools-bar">
+            <div class="share">
+              <button type="button" class="btn btn-ghost btn-sm" id="copy-link"><svg aria-hidden="true"><use href="#i-link"/></svg>Copy a link to these numbers</button>
+              <p class="share-status" id="share-status" role="status"></p>
+              <label class="sr-only" for="share-url">Link to these numbers</label>
+              <input class="share-url" id="share-url" type="text" readonly hidden>
+            </div>
+            <a class="btn btn-sm" id="talk-numbers" href="../../#contact" data-home="../../">Talk through these numbers <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+          <!-- sync:template-plate -->
+          <template id="plate-row">
+            <li class="row">
+              <input class="r-name" type="text" maxlength="40" autocomplete="off" data-k="name" aria-label="Ingredient name">
+              <span class="money sm"><span aria-hidden="true">$</span><input type="text" inputmode="decimal" autocomplete="off" data-k="cost" aria-label="Ingredient cost"></span>
+              <button type="button" class="row-del" aria-label="Remove ingredient"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+            </li>
+          </template>
+          <!-- /sync:template-plate -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TODO(verify): drafted explainer; confirm the wording and examples match how you advise clients -->
+    <section class="section tint" aria-labelledby="how-title">
+      <div class="wrap explainer">
+        <h2 id="how-title">How plate cost and menu pricing work</h2>
+        <p>Plate cost is what the ingredients in one portion cost you. Divide it by the food cost percentage you are aiming for and you have a starting menu price. Once the dish is on the menu, the same numbers tell you its actual food cost.</p>
+        <p class="formula">Suggested price = plate cost ÷ target food cost %</p>
+        <p class="formula">Food cost % = plate cost ÷ menu price × 100</p>
+
+        <h3>Costing a plate accurately</h3>
+        <ul>
+          <li><strong>Cost what lands on the plate, not what you buy.</strong> A $10 pound of salmon that yields 12 usable ounces after trimming costs about $0.83 an ounce, not $0.63.</li>
+          <li><strong>Include the small things:</strong> cooking oil, sauce, garnish, and any bread or sides served with the dish.</li>
+          <li><strong>Recost when supplier prices change,</strong> so menu prices keep pace with what the ingredients cost today.</li>
+        </ul>
+
+        <h3>A worked example</h3>
+        <p>The example plate costs $6.20: protein $4.20, starch $0.60, vegetables $0.85, and sauce and garnish $0.55.</p>
+        <p class="formula">$6.20 ÷ 30% = $20.67 suggested price</p>
+        <p>On a $22.00 menu price, food cost is $6.20 ÷ $22.00 = 28.2%, a little under the 30% target, and the plate earns $15.80 of gross profit before labor and overheads.</p>
+
+        <h3>Look at the dollars as well as the percentage</h3>
+        <p>A lower food cost percentage is not always the better dish. For example, a $40 steak at 38% food cost earns $24.80 a plate, while a $16 pasta at 22% earns $12.48. Weigh the percentage, the gross profit per plate and how often each dish sells.</p>
+
+        <h3>More free tools</h3>
+        <ul class="other-tools">
+          <li><a class="text-link" href="../prime-cost-calculator/">Prime cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="text-link" href="../pour-cost-calculator/">Cocktail pour cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="next-title">
+      <div class="wrap">
+        <div class="cta-panel">
+          <div class="wrap-in">
+            <h2 id="next-title">Pricing a whole <em>menu?</em></h2>
+            <p>Menu and pricing reviews look at every dish together: cost, price, margin and how well each one sells.</p>
+            <p><a class="btn" href="../../#contact">Start a conversation <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <!-- sync:footer -->
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-brand" href="../../"><span class="brand-mark"><img src="../../assets/images/tmhs-logo-96.png" width="32" height="30" alt=""></span>TM Hospitality Strategies</a>
+          <p>Strategy and operations consulting for restaurants and hospitality.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <ul>
+            <li><a href="../../#services">Services</a></li>
+            <li><a href="../../#approach">Approach</a></li>
+            <li><a href="../../#calculator">Cost calculators</a></li>
+            <li><a href="../../#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="https://www.linkedin.com/company/tm-hospitality-strategies/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="https://www.instagram.com/tmhs.ig/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p>&copy; <span id="year">2026</span> TM Hospitality Strategies. All rights reserved.</p>
+        <p>No cookies, no analytics, no third-party requests.</p>
+        <a class="to-top" href="#top">Back to top <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+    <!-- /sync:footer -->
+  </footer>
+
+  <script src="../../js/theme.js" defer></script>
+  <script src="../../js/calc-math.js" defer></script>
+  <script src="../../js/calc-recipe.js" defer></script>
+  <script src="../../js/calc-tabs.js" defer></script>
+  <script src="../../js/main.js" defer></script>
+</body>
+</html>

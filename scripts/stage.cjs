@@ -37,20 +37,25 @@ for (const f of fs.readdirSync(path.join(ROOT, 'js'))) {
   fs.writeFileSync(path.join(OUT, 'js', f), code);
 }
 
-// HTML: swap the stylesheet links for the bundles
-const stripLinks = (html, bundle, files) => {
+// HTML: swap the stylesheet links for the bundles. `up` is the page's way back to the
+// site root: '' for the home page, '../../' for a calculator page in tools/<slug>/.
+const stripLinks = (html, bundle, files, up = '') => {
   let out = html;
   files.forEach((f, i) => {
-    const re = new RegExp(`\\s*<link rel="stylesheet" href="css/${f}\\.css">`);
-    out = out.replace(re, i === 0 ? `\n  <link rel="stylesheet" href="css/${bundle}.min.css">` : '');
+    const re = new RegExp(`\\s*<link rel="stylesheet" href="${up}css/${f}\\.css">`);
+    out = out.replace(re, i === 0 ? `\n  <link rel="stylesheet" href="${up}css/${bundle}.min.css">` : '');
   });
   return out;
 };
-// The home page inlines its (small) stylesheet to remove a render-blocking request.
-// Font URLs are relative to css/, so they are rewritten for the page root.
-const inlineCss = fs.readFileSync(path.join(OUT, 'css', 'site.min.css'), 'utf8').replace(/url\((['"]?)\.\.\/assets\//g, 'url($1assets/');
-const home = stripLinks(read('index.html'), 'site', ['tokens', 'base', 'components'])
-  .replace('<link rel="stylesheet" href="css/site.min.css">', () => `<style>${inlineCss}</style>`);
+// Pages using the full stylesheet inline it (it is small) to remove a render-blocking request.
+// Font URLs are relative to css/, so they are rewritten for where the page sits.
+const siteCss = fs.readFileSync(path.join(OUT, 'css', 'site.min.css'), 'utf8');
+const withInlineCss = (html, up = '') => {
+  const css = siteCss.replace(/url\((['"]?)\.\.\/assets\//g, `url($1${up}assets/`);
+  return stripLinks(html, 'site', ['tokens', 'base', 'components'], up)
+    .replace(`<link rel="stylesheet" href="${up}css/site.min.css">`, () => `<style>${css}</style>`);
+};
+const home = withInlineCss(read('index.html'));
 // Content-Security-Policy: only this site's own files, plus the exact inline
 // <script> and <style> blocks of each page (allowed by hash). JSON-LD is data, not script.
 const sha = (text) => `'sha256-${crypto.createHash('sha256').update(text, 'utf8').digest('base64')}'`;
@@ -73,6 +78,14 @@ const withCsp = (html) => {
 };
 fs.writeFileSync(path.join(OUT, 'index.html'), withCsp(home));
 fs.writeFileSync(path.join(OUT, '404.html'), withCsp(stripLinks(read('404.html'), 'base', ['tokens', 'base'])));
+
+// Calculator pages: tools/<slug>/index.html, two levels below the root
+for (const slug of fs.readdirSync(path.join(ROOT, 'tools'))) {
+  const page = path.join('tools', slug, 'index.html');
+  if (!fs.existsSync(path.join(ROOT, page))) continue;
+  fs.mkdirSync(path.join(OUT, 'tools', slug), { recursive: true });
+  fs.writeFileSync(path.join(OUT, page), withCsp(withInlineCss(read(page), '../../')));
+}
 
 const size = (p) => fs.statSync(path.join(OUT, p)).size;
 console.log(`staged _site: site.min.css ${size('css/site.min.css')} B (from ${['tokens', 'base', 'components'].reduce((n, f) => n + fs.statSync(path.join(ROOT, `css/${f}.css`)).size, 0)} B)`);

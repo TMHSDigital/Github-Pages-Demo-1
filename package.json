@@ -8,12 +8,13 @@
   },
   "scripts": {
     "build": "node scripts/stage.cjs",
-    "validate": "html-validate index.html 404.html",
+    "sync": "node scripts/sync-tool-pages.cjs",
+    "validate": "html-validate index.html 404.html tools/*/index.html",
     "lint": "eslint .",
     "test": "node tests/smoke.cjs",
     "test:build": "node scripts/stage.cjs && node -e \"process.env.SITE_DIR='_site'; require('./tests/smoke.cjs')\"",
     "links": "node scripts/check-links.cjs",
-    "check": "npm run validate && npm run lint && npm test && npm run test:build"
+    "check": "node scripts/sync-tool-pages.cjs --check && npm run validate && npm run lint && npm test && npm run test:build"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
