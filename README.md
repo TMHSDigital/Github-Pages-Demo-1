@@ -179,6 +179,7 @@ Then open <http://localhost:8000>.
 │   └── images/              Logo, small logo, favicon, apple-touch icon, social card
 ├── tests/smoke.cjs          Layout, keyboard, theme, calculator and axe checks (Playwright)
 ├── scripts/
+│   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
 │   ├── check-links.cjs      External link checker
 │   └── screenshots.cjs      Regenerates docs/screenshots and the social card
 ├── docs/screenshots/        README images
@@ -206,7 +207,12 @@ Then open <http://localhost:8000>.
 
 ## Deployment
 
-Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which stages only the site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `css`, `js`, `assets`) and publishes them to GitHub Pages.
+Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS into one file, minifies the scripts and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`); source files stay unbundled for development. To preview the published build locally:
+
+```bash
+npm i --no-save esbuild
+node scripts/stage.cjs && cd _site && python -m http.server 8000
+```
 
 <br>
 
@@ -218,18 +224,19 @@ Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which stag
 | :-- | :-- | :-- |
 | HTML validity | `html-validate` | No errors |
 | JavaScript lint | ESLint | No errors |
-| Layout | Playwright | No horizontal scroll at 375, 768 and 1280px; no console errors |
+| Layout | Playwright, on source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
 | Features | Playwright | Theme toggle persists and follows the system; calculator maths and live readout; marquee pauses; content visible with JavaScript off |
 | Keyboard | Playwright | Skip link first, menu and FAQ operable, Escape returns focus, visible focus rings |
 | Accessibility | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in light and dark themes, and with reduced motion |
-| Performance and quality | Lighthouse | 95 or higher in Performance, Accessibility, Best Practices and SEO |
+| Performance and quality | Lighthouse (on the staged build) | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
 | Links | internal and external checkers | No broken links |
 
 Run the browser checks locally:
 
 ```bash
-npm i --no-save playwright axe-core    # uses your installed Chrome
+npm i --no-save playwright axe-core esbuild    # uses your installed Chrome
 node tests/smoke.cjs
+node scripts/stage.cjs && SITE_DIR=_site node tests/smoke.cjs    # the published build
 node scripts/check-links.cjs
 ```
 

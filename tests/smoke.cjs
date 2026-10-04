@@ -2,6 +2,7 @@
 /**
  * Smoke, keyboard and accessibility checks.
  * Run: npm i --no-save playwright axe-core && node tests/smoke.cjs
+ * Staged build: node scripts/stage.cjs && SITE_DIR=_site node tests/smoke.cjs
  * Uses the system Chrome (channel "chrome"); no browser download needed.
  */
 const http = require('node:http');
@@ -10,7 +11,8 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 
-const ROOT = path.resolve(__dirname, '..');
+// Serves the source tree by default; set SITE_DIR=_site to test the staged build.
+const ROOT = process.env.SITE_DIR ? path.resolve(process.env.SITE_DIR) : path.resolve(__dirname, '..');
 const AXE = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain' };
 

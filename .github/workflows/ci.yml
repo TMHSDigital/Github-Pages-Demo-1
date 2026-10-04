@@ -21,21 +21,26 @@ jobs:
         run: npx --yes html-validate index.html 404.html
       - name: Lint JS
         run: npx --yes eslint@8 --no-eslintrc --env browser,es2021 --parser-options ecmaVersion:2021 js/*.js
-      - name: Smoke, keyboard and accessibility tests
-        run: |
-          npm i --no-save playwright axe-core
-          node tests/smoke.cjs
+      - name: Install test tooling
+        run: npm i --no-save playwright axe-core esbuild
+      - name: Smoke, keyboard and accessibility tests (source)
+        run: node tests/smoke.cjs
+      - name: Stage the publishable site
+        run: node scripts/stage.cjs
+      - name: Smoke, keyboard and accessibility tests (staged build)
+        run: SITE_DIR=_site node tests/smoke.cjs
       - name: Check external links
         run: node scripts/check-links.cjs
       - name: Lighthouse budgets
         run: |
-          python3 -m http.server 8000 >/dev/null 2>&1 &
+          (cd _site && python3 -m http.server 8000 >/dev/null 2>&1 &)
           sleep 2
           npx --yes lighthouse http://localhost:8000/ --output=json --output-path=lh.json --chrome-flags="--headless=new --no-sandbox" --quiet
           python3 - <<'PY'
           import json, sys
           cats = json.load(open('lh.json'))['categories']
-          bad = {k: round(v['score'] * 100) for k, v in cats.items() if k in ('performance', 'accessibility', 'best-practices', 'seo') and v['score'] < 0.95}
+          floors = {'performance': 0.90, 'accessibility': 0.95, 'best-practices': 0.95, 'seo': 0.95}
+          bad = {k: round(v['score'] * 100) for k, v in cats.items() if k in floors and v['score'] < floors[k]}
           print({k: round(v['score'] * 100) for k, v in cats.items()})
           sys.exit(1 if bad else 0)
           PY

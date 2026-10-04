@@ -13,7 +13,7 @@ js/calculator.js      # Prime cost calculator (TMHSCalc) + wiring
 js/main.js            # Menu, reveal, nav spy, parallax, marquee, CONTACT_EMAIL
 assets/               # fonts/ (self-hosted), images/ (logo, icons, og-image)
 tests/smoke.cjs       # Playwright + axe checks
-scripts/              # check-links.cjs, screenshots.cjs
+scripts/              # stage.cjs (publishable build), check-links.cjs, screenshots.cjs
 .github/workflows/    # pages.yml (deploy), ci.yml (checks)
 ```
 
@@ -23,7 +23,7 @@ scripts/              # check-links.cjs, screenshots.cjs
 - Do not invent testimonials, statistics, client names or credentials. Placeholder copy must be labeled and marked `TODO(verify)`.
 - Semantic HTML, visible focus states, `alt` on every image, AA contrast, `prefers-reduced-motion` respected.
 - No third-party scripts, analytics or cookies without updating the README privacy section.
-- Keep the Pages artifact limited to site files (see `pages.yml`); add new top-level site files to its copy step.
+- The Pages artifact is built by `scripts/stage.cjs` (site files only, CSS bundled and minified); add new top-level site files there.
 - Validate before committing: `npx html-validate index.html 404.html` and `node tests/smoke.cjs` (needs `npm i --no-save playwright axe-core`).
 - No inline `style` attributes (html-validate rejects them); use classes. Use design tokens, never hardcoded colors.
 - Stage files by name; never `git add -A` (scratch screenshots and Playwright output must not be committed).
