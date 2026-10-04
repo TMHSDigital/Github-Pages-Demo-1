@@ -37,10 +37,10 @@ No framework, no runtime dependencies.
 
 <table align="center">
   <tr>
-    <td align="center" valign="top"><h3>2&nbsp;themes</h3><sub>Light&nbsp;and&nbsp;dark,<br>follows&nbsp;your&nbsp;system</sub></td>
-    <td align="center" valign="top"><h3>0&nbsp;requests</h3><sub>No&nbsp;third&#8209;party&nbsp;calls,<br>cookies&nbsp;or&nbsp;analytics</sub></td>
-    <td align="center" valign="top"><h3>0&nbsp;violations</h3><sub>axe&#8209;core,&nbsp;WCAG&nbsp;2.2&nbsp;AA,<br>in&nbsp;both&nbsp;themes</sub></td>
-    <td align="center" valign="top"><h3>35&nbsp;checks</h3><sub>Browser&nbsp;tests&nbsp;run<br>on&nbsp;every&nbsp;push</sub></td>
+    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>2&nbsp;themes</h3><sub>Light&nbsp;and&nbsp;dark,<br>follows&nbsp;your&nbsp;system</sub></td>
+    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;requests</h3><sub>No&nbsp;third&#8209;party&nbsp;calls,<br>cookies&nbsp;or&nbsp;analytics</sub></td>
+    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;violations</h3><sub>axe&#8209;core,&nbsp;WCAG&nbsp;2.2&nbsp;AA,<br>in&nbsp;both&nbsp;themes</sub></td>
+    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>35&nbsp;checks</h3><sub>Browser&nbsp;tests&nbsp;run<br>on&nbsp;every&nbsp;push</sub></td>
   </tr>
 </table>
 
