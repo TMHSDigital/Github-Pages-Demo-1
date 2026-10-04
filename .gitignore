@@ -27,3 +27,5 @@ socials.md
 feature-planning.md
 
 .cursorrules
+node_modules/
+package-lock.json

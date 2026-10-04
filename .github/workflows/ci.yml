@@ -1,7 +1,10 @@
 name: CI
 
 on:
+  push:
+    branches: ["main"]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -18,6 +21,12 @@ jobs:
         run: npx --yes html-validate index.html 404.html
       - name: Lint JS
         run: npx --yes eslint@8 --no-eslintrc --env browser,es2021 --parser-options ecmaVersion:2021 js/main.js
+      - name: Smoke, keyboard and accessibility tests
+        run: |
+          npm i --no-save playwright axe-core
+          node tests/smoke.cjs
+      - name: Check external links
+        run: node scripts/check-links.cjs
       - name: Lighthouse budgets
         run: |
           python3 -m http.server 8000 >/dev/null 2>&1 &
