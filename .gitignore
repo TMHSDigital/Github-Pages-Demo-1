@@ -29,3 +29,5 @@ feature-planning.md
 .cursorrules
 node_modules/
 package-lock.json
+.playwright-mcp/
+lh.json
