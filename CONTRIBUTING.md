@@ -9,6 +9,7 @@ Thanks for helping with the TM Hospitality Strategies site. It is a small, depen
 - **No third-party requests, cookies or analytics** without updating the README privacy section.
 - **Accessibility is a requirement.** Keep AA contrast, visible focus, semantic markup, `alt` text and `prefers-reduced-motion` support.
 - **Use the design tokens** in `css/tokens.css`; avoid hardcoded colors and inline `style` attributes.
+- **Respect the Content-Security-Policy.** The build hashes inline `<script>` and `<style>` blocks automatically, but anything loaded from another origin is blocked; add it to the policy in `scripts/stage.cjs` only if it is truly needed (and update the README privacy section).
 
 ## Set up
 

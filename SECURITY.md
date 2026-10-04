@@ -17,5 +17,6 @@ You can expect an acknowledgement within a few days. Once a fix is available it 
 - GitHub Actions are pinned to full commit SHAs and updated weekly by Dependabot.
 - Workflows use least-privilege `permissions`.
 - The published artifact contains only the built site files (see `scripts/stage.cjs`), not the repository.
+- Published pages carry a Content-Security-Policy (`<meta>` tag, as GitHub Pages cannot set headers): scripts, styles, fonts and images load only from the site itself, inline blocks are allowed by SHA-256 hash, and plugins and form submissions are disabled. CI fails if anything on the page violates it.
 - Fonts are self-hosted and there are no analytics, trackers or cookies.
 - `.gitignore` excludes local tooling output.

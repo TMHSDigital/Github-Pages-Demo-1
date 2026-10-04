@@ -2,12 +2,14 @@
 /**
  * Builds the publishable site into _site/ (used by the Pages workflow and CI).
  * Source files stay unbundled for development; the published copy gets one
- * minified stylesheet (inlined into the home page) and minified scripts. Fonts and images are copied as is.
+ * minified stylesheet (inlined into the home page), minified scripts and a
+ * hash-based Content-Security-Policy. Fonts and images are copied as is.
  *
  * Run: npm i --no-save esbuild && node scripts/stage.cjs
  */
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const esbuild = require('esbuild');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -49,8 +51,28 @@ const stripLinks = (html, bundle, files) => {
 const inlineCss = fs.readFileSync(path.join(OUT, 'css', 'site.min.css'), 'utf8').replace(/url\((['"]?)\.\.\/assets\//g, 'url($1assets/');
 const home = stripLinks(read('index.html'), 'site', ['tokens', 'base', 'components'])
   .replace('<link rel="stylesheet" href="css/site.min.css">', () => `<style>${inlineCss}</style>`);
-fs.writeFileSync(path.join(OUT, 'index.html'), home);
-fs.writeFileSync(path.join(OUT, '404.html'), stripLinks(read('404.html'), 'base', ['tokens', 'base']));
+// Content-Security-Policy: only this site's own files, plus the exact inline
+// <script> and <style> blocks of each page (allowed by hash). JSON-LD is data, not script.
+const sha = (text) => `'sha256-${crypto.createHash('sha256').update(text, 'utf8').digest('base64')}'`;
+const withCsp = (html) => {
+  const scripts = [...html.matchAll(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => sha(m[1]));
+  const styles = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => sha(m[1]));
+  const policy = [
+    "default-src 'self'",
+    `script-src 'self' ${scripts.join(' ')}`.trim(),
+    `style-src 'self' ${styles.join(' ')}`.trim(),
+    "img-src 'self' data:",
+    "font-src 'self'",
+    "connect-src 'self'", // 'none' would also block same-origin tools such as Lighthouse's robots.txt check
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'none'",
+  ].join('; ');
+  return html.replace(/(<meta name="viewport"[^>]*>)/, `$1
+  <meta http-equiv="Content-Security-Policy" content="${policy}">`);
+};
+fs.writeFileSync(path.join(OUT, 'index.html'), withCsp(home));
+fs.writeFileSync(path.join(OUT, '404.html'), withCsp(stripLinks(read('404.html'), 'base', ['tokens', 'base'])));
 
 const size = (p) => fs.statSync(path.join(OUT, p)).size;
 console.log(`staged _site: site.min.css ${size('css/site.min.css')} B (from ${['tokens', 'base', 'components'].reduce((n, f) => n + fs.statSync(path.join(ROOT, `css/${f}.css`)).size, 0)} B)`);

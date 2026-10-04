@@ -39,7 +39,7 @@ No framework, no runtime dependencies.
     <td width="25%" align="center" valign="top"><h3>2 themes</h3><sub>Light and dark, following<br>the system setting</sub></td>
     <td width="25%" align="center" valign="top"><h3>0 requests</h3><sub>No third-party requests,<br>cookies or analytics</sub></td>
     <td width="25%" align="center" valign="top"><h3>0 violations</h3><sub>axe-core, WCAG 2.2 A/AA,<br>in both themes</sub></td>
-    <td width="25%" align="center" valign="top"><h3>29 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
+    <td width="25%" align="center" valign="top"><h3>35 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
   </tr>
 </table>
 
@@ -251,7 +251,7 @@ Then open <http://localhost:8000>.
 
 ## Deployment
 
-Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
+Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
 
 <details>
 <summary><b>Preview the published build locally</b></summary>
@@ -281,7 +281,9 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 | **Features** | Playwright | Theme toggle persists and follows the system; calculator maths, live readout, caret-safe formatting and reset; marquee pauses; one header call to action per layout; valid JSON-LD |
 | **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
 | **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, FAQ operable, visible focus rings |
+| **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |
 | **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion |
+| **Security** | Playwright, staged build | Content-Security-Policy present on every page and no violations while using the theme toggle, calculator and 404 page |
 | **Performance and quality** | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
 | **Links** | internal and external checkers | No broken links |
 
@@ -328,6 +330,7 @@ No framework, no bundler in development and no runtime dependencies. Playwright,
 ## Privacy and security
 
 - The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculator runs locally and never stores or sends what you enter.
+- The published pages carry a strict Content-Security-Policy: only the site's own files run, and the few inline blocks are allowed by hash (generated in `scripts/stage.cjs`).
 - GitHub Actions are pinned to commit SHAs and kept current by Dependabot.
 - Found a vulnerability? See [SECURITY.md](SECURITY.md) and report it privately through the repository's **Security** tab.
 
