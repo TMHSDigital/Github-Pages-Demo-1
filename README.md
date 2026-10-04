@@ -1,11 +1,15 @@
+<a id="top"></a>
+
 <div align="center">
 
 <a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/"><img src="docs/screenshots/banner.png" alt="TM Hospitality Strategies. Sharper concepts. Tighter operations. Better margins." width="100%"></a>
 
 <br>
 
-**The official marketing site for TM Hospitality Strategies.**<br>
-A fast, accessible, single-page build with a dark/light theme and a prime cost calculator. No framework, no runtime dependencies.
+### The official marketing site for TM Hospitality Strategies
+
+A fast, accessible, single-page build with a dark/light theme and a prime cost calculator.<br>
+No framework, no runtime dependencies.
 
 <br>
 
@@ -24,7 +28,7 @@ A fast, accessible, single-page build with a dark/light theme and a prime cost c
 
 <br>
 
-[**Live site**](https://tmhsdigital.github.io/Github-Pages-Demo-1/) &nbsp;·&nbsp; [Preview](#preview) &nbsp;·&nbsp; [Quick start](#quick-start) &nbsp;·&nbsp; [Customize](#customize) &nbsp;·&nbsp; [Quality gates](#quality-gates) &nbsp;·&nbsp; [Issues](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues)
+**[Preview](#preview)** &nbsp;·&nbsp; **[Quick start](#quick-start)** &nbsp;·&nbsp; **[Customize](#customize)** &nbsp;·&nbsp; **[Quality gates](#quality-gates)** &nbsp;·&nbsp; **[Roadmap](#roadmap)** &nbsp;·&nbsp; **[Issues](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues)**
 
 </div>
 
@@ -32,10 +36,10 @@ A fast, accessible, single-page build with a dark/light theme and a prime cost c
 
 <table width="100%">
   <tr>
-    <td width="25%" align="center" valign="top"><h3>2 themes</h3><sub>Light and dark, following the system setting</sub></td>
-    <td width="25%" align="center" valign="top"><h3>0 requests</h3><sub>No third-party requests, cookies or analytics</sub></td>
-    <td width="25%" align="center" valign="top"><h3>0 violations</h3><sub>axe-core, WCAG 2.2 A/AA, both themes</sub></td>
-    <td width="25%" align="center" valign="top"><h3>22 checks</h3><sub>Automated browser tests on every push</sub></td>
+    <td width="25%" align="center" valign="top"><h3>2 themes</h3><sub>Light and dark, following<br>the system setting</sub></td>
+    <td width="25%" align="center" valign="top"><h3>0 requests</h3><sub>No third-party requests,<br>cookies or analytics</sub></td>
+    <td width="25%" align="center" valign="top"><h3>0 violations</h3><sub>axe-core, WCAG 2.2 A/AA,<br>in both themes</sub></td>
+    <td width="25%" align="center" valign="top"><h3>22 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
   </tr>
 </table>
 
@@ -44,79 +48,98 @@ A fast, accessible, single-page build with a dark/light theme and a prime cost c
 > [!NOTE]
 > **Content status.** The About, Services, Approach, Selected work and FAQ copy is **placeholder text** drafted for layout review. Each spot that needs real information is marked `TODO(verify)` in [`index.html`](index.html), and no testimonials, statistics or client names have been invented. Tracked in [#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14).
 
+<details>
+<summary><b>Table of contents</b></summary>
 <br>
 
-## Contents
+| | |
+| :-- | :-- |
+| **The site** | [Preview](#preview) · [What's on the page](#whats-on-the-page) · [Design system](#design-system) |
+| **Build and run** | [Quick start](#quick-start) · [Customize](#customize) · [Project structure](#project-structure) · [Deployment](#deployment) |
+| **Quality** | [Quality gates](#quality-gates) · [Tech stack](#tech-stack) · [Privacy and security](#privacy-and-security) · [Roadmap](#roadmap) |
 
-<div align="center">
-
-**The site** &nbsp;·&nbsp; [Preview](#preview) &nbsp;·&nbsp; [What's on the page](#whats-on-the-page) &nbsp;·&nbsp; [Design system](#design-system)
-
-**Build and run** &nbsp;·&nbsp; [Quick start](#quick-start) &nbsp;·&nbsp; [Customize](#customize) &nbsp;·&nbsp; [Project structure](#project-structure) &nbsp;·&nbsp; [Deployment](#deployment)
-
-**Quality** &nbsp;·&nbsp; [Quality gates](#quality-gates) &nbsp;·&nbsp; [Tech stack](#tech-stack) &nbsp;·&nbsp; [Privacy and security](#privacy-and-security) &nbsp;·&nbsp; [Roadmap](#roadmap)
-
-</div>
+</details>
 
 <br>
+
+---
 
 ## Preview
 
-<div align="center">
-  <img src="docs/screenshots/hero.png" width="860" alt="Light theme hero: 'Sharper concepts. Tighter operations. Better margins.' beside the animated TMHS brand scene">
-  <br><sub><b>Hero</b> · light theme, desktop</sub>
-</div>
-
-<br>
-
-<div align="center">
-  <img src="docs/screenshots/hero-dark.png" width="860" alt="Dark theme hero with glowing logo-blue accents">
-  <br><sub><b>Hero</b> · dark theme (follows the system setting, with a manual toggle)</sub>
-</div>
-
-<br>
+<sub>The site in both themes. It follows the visitor's system setting and has a manual toggle.</sub>
 
 <table width="100%">
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/services.png" alt="Services bento grid with a large Concept and positioning card">
-      <br><sub><b>Services</b> · bento layout</sub>
+      <img src="docs/screenshots/hero.png" width="100%" alt="Light theme hero: 'Sharper concepts. Tighter operations. Better margins.' beside the animated TMHS brand scene">
+      <br><sub><b>Light</b> · hero</sub>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/calculator.png" alt="Prime cost calculator with sliders and a gauge">
-      <br><sub><b>Prime cost calculator</b> · live gauge and bands</sub>
+      <img src="docs/screenshots/hero-dark.png" width="100%" alt="Dark theme hero with glowing logo-blue accents">
+      <br><sub><b>Dark</b> · hero</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/approach.png" alt="Approach: four steps joined by a progress line">
-      <br><sub><b>Approach</b> · scroll-linked progress line</sub>
+      <img src="docs/screenshots/calculator.png" width="100%" alt="Prime cost calculator with sliders and a gauge">
+      <br><sub><b>Light</b> · prime cost calculator</sub>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/calculator-dark.png" alt="Calculator in the dark theme">
-      <br><sub><b>Calculator</b> · dark theme</sub>
+      <img src="docs/screenshots/calculator-dark.png" width="100%" alt="Calculator in the dark theme">
+      <br><sub><b>Dark</b> · prime cost calculator</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/screenshots/services.png" width="100%" alt="Services bento grid with a large Concept and positioning card">
+      <br><sub><b>Services</b> · bento layout</sub>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/screenshots/approach.png" width="100%" alt="Approach: four steps joined by a progress line">
+      <br><sub><b>Approach</b> · scroll-linked progress line</sub>
     </td>
   </tr>
 </table>
 
-<br>
+<div align="center">
 
-<table align="center">
+<table>
   <tr>
     <td align="center" valign="top">
-      <img src="docs/screenshots/mobile.png" width="260" alt="Mobile hero at 390px wide">
+      <img src="docs/screenshots/mobile.png" width="250" alt="Mobile hero at 390px wide">
       <br><sub><b>Mobile</b> · 390px</sub>
     </td>
     <td align="center" valign="top">
-      <img src="docs/screenshots/mobile-menu.png" width="260" alt="Mobile navigation menu open">
+      <img src="docs/screenshots/mobile-menu.png" width="250" alt="Mobile navigation menu open">
       <br><sub><b>Mobile menu</b> · keyboard operable</sub>
     </td>
   </tr>
 </table>
 
-<div align="center"><sub>Screenshots, the banner and the social card are generated by <a href="scripts/screenshots.cjs"><code>scripts/screenshots.cjs</code></a>.</sub></div>
+<sub>Screenshots, the banner and the social card are generated by <a href="scripts/screenshots.cjs"><code>scripts/screenshots.cjs</code></a>.</sub>
 
-<br>
+</div>
+
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
+
+## Quick start
+
+> [!TIP]
+> There is nothing to install. Any static file server works.
+
+```bash
+git clone https://github.com/TMHSDigital/Github-Pages-Demo-1.git
+cd Github-Pages-Demo-1
+python -m http.server 8000      # or: npx serve
+```
+
+Then open <http://localhost:8000>.
+
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## What's on the page
 
@@ -134,11 +157,13 @@ A fast, accessible, single-page build with a dark/light theme and a prime cost c
 | **Contact** | LinkedIn and Instagram, with an optional `mailto:` once an email is configured. |
 | **404** | Branded error page that resolves its assets correctly from any nested URL. |
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## Design system
 
-Tokens live in [`css/tokens.css`](css/tokens.css) and follow the TM Hospitality Strategies Canva brand kit and logo.
+<sub>Tokens live in <a href="css/tokens.css"><code>css/tokens.css</code></a> and follow the TM Hospitality Strategies Canva brand kit and logo.</sub>
 
 <table width="100%">
   <tr>
@@ -151,7 +176,7 @@ Tokens live in [`css/tokens.css`](css/tokens.css) and follow the TM Hospitality 
   </tr>
 </table>
 
-| | |
+| Principle | How it shows up |
 | :-- | :-- |
 | **Tokens** | Fluid type and spacing scales, elevation and glow tokens, with complete light and dark sets. |
 | **Type** | Fraunces (with true italics for accent words) for headings and Inter for text, both self-hosted variable fonts. |
@@ -159,24 +184,13 @@ Tokens live in [`css/tokens.css`](css/tokens.css) and follow the TM Hospitality 
 | **Contrast** | Every text pairing is chosen for WCAG AA and verified by axe in both themes. The bright logo blue is decorative, or used for text only on navy. |
 | **Motion** | Transforms and opacity only, paused or disabled under `prefers-reduced-motion`. Content is fully visible without JavaScript. |
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
-## Quick start
-
-> [!TIP]
-> There is nothing to install. Any static file server works.
-
-```bash
-git clone https://github.com/TMHSDigital/Github-Pages-Demo-1.git
-cd Github-Pages-Demo-1
-python -m http.server 8000      # or: npx serve
-```
-
-Then open <http://localhost:8000>.
-
-<br>
+---
 
 ## Customize
+
+<sub>Everything is plain files. Change it, reload the page.</sub>
 
 | To change | Do this |
 | :-- | :-- |
@@ -188,7 +202,9 @@ Then open <http://localhost:8000>.
 | **Social card, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. |
 | **Repo name or domain** | Update `og:url`, canonical, `sitemap.xml`, `robots.txt` and the `<base>` in `404.html`. |
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## Project structure
 
@@ -225,7 +241,9 @@ Then open <http://localhost:8000>.
 
 </details>
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## Deployment
 
@@ -241,22 +259,24 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 
 </details>
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## Quality gates
 
-[`ci.yml`](.github/workflows/ci.yml) runs on every push and pull request.
+<sub><a href="https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml"><code>ci.yml</code></a> runs on every push and pull request.</sub>
 
 | Gate | Tool | Standard |
 | :-- | :-- | :-- |
-| HTML validity | `html-validate` | No errors |
-| JavaScript lint | ESLint | No errors |
-| Layout | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
-| Features | Playwright | Theme toggle persists and follows the system; calculator maths and live readout; marquee pauses; content visible with JavaScript off |
-| Keyboard | Playwright | Skip link first, menu and FAQ operable, Escape returns focus, visible focus rings |
-| Accessibility | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion |
-| Performance and quality | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
-| Links | internal and external checkers | No broken links |
+| **HTML validity** | `html-validate` | No errors |
+| **JavaScript lint** | ESLint | No errors |
+| **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
+| **Features** | Playwright | Theme toggle persists and follows the system; calculator maths and live readout; marquee pauses; content visible with JavaScript off |
+| **Keyboard** | Playwright | Skip link first, menu and FAQ operable, Escape returns focus, visible focus rings |
+| **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion |
+| **Performance and quality** | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
+| **Links** | internal and external checkers | No broken links |
 
 <details>
 <summary><b>Run the checks locally</b></summary>
@@ -274,7 +294,9 @@ node scripts/check-links.cjs
 > [!IMPORTANT]
 > Automated checks do not replace a real screen-reader review. A manual NVDA and VoiceOver pass is still recommended before launch ([#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17)).
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## Tech stack
 
@@ -288,9 +310,13 @@ node scripts/check-links.cjs
 
 </div>
 
+<br>
+
 No framework, no bundler in development and no runtime dependencies. Playwright, axe-core and esbuild are used only for testing and publishing and are never shipped.
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## Privacy and security
 
@@ -298,32 +324,39 @@ No framework, no bundler in development and no runtime dependencies. Playwright,
 - GitHub Actions are pinned to commit SHAs and kept current by Dependabot.
 - Found a vulnerability? See [SECURITY.md](SECURITY.md) and report it privately through the repository's **Security** tab.
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 ## Roadmap
 
-Open work is tracked in [Issues](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues).
+<sub>Open work is tracked in <a href="https://github.com/TMHSDigital/Github-Pages-Demo-1/issues">Issues</a>. The last column shows who the next step is waiting on.</sub>
 
-| Next | Issue |
-| :-- | :-- |
-| Replace placeholder copy with real content | [#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14) |
-| Choose a contact method (email or booking link) | [#15](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15) |
-| Verify the calculator's benchmark bands | [#27](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/27) |
-| Vector logo | [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16) |
-| Manual screen-reader and zoom review | [#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17) |
-| Photography and richer visuals | [#20](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20) |
-| Repo rename and domain | [#18](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/18) |
-| TMHS and TMHS Digital brand relationship | [#19](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/19) |
-| Analytics and privacy decision | [#29](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/29) |
-| Further performance gains | [#28](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/28) |
+| Next | Issue | Waiting on |
+| :-- | :-: | :-- |
+| Replace placeholder copy with real content | [#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14) | Owner |
+| Choose a contact method (email or booking link) | [#15](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15) | Owner |
+| Verify the calculator's benchmark bands | [#27](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/27) | Owner |
+| Vector logo | [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16) | Owner (original file) |
+| Manual screen-reader and zoom review | [#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17) | Owner or reviewer |
+| Photography and richer visuals | [#20](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20) | Owner |
+| Repo rename and domain | [#18](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/18) | Decision |
+| TMHS and TMHS Digital brand relationship | [#19](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/19) | Decision |
+| Analytics and privacy decision | [#29](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/29) | Decision |
+| Further performance gains | [#28](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/28) | Open to work |
 
-<br>
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
 
 <div align="center">
 
+<br>
+
 <img src="assets/images/tmhs-logo-96.png" alt="" width="48">
 
-**TM Hospitality Strategies**<br>
+**TM Hospitality Strategies**
+
 <sub><a href="https://www.linkedin.com/company/tm-hospitality-strategies/">LinkedIn</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/tmhs.ig/">Instagram</a> &nbsp;·&nbsp; <a href="LICENSE">MIT License</a></sub>
 
 </div>
