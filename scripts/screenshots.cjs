@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Regenerates the README screenshots in docs/screenshots/.
+ * Regenerates the README screenshots in docs/screenshots/ and the social card.
  * Run: npm i --no-save playwright && node scripts/screenshots.cjs
  */
 const http = require('node:http');
@@ -26,22 +26,46 @@ const server = http.createServer((req, res) => {
   const base = `http://localhost:${server.address().port}/`;
   const browser = await chromium.launch({ channel: 'chrome' });
 
-  const shot = async (name, viewport, fn, opts = {}) => {
-    const ctx = await browser.newContext({ viewport, deviceScaleFactor: 2, reducedMotion: 'reduce' });
+  const shot = async (name, { viewport, theme = 'light', at, action, dir = OUT, scale = 2, clip }) => {
+    const ctx = await browser.newContext({ viewport, deviceScaleFactor: scale, reducedMotion: 'reduce' });
+    await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch (e) {} }, theme);
     const page = await ctx.newPage();
     await page.goto(base, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
-    if (fn) await fn(page);
-    await page.screenshot({ path: path.join(OUT, name), ...opts });
+    if (at) await page.evaluate((sel) => window.scrollTo(0, document.querySelector(sel).offsetTop - 72), at);
+    if (action) await action(page);
+    await page.waitForTimeout(250);
+    await page.screenshot({ path: path.join(dir, name), clip });
     await ctx.close();
     console.log('wrote', name);
   };
 
-  await shot('hero.png', { width: 1280, height: 760 });
-  await shot('services.png', { width: 1280, height: 600 }, (p) => p.evaluate(() => { window.scrollTo(0, document.querySelector('#services').offsetTop - 60); }));
-  await shot('approach.png', { width: 1280, height: 600 }, (p) => p.evaluate(() => { window.scrollTo(0, document.querySelector('#approach').offsetTop - 60); }));
-  await shot('mobile.png', { width: 390, height: 844 });
-  await shot('mobile-menu.png', { width: 390, height: 844 }, (p) => p.locator('.nav-toggle').click());
+  const desk = { width: 1280, height: 780 };
+  await shot('hero.png', { viewport: desk });
+  await shot('hero-dark.png', { viewport: desk, theme: 'dark' });
+  await shot('services.png', { viewport: { width: 1280, height: 720 }, at: '#services' });
+  await shot('approach.png', { viewport: { width: 1280, height: 560 }, at: '#approach' });
+  await shot('calculator.png', { viewport: { width: 1280, height: 760 }, at: '#calculator' });
+  await shot('calculator-dark.png', { viewport: { width: 1280, height: 760 }, at: '#calculator', theme: 'dark' });
+  await shot('mobile.png', { viewport: { width: 390, height: 844 } });
+  await shot('mobile-menu.png', { viewport: { width: 390, height: 844 }, action: (p) => p.locator('.nav-toggle').click() });
+
+  // Social card (1200x630) built from the hero scene
+  await shot('og-image.png', {
+    viewport: { width: 1200, height: 630 }, scale: 1, theme: 'dark', dir: path.join(ROOT, 'assets', 'images'),
+    action: (p) => p.evaluate(() => {
+      document.querySelector('.site-header').style.display = 'none';
+      document.querySelector('.proof').style.display = 'none';
+      document.querySelector('main').style.cssText = 'height:630px;overflow:hidden';
+      document.querySelector('.hero').style.cssText = 'height:630px;padding:0;display:flex;align-items:center';
+      document.querySelector('.hero-grid').style.paddingInline = '64px';
+      document.querySelector('.hero-grid').style.width = '100%';
+      document.querySelector('.hero h1').style.fontSize = '3.4rem';
+      document.querySelector('.hero .lead').style.display = 'none';
+      document.querySelector('.trust').style.display = 'none';
+      document.querySelector('.btn-row').style.display = 'none';
+    }),
+  });
 
   await browser.close();
   server.close();

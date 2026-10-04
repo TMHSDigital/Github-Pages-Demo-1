@@ -1,0 +1,97 @@
+/* ==========================================================================
+   TM Hospitality Strategies — design tokens
+   Brand source: Canva brand kit (#203164, #336193) and the logo blue (#00A5F6).
+   Light is the default; [data-theme="dark"] overrides. Every text/background
+   pairing below is chosen for WCAG AA (verified by axe in both themes).
+   ========================================================================== */
+
+/* Self-hosted variable fonts (latin subset), SIL Open Font License */
+@font-face { font-family: 'Fraunces'; font-style: normal; font-weight: 500 600; font-display: swap; src: url('../assets/fonts/fraunces.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Fraunces'; font-style: italic; font-weight: 400 600; font-display: swap; src: url('../assets/fonts/fraunces-italic.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('../assets/fonts/inter.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  color-scheme: light;
+
+  /* Brand constants */
+  --navy: #0E1A33;
+  --brand: #203164;
+  --brand-2: #336193;
+  --logo-blue: #00A5F6;
+
+  /* Fluid type scale */
+  --step--1: clamp(.8rem, .78rem + .1vw, .875rem);
+  --step-0: clamp(1rem, .97rem + .15vw, 1.0625rem);
+  --step-1: clamp(1.15rem, 1.08rem + .35vw, 1.3rem);
+  --step-2: clamp(1.4rem, 1.25rem + .75vw, 1.8rem);
+  --step-3: clamp(1.8rem, 1.5rem + 1.5vw, 2.6rem);
+  --step-4: clamp(2.3rem, 1.7rem + 3vw, 3.8rem);
+  --step-5: clamp(2.7rem, 1.8rem + 3.6vw, 4.5rem);
+
+  /* Fluid space scale */
+  --space-xs: clamp(.5rem, .45rem + .25vw, .75rem);
+  --space-s: clamp(.9rem, .8rem + .5vw, 1.25rem);
+  --space-m: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+  --space-l: clamp(2.2rem, 1.8rem + 2vw, 3.5rem);
+  --space-xl: clamp(3.5rem, 2.5rem + 5vw, 7rem);
+
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-s: 10px;
+  --radius: 18px;
+  --radius-l: 28px;
+  --maxw: 1180px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+
+  /* Light theme */
+  --bg: #F6F7FA;
+  --bg-tint: #ECF1F8;
+  --surface: #FFFFFF;
+  --surface-2: #F1F4F9;
+  --text: #0E1A33;
+  --text-soft: #46526C;
+  --line: #DEE4EE;
+  --accent: #1F4E8C;          /* buttons, links (white text 8:1) */
+  --accent-hover: #173C6E;
+  --accent-text: #1B5AA6;     /* accent used as text on --bg (6.2:1) */
+  --on-accent: #FFFFFF;
+  --glow: rgba(0, 165, 246, .20);
+  --glow-2: rgba(32, 49, 100, .10);
+  --hero-wash: radial-gradient(900px 520px at 85% -10%, rgba(0, 165, 246, .20), transparent 60%), radial-gradient(700px 480px at -5% 105%, rgba(51, 97, 147, .14), transparent 60%), var(--bg);
+  --header-bg: rgba(246, 247, 250, .78);
+  --shadow-s: 0 1px 2px rgba(14, 26, 51, .06), 0 2px 6px rgba(14, 26, 51, .05);
+  --shadow-m: 0 14px 34px -14px rgba(14, 26, 51, .22);
+  --shadow-l: 0 40px 80px -28px rgba(14, 26, 51, .35);
+  --btn-shadow: 0 10px 24px -10px rgba(31, 78, 140, .65);
+  --dark-section: #203164;    /* approach band */
+  --on-dark: #E6ECF8;
+  --on-dark-soft: #C3CFE6;
+  --on-dark-accent: #86CCF8;
+  --grain-opacity: .035;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0A1226;
+  --bg-tint: #0D1830;
+  --surface: #111E3B;
+  --surface-2: #162748;
+  --text: #EDF1FA;
+  --text-soft: #AAB7D1;
+  --line: #243660;
+  --accent: #00A5F6;          /* with --on-accent navy text (6.5:1) */
+  --accent-hover: #3DBBFF;
+  --accent-text: #6CC4FA;
+  --on-accent: #06122B;
+  --glow: rgba(0, 165, 246, .26);
+  --glow-2: rgba(51, 97, 147, .35);
+  --hero-wash: radial-gradient(900px 520px at 85% -10%, rgba(0, 165, 246, .26), transparent 60%), radial-gradient(700px 480px at -5% 105%, rgba(51, 97, 147, .30), transparent 60%), var(--bg);
+  --header-bg: rgba(10, 18, 38, .72);
+  --shadow-s: 0 1px 2px rgba(0, 0, 0, .35), 0 2px 6px rgba(0, 0, 0, .25);
+  --shadow-m: 0 14px 34px -14px rgba(0, 0, 0, .6);
+  --shadow-l: 0 40px 80px -28px rgba(0, 0, 0, .75);
+  --btn-shadow: 0 10px 28px -10px rgba(0, 165, 246, .6);
+  --dark-section: #0F1D3F;
+  --grain-opacity: .06;
+}

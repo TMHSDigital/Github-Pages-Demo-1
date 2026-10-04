@@ -18,90 +18,194 @@
   <meta property="og:image:alt" content="TM Hospitality Strategies logo on a navy background">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#0E1A33">
+  <meta name="color-scheme" content="light dark">
 
   <link rel="icon" type="image/png" sizes="48x48" href="assets/images/favicon-48.png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+
+  <script>
+    /* Pre-paint: apply saved or system theme and flag JS (enables scroll reveals) */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('tmhs-theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
+  <!-- Icon sprite -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+      <symbol id="i-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-5 3 3 5-7"/></symbol>
+      <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9A2.2 2.2 0 0 0 5 15zM12 15l-3-3a22 22 0 0 1 2-4 12 12 0 0 1 11-6c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+      <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+    </defs>
+  </svg>
+
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <header class="site-header" id="top">
     <div class="wrap bar">
       <a class="brand" href="#top" aria-label="TM Hospitality Strategies — home">
-        <span class="brand-mark"><img src="assets/images/tmhs-logo.png" width="44" height="41" alt=""></span>
+        <span class="brand-mark"><img src="assets/images/tmhs-logo-96.png" width="34" height="31" alt=""></span>
         <span class="brand-text">TM Hospitality <b>Strategies</b></span>
       </a>
-      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav">
-        <span class="sr-only">Menu</span><span class="bars" aria-hidden="true"></span>
-      </button>
       <nav id="nav" class="nav" aria-label="Main">
         <ul>
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#approach">Approach</a></li>
+          <li><a href="#calculator">Calculator</a></li>
           <li><a href="#work">Work</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
         <a class="btn btn-sm" href="#contact">Start a conversation</a>
       </nav>
+      <div class="header-tools">
+        <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Dark mode">
+          <svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+          <svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        </button>
+        <button type="button" class="icon-btn nav-toggle" aria-expanded="false" aria-controls="nav">
+          <span class="sr-only">Menu</span><span class="bars" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero">
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-labelledby="hero-title">
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Hospitality strategy &amp; operations</p>
-          <h1>Sharper concepts. Tighter operations. <em>Better margins.</em></h1>
+          <h1 id="hero-title">Sharper concepts. Tighter operations. <em>Better margins.</em></h1>
           <p class="lead">TM Hospitality Strategies partners with restaurant and hospitality operators to turn good food and good service into a business that runs well and grows on purpose.</p>
-          <div class="cta-row">
-            <a class="btn" href="#contact">Start a conversation</a>
-            <a class="btn btn-ghost" href="#services">See how I can help</a>
+          <div class="btn-row">
+            <a class="btn" href="#contact">Start a conversation <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-ghost" href="#calculator">Try the margin calculator</a>
+          </div>
+          <!-- TODO(verify): confirm each of these promises matches how you actually work -->
+          <ul class="trust">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Practical, owner-level advice</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>On site or remote</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Plain-English reporting</li>
+          </ul>
+        </div>
+
+        <div class="scene" id="scene" aria-hidden="true">
+          <div class="scene-glow"></div>
+          <svg class="scene-rings" viewBox="0 0 400 400" fill="none" stroke="currentColor">
+            <circle class="r1" cx="200" cy="200" r="190" stroke-width="1" stroke-dasharray="2 10" opacity=".55"/>
+            <circle class="r2" cx="200" cy="200" r="160" stroke-width="1.2" stroke-dasharray="40 14 4 14" opacity=".35"/>
+            <circle cx="200" cy="200" r="132" stroke-width="1" opacity=".22"/>
+          </svg>
+          <div class="orbit o2"><i></i></div>
+          <div class="scene-plate">
+            <div class="orbit"><i></i></div>
+            <img src="assets/images/tmhs-logo.png" width="335" height="310" alt="">
+          </div>
+          <div class="chip c1"><span class="ico"><svg><use href="#i-compass"/></svg></span><span><b>Concept</b><span class="sub">Clear and distinct</span></span></div>
+          <div class="chip c2"><span class="ico"><svg><use href="#i-cog"/></svg></span><span><b>Operations</b><span class="sub">Systems that hold</span></span></div>
+          <div class="chip c3"><span class="ico"><svg><use href="#i-chart"/></svg></span><span><b>Margins</b><span class="sub">Healthy and visible</span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CAPABILITIES MARQUEE ============ -->
+    <section class="proof" aria-label="Areas of focus">
+      <div class="wrap">
+        <div class="proof-top">
+          <p class="proof-label">Where the work happens</p>
+          <button type="button" class="pause" id="marquee-toggle" aria-pressed="false">Pause scrolling</button>
+        </div>
+        <div class="marquee" id="marquee">
+          <div class="marquee-track">
+            <ul>
+              <li>Concept &amp; positioning</li><li>Menu engineering</li><li>Labor &amp; scheduling</li><li>Cost control</li><li>New openings</li><li>Restaurants</li><li>Hotels</li><li>Cafés &amp; bars</li><li>Catering</li>
+            </ul>
+            <ul aria-hidden="true">
+              <li>Concept &amp; positioning</li><li>Menu engineering</li><li>Labor &amp; scheduling</li><li>Cost control</li><li>New openings</li><li>Restaurants</li><li>Hotels</li><li>Cafés &amp; bars</li><li>Catering</li>
+            </ul>
           </div>
         </div>
-        <div class="hero-card" aria-hidden="true">
-          <img src="assets/images/tmhs-logo.png" width="335" height="310" alt="">
-        </div>
       </div>
     </section>
 
-    <section class="section" id="about">
-      <div class="wrap split">
-        <div>
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap about-grid">
+        <div data-reveal>
           <p class="eyebrow">About</p>
-          <h2>Strategy built from the floor up</h2>
-        </div>
-        <div class="prose">
+          <h2 id="about-title">Strategy built from <em>the floor up</em></h2>
           <!-- TODO(verify): replace with your real story, background and credentials -->
           <p>Hospitality is a business of details: the menu, the shift schedule, the prep list, the P&amp;L. TM Hospitality Strategies connects those details to the bigger picture so every decision supports the guest experience and the bottom line.</p>
-          <p>The work is hands-on and practical. Expect clear priorities, simple tools, and recommendations your team can actually run on a Tuesday night.</p>
+          <p>The work is hands-on and practical. Expect clear priorities, simple tools and recommendations your team can actually run on a Tuesday night.</p>
           <p class="note"><strong>Placeholder copy.</strong> This section is a draft and should be replaced with your own story.</p>
+        </div>
+        <div class="about-side d1" data-reveal>
+        <figure class="quote">
+          <!-- TODO(verify): placeholder statement, not a real client testimonial -->
+          <blockquote><p>Great hospitality looks effortless because the systems behind it are not.</p></blockquote>
+          <footer>Placeholder statement. A real quote or client testimonial will go here.</footer>
+        </figure>
+        <ul class="principles">
+            <li><span class="ico"><svg aria-hidden="true"><use href="#i-users"/></svg></span><span><b>Guests first</b><span>Every change should make the experience better, not just cheaper.</span></span></li>
+            <li><span class="ico"><svg aria-hidden="true"><use href="#i-doc"/></svg></span><span><b>Numbers you can read</b><span>Simple reporting that owners and managers both understand.</span></span></li>
+            <li><span class="ico"><svg aria-hidden="true"><use href="#i-pin"/></svg></span><span><b>Boots on the floor</b><span>Recommendations tested against how a real shift runs.</span></span></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section class="section alt" id="services">
+    <!-- ============ SERVICES ============ -->
+    <section class="section tint" id="services" aria-labelledby="services-title">
       <div class="wrap">
-        <p class="eyebrow">Services</p>
-        <h2>Where I can help</h2>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Services</p>
+          <h2 id="services-title">Where I can <em>help</em></h2>
+          <p>Four focused areas that cover the way a hospitality business is built, run and grown.</p>
+        </div>
         <!-- TODO(verify): confirm the actual service list and wording -->
-        <div class="cards">
-          <article class="card">
+        <div class="bento">
+          <article class="tile t1" data-reveal>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-compass"/></svg></span>
             <h3>Concept &amp; positioning</h3>
-            <p>Clarify who you serve, what you are known for and how the menu, brand and room tell one story.</p>
+            <p>Clarify who you serve, what you are known for and how the menu, brand and room tell one story, so guests know exactly why to choose you.</p>
+            <ul>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Brand and guest definition</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Menu and pricing strategy</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Competitive positioning</li>
+            </ul>
           </article>
-          <article class="card">
+          <article class="tile t2 d1" data-reveal>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-cog"/></svg></span>
             <h3>Operations &amp; systems</h3>
             <p>Build the playbooks, checklists and scheduling that make service consistent without burning out your team.</p>
           </article>
-          <article class="card">
+          <article class="tile t3 d2" data-reveal>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-chart"/></svg></span>
             <h3>Financial performance</h3>
             <p>Understand prime cost, menu margins and pricing so growth shows up in profit, not just revenue.</p>
           </article>
-          <article class="card">
+          <article class="tile t4 d3" data-reveal>
+            <span class="ico"><svg aria-hidden="true"><use href="#i-rocket"/></svg></span>
             <h3>Growth &amp; new openings</h3>
             <p>Plan expansion, new locations or new revenue streams with realistic numbers and a phased roadmap.</p>
           </article>
@@ -109,75 +213,156 @@
       </div>
     </section>
 
-    <section class="section dark" id="approach">
+    <!-- ============ APPROACH ============ -->
+    <section class="section dark-band" id="approach" aria-labelledby="approach-title">
       <div class="wrap">
-        <p class="eyebrow">Approach</p>
-        <h2>A simple process, no mystery</h2>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Approach</p>
+          <h2 id="approach-title">A simple process, <em>no mystery</em></h2>
+          <p>Four steps from first conversation to results that last.</p>
+        </div>
         <ol class="steps">
-          <li><span class="num">01</span><h3>Listen</h3><p>Walk the operation, review the numbers and hear from the people who run it.</p></li>
-          <li><span class="num">02</span><h3>Diagnose</h3><p>Find the few changes that will move results the most and rank them by effort and impact.</p></li>
-          <li><span class="num">03</span><h3>Build</h3><p>Put the plan, tools and training in place, with your team involved at each step.</p></li>
-          <li><span class="num">04</span><h3>Sustain</h3><p>Track the right measures and adjust, so the gains hold after the engagement ends.</p></li>
+          <li data-reveal><span class="num">01</span><h3>Listen</h3><p>Walk the operation, review the numbers and hear from the people who run it.</p></li>
+          <li data-reveal data-d="1"><span class="num">02</span><h3>Diagnose</h3><p>Find the few changes that will move results the most and rank them by effort and impact.</p></li>
+          <li data-reveal data-d="2"><span class="num">03</span><h3>Build</h3><p>Put the plan, tools and training in place, with your team involved at each step.</p></li>
+          <li data-reveal data-d="3"><span class="num">04</span><h3>Sustain</h3><p>Track the right measures and adjust, so the gains hold after the engagement ends.</p></li>
         </ol>
       </div>
     </section>
 
-    <section class="section" id="work">
+    <!-- ============ CALCULATOR ============ -->
+    <section class="section" id="calculator" aria-labelledby="calc-title">
       <div class="wrap">
-        <p class="eyebrow">Selected work</p>
-        <h2>Case studies, coming soon</h2>
-        <p class="section-intro">Real engagements will appear here. The cards below are labeled placeholders so the layout can be reviewed.</p>
-        <div class="cards three">
-          <article class="card case">
-            <span class="tag">Placeholder</span>
-            <h3>Neighborhood restaurant</h3>
-            <p>Menu and pricing review. Replace with a real project, the challenge and the measured outcome.</p>
-          </article>
-          <article class="card case">
-            <span class="tag">Placeholder</span>
-            <h3>Multi-unit group</h3>
-            <p>Operations playbook rollout. Replace with a real project, the challenge and the measured outcome.</p>
-          </article>
-          <article class="card case">
-            <span class="tag">Placeholder</span>
-            <h3>New concept launch</h3>
-            <p>Opening plan and budget. Replace with a real project, the challenge and the measured outcome.</p>
-          </article>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Free tool</p>
+          <h2 id="calc-title">What is your <em>prime cost</em>?</h2>
+          <p>Prime cost, food plus labor, is the number most operators watch first. Move the sliders to see where you stand.</p>
+        </div>
+        <div class="calc" id="calc" role="group" aria-labelledby="calc-title" data-reveal>
+          <div class="calc-form">
+            <div class="field">
+              <label for="calc-revenue">Monthly sales</label>
+              <div class="money"><span aria-hidden="true">$</span><input id="calc-revenue" name="revenue" type="text" inputmode="numeric" autocomplete="off" value="100,000" aria-describedby="calc-revenue-hint"></div>
+              <p id="calc-revenue-hint" class="sr-only">Enter your total monthly sales in dollars.</p>
+            </div>
+            <div class="field">
+              <div class="lab"><label for="calc-food">Food and beverage cost</label><output id="calc-food-out" for="calc-food">31%</output></div>
+              <input id="calc-food" name="food" type="range" min="15" max="50" step="1" value="31">
+            </div>
+            <div class="field">
+              <div class="lab"><label for="calc-labor">Labor cost</label><output id="calc-labor-out" for="calc-labor">32%</output></div>
+              <input id="calc-labor" name="labor" type="range" min="15" max="50" step="1" value="32">
+            </div>
+            <div class="field">
+              <div class="lab"><label for="calc-other">Other controllable costs</label><output id="calc-other-out" for="calc-other">12%</output></div>
+              <input id="calc-other" name="other" type="range" min="0" max="30" step="1" value="12">
+            </div>
+          </div>
+          <div class="calc-out">
+            <div class="gauge">
+              <svg viewBox="0 0 220 124" aria-hidden="true">
+                <path class="track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100"/>
+                <path class="bar-fill" id="gauge-fill" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="37"/>
+              </svg>
+              <div class="read"><b id="out-prime-pct">63%</b><span>Prime cost</span></div>
+            </div>
+            <span class="band" id="out-band">On target</span>
+            <dl class="stats">
+              <div><dt>Prime cost</dt><dd id="out-prime-usd">$63,000</dd></div>
+              <div><dt>Left after costs</dt><dd id="out-left-usd">$25,000</dd></div>
+            </dl>
+            <p class="calc-summary" id="out-summary" role="status" aria-live="polite"></p>
+          </div>
+          <!-- TODO(verify): confirm benchmark ranges (rule-of-thumb bands below) before relying on them -->
+          <p class="calc-note"><strong>Illustration only, not advice.</strong> Bands are common rules of thumb (under 60% strong, 60-65% on target, 65-70% watch, over 70% needs attention) and vary by concept. Nothing you enter is sent or stored.</p>
         </div>
       </div>
     </section>
 
-    <section class="section alt" id="faq">
-      <div class="wrap narrow">
-        <p class="eyebrow">FAQ</p>
-        <h2>Common questions</h2>
-        <!-- TODO(verify): confirm answers match how you actually work -->
-        <details><summary>Who do you work with?</summary><p>Independent restaurants, small groups and hospitality businesses that want practical, owner-level strategy.</p></details>
-        <details><summary>How does an engagement start?</summary><p>With a short conversation to understand your goals. If there is a fit, we scope a focused project with clear deliverables.</p></details>
-        <details><summary>Do you work remotely or on site?</summary><p>Both are possible. On-site time is the most valuable for operations work, and strategy work can be done remotely.</p></details>
-        <details><summary>What does it cost?</summary><p>It depends on scope. Pricing is shared after the first conversation, so there are no surprises.</p></details>
+    <!-- ============ WORK ============ -->
+    <section class="section tint" id="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Selected work</p>
+          <h2 id="work-title">Case studies, <em>coming soon</em></h2>
+          <p>Real engagements will appear here. The cards below are labeled placeholders so the layout can be reviewed.</p>
+        </div>
+        <div class="cases">
+          <article class="case" data-reveal><div class="cover v1"><span class="tag">Placeholder</span></div><div class="case-body"><h3>Neighborhood restaurant</h3><p>Menu and pricing review. Replace with a real project, the challenge and the measured outcome.</p></div></article>
+          <article class="case d1" data-reveal><div class="cover v2"><span class="tag">Placeholder</span></div><div class="case-body"><h3>Multi-unit group</h3><p>Operations playbook rollout. Replace with a real project, the challenge and the measured outcome.</p></div></article>
+          <article class="case d2" data-reveal><div class="cover v3"><span class="tag">Placeholder</span></div><div class="case-body"><h3>New concept launch</h3><p>Opening plan and budget. Replace with a real project, the challenge and the measured outcome.</p></div></article>
+        </div>
       </div>
     </section>
 
-    <section class="section cta" id="contact">
-      <div class="wrap narrow center">
-        <h2>Let's talk about your next move</h2>
-        <p class="lead">Tell me about your concept and what you want to change. I'll reply with honest next steps.</p>
-        <div class="cta-row center">
-          <a class="btn" id="email-cta" href="https://www.linkedin.com/company/tm-hospitality-strategies/" target="_blank" rel="noopener noreferrer">Message on LinkedIn</a>
-          <a class="btn btn-ghost" href="https://www.instagram.com/tmhs.ig/" target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="wrap narrow">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Common <em>questions</em></h2>
+        </div>
+        <!-- TODO(verify): confirm answers match how you actually work -->
+        <div data-reveal>
+          <details><summary>Who do you work with?</summary><p>Independent restaurants, small groups and hospitality businesses that want practical, owner-level strategy.</p></details>
+          <details><summary>How does an engagement start?</summary><p>With a short conversation to understand your goals. If there is a fit, we scope a focused project with clear deliverables.</p></details>
+          <details><summary>Do you work remotely or on site?</summary><p>Both are possible. On-site time is the most valuable for operations work, and strategy work can be done remotely.</p></details>
+          <details><summary>What does it cost?</summary><p>It depends on scope. Pricing is shared after the first conversation, so there are no surprises.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="section flush-top" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <div class="cta-panel" data-reveal>
+          <img class="mark" src="assets/images/tmhs-logo.png" width="360" height="333" alt="" loading="lazy">
+          <div class="wrap-in">
+            <h2 id="contact-title">Let's talk about <em>your next move</em></h2>
+            <p>Tell me about your concept and what you want to change. I'll reply with honest next steps.</p>
+            <div class="btn-row center">
+              <a class="btn" id="email-cta" href="https://www.linkedin.com/company/tm-hospitality-strategies/" target="_blank" rel="noopener noreferrer">Message on LinkedIn <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <a class="btn btn-ghost" href="https://www.instagram.com/tmhs.ig/" target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="wrap foot">
-      <p>&copy; <span id="year">2026</span> TM Hospitality Strategies. All rights reserved.</p>
-      <p class="muted">No cookies, no analytics, no third-party requests.</p>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <a class="foot-brand" href="#top"><span class="brand-mark"><img src="assets/images/tmhs-logo-96.png" width="32" height="30" alt=""></span>TM Hospitality Strategies</a>
+          <p>Strategy and operations consulting for restaurants and hospitality.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <ul>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#approach">Approach</a></li>
+            <li><a href="#calculator">Prime cost calculator</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="https://www.linkedin.com/company/tm-hospitality-strategies/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="https://www.instagram.com/tmhs.ig/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p>&copy; <span id="year">2026</span> TM Hospitality Strategies. All rights reserved.</p>
+        <p>No cookies, no analytics, no third-party requests.</p>
+      </div>
     </div>
   </footer>
 
+  <script src="js/theme.js" defer></script>
+  <script src="js/calculator.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

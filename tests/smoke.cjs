@@ -78,7 +78,7 @@ async function check(name, fn) {
     await page.keyboard.press('Escape');
     assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
     assert.equal(await page.locator('#nav').isVisible(), false);
-    assert.equal(await page.evaluate(() => document.activeElement.className), 'nav-toggle');
+    assert.match(await page.evaluate(() => document.activeElement.className), /nav-toggle/);
     await ctx.close();
   });
 
@@ -113,7 +113,8 @@ async function check(name, fn) {
       const info = await page.evaluate(() => {
         const el = document.activeElement;
         const cs = getComputedStyle(el);
-        return { tag: el.tagName, text: (el.textContent || '').trim().slice(0, 20), width: cs.outlineWidth, style: cs.outlineStyle, visible: el.getClientRects().length > 0 };
+        const ring = el.closest('.money') ? getComputedStyle(el.closest('.money')) : cs; // inputs show the ring on their wrapper
+        return { tag: el.tagName, text: (el.textContent || '').trim().slice(0, 20), width: ring.outlineWidth, style: ring.outlineStyle, visible: el.getClientRects().length > 0 };
       });
       if (info.tag !== 'BODY' && info.visible && (info.style === 'none' || parseFloat(info.width) < 2)) bad.push(`${info.tag} "${info.text}"`);
     }
@@ -131,16 +132,113 @@ async function check(name, fn) {
     await ctx.close();
   });
 
-  // axe-core WCAG 2.x A/AA at three widths and with reduced motion
-  for (const [w, h, extra] of [[375, 800, {}], [1280, 900, {}], [1280, 900, { reducedMotion: 'reduce' }]]) {
-    await check(`axe WCAG A/AA: 0 violations at ${w}px${extra.reducedMotion ? ' (reduced motion)' : ''}`, async () => {
-      const { ctx, page } = await open({ width: w, height: h }, extra);
+  // axe-core WCAG 2.x A/AA at three widths, in both themes, and with reduced motion
+  for (const [w, h, extra, theme] of [[375, 800, {}, 'light'], [375, 800, {}, 'dark'], [1280, 900, {}, 'light'], [1280, 900, {}, 'dark'], [1280, 900, { reducedMotion: 'reduce' }, 'light']]) {
+    await check(`axe WCAG A/AA: 0 violations at ${w}px, ${theme} theme${extra.reducedMotion ? ', reduced motion' : ''}`, async () => {
+      const ctx = await browser.newContext({ viewport: { width: w, height: h }, ...extra });
+      await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch (e) {} }, theme);
+      const page = await ctx.newPage();
+      await page.goto(base, { waitUntil: 'networkidle' });
+      // scroll through so every reveal has played before scanning
+      await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 500) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 40)); } window.scrollTo(0, 0); await new Promise((r) => setTimeout(r, 1100)); });
       await page.evaluate(AXE);
       const res = await page.evaluate(() => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] }));
-      assert.deepEqual(res.violations.map((v) => `${v.id} (${v.nodes.length})`), []);
+      assert.deepEqual(res.violations.map((v) => `${v.id} (${v.nodes.length}): ${v.nodes.slice(0, 2).map((n) => n.target.join(' ')).join(' | ')}`), []);
       await ctx.close();
     });
   }
+
+  // Theme toggle
+  await check('theme toggle switches, persists and updates aria-pressed', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, colorScheme: 'light' });
+    const page = await ctx.newPage();
+    await page.goto(base, { waitUntil: 'networkidle' });
+    const btn = page.locator('#theme-toggle');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
+    assert.equal(await btn.getAttribute('aria-pressed'), 'false');
+    await btn.click();
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+    assert.equal(await btn.getAttribute('aria-pressed'), 'true');
+    await page.reload({ waitUntil: 'networkidle' });
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+    assert.equal(await page.evaluate(() => localStorage.getItem('tmhs-theme')), 'dark');
+    await ctx.close();
+  });
+
+  await check('follows the system theme until a choice is saved', async () => {
+    const ctx = await browser.newContext({ colorScheme: 'dark' });
+    const page = await ctx.newPage();
+    await page.goto(base, { waitUntil: 'networkidle' });
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+    await ctx.close();
+  });
+
+  // Content stays visible without JS and with reduced motion
+  await check('content is visible with JavaScript disabled', async () => {
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    await page.goto(base);
+    assert.equal(await page.locator('#services h2').isVisible(), true);
+    const opacity = await page.locator('#services .tile').first().evaluate((el) => getComputedStyle(el).opacity);
+    assert.equal(opacity, '1');
+    await ctx.close();
+  });
+
+  // Calculator
+  await check('calculator math and bands (pure functions)', async () => {
+    const { page, ctx } = await open({ width: 1280, height: 900 });
+    const r = await page.evaluate(() => ({
+      pct: TMHSCalc.primeCostPct(31, 32), left: TMHSCalc.leftoverPct(31, 32, 12), money: TMHSCalc.parseMoney('$1,234,567.89'),
+      capped: TMHSCalc.parseMoney('99999999999'), bad: TMHSCalc.parseMoney('abc'),
+      bands: [59, 60, 64, 65, 69, 70].map((n) => TMHSCalc.band(n).key),
+    }));
+    assert.equal(r.pct, 63); assert.equal(r.left, 25); assert.equal(r.money, 1234567); assert.equal(r.capped, 10000000); assert.equal(r.bad, 0);
+    assert.deepEqual(r.bands, ['strong', 'target', 'target', 'watch', 'watch', 'attention']);
+    await ctx.close();
+  });
+
+  await check('calculator updates the readout, band and live summary', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.fill('#calc-revenue', '200000');
+    await page.locator('#calc-food').fill('40');
+    await page.locator('#calc-labor').fill('35');
+    await page.locator('#calc-other').fill('10');
+    assert.equal(await page.locator('#out-prime-pct').textContent(), '75%');
+    assert.equal(await page.locator('#out-prime-usd').textContent(), '$150,000');
+    assert.equal(await page.locator('#out-left-usd').textContent(), '$30,000');
+    assert.equal(await page.locator('#out-band').textContent(), 'Needs attention');
+    await page.waitForTimeout(600);
+    assert.match(await page.locator('#out-summary').textContent(), /Prime cost is 75%, needs attention\./);
+    assert.equal(await page.locator('#calc-revenue').inputValue(), '200,000');
+    await page.fill('#calc-revenue', '');
+    await page.waitForTimeout(600);
+    assert.match(await page.locator('#out-summary').textContent(), /Enter your monthly sales/);
+    await ctx.close();
+  });
+
+  await check('calculator is keyboard operable (slider arrow keys)', async () => {
+    const { page, ctx } = await open({ width: 1280, height: 900 });
+    await page.locator('#calc-food').focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('#calc-food').inputValue(), '32');
+    assert.equal(await page.locator('#calc-food-out').textContent(), '32%');
+    await ctx.close();
+  });
+
+  // Marquee pause control
+  await check('marquee can be paused and resumed', async () => {
+    const { page, ctx } = await open({ width: 1280, height: 900 });
+    const btn = page.locator('#marquee-toggle');
+    await btn.click();
+    assert.equal(await btn.getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('#marquee').evaluate((el) => el.classList.contains('is-paused')), true);
+    assert.equal(await page.locator('.marquee-track').evaluate((el) => getComputedStyle(el).animationPlayState), 'paused');
+    await btn.click();
+    assert.equal(await btn.getAttribute('aria-pressed'), 'false');
+    await ctx.close();
+  });
 
   // 404 page renders styled from a nested path (uses <base>); served here from a rewrite
   await check('404 page has noindex and a link home', async () => {
