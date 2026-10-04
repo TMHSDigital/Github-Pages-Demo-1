@@ -44,9 +44,9 @@ const server = http.createServer((req, res) => {
   await shot('hero.png', { viewport: desk });
   await shot('hero-dark.png', { viewport: desk, theme: 'dark' });
   await shot('services.png', { viewport: { width: 1280, height: 720 }, at: '#services' });
-  await shot('approach.png', { viewport: { width: 1280, height: 560 }, at: '#approach' });
-  await shot('calculator.png', { viewport: { width: 1280, height: 760 }, at: '#calculator' });
-  await shot('calculator-dark.png', { viewport: { width: 1280, height: 760 }, at: '#calculator', theme: 'dark' });
+  await shot('approach.png', { viewport: { width: 1280, height: 720 }, at: '#approach' });
+  await shot('calculator.png', { viewport: { width: 1280, height: 800 }, at: '#calculator' });
+  await shot('calculator-dark.png', { viewport: { width: 1280, height: 800 }, at: '#calculator', theme: 'dark' });
   await shot('mobile.png', { viewport: { width: 390, height: 844 }, scale: 2 });
   await shot('mobile-menu.png', { viewport: { width: 390, height: 844 }, scale: 2, action: (p) => p.locator('.nav-toggle').click() });
 
