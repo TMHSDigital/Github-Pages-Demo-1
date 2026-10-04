@@ -64,6 +64,8 @@ No framework, no runtime dependencies.
 
 ---
 
+<p align="center"><sub><b>PART 1 · THE SITE</b></sub></p>
+
 ## Preview
 
 <sub>The site in both themes. It follows the visitor's system setting and has a manual toggle.</sub>
@@ -124,23 +126,6 @@ No framework, no runtime dependencies.
 
 ---
 
-## Quick start
-
-> [!TIP]
-> There is nothing to install. Any static file server works.
-
-```bash
-git clone https://github.com/TMHSDigital/Github-Pages-Demo-1.git
-cd Github-Pages-Demo-1
-python -m http.server 8000      # or: npx serve
-```
-
-Then open <http://localhost:8000>.
-
-<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
-
----
-
 ## What's on the page
 
 | Section | Purpose |
@@ -183,6 +168,25 @@ Then open <http://localhost:8000>.
 | **Theme** | Follows the system setting until the visitor chooses, then remembers the choice. No flash on load. |
 | **Contrast** | Every text pairing is chosen for WCAG AA and verified by axe in both themes. The bright logo blue is decorative, or used for text only on navy. |
 | **Motion** | Transforms and opacity only, paused or disabled under `prefers-reduced-motion`. Content is fully visible without JavaScript. |
+
+<div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
+
+---
+
+<p align="center"><sub><b>PART 2 · BUILD AND RUN</b></sub></p>
+
+## Quick start
+
+> [!TIP]
+> There is nothing to install. Any static file server works.
+
+```bash
+git clone https://github.com/TMHSDigital/Github-Pages-Demo-1.git
+cd Github-Pages-Demo-1
+python -m http.server 8000      # or: npx serve
+```
+
+Then open <http://localhost:8000>.
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
@@ -263,6 +267,8 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 
 ---
 
+<p align="center"><sub><b>PART 3 · QUALITY AND ROADMAP</b></sub></p>
+
 ## Quality gates
 
 <sub><a href="https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml"><code>ci.yml</code></a> runs on every push and pull request.</sub>
@@ -330,20 +336,26 @@ No framework, no bundler in development and no runtime dependencies. Playwright,
 
 ## Roadmap
 
-<sub>Open work is tracked in <a href="https://github.com/TMHSDigital/Github-Pages-Demo-1/issues">Issues</a>. The last column shows who the next step is waiting on.</sub>
+<sub>Open work is tracked in <a href="https://github.com/TMHSDigital/Github-Pages-Demo-1/issues">Issues</a>, grouped here by what each item is waiting on.</sub>
 
-| Next | Issue | Waiting on |
-| :-- | :-: | :-- |
-| Replace placeholder copy with real content | [#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14) | Owner |
-| Choose a contact method (email or booking link) | [#15](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15) | Owner |
-| Verify the calculator's benchmark bands | [#27](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/27) | Owner |
-| Vector logo | [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16) | Owner (original file) |
-| Manual screen-reader and zoom review | [#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17) | Owner or reviewer |
-| Photography and richer visuals | [#20](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20) | Owner |
-| Repo rename and domain | [#18](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/18) | Decision |
-| TMHS and TMHS Digital brand relationship | [#19](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/19) | Decision |
-| Analytics and privacy decision | [#29](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/29) | Decision |
-| Further performance gains | [#28](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/28) | Open to work |
+**Needs your input**
+
+- [ ] Replace placeholder copy with real content ([#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14))
+- [ ] Choose a contact method, email or booking link ([#15](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15))
+- [ ] Confirm the calculator's benchmark bands ([#27](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/27))
+- [ ] Provide the original vector logo ([#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16))
+- [ ] Add photography and richer visuals ([#20](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20))
+
+**Needs a decision**
+
+- [ ] Rename the repo or move to a custom domain ([#18](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/18))
+- [ ] How TMHS and TMHS Digital relate on the site ([#19](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/19))
+- [ ] Analytics and privacy statement ([#29](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/29))
+
+**Open to work**
+
+- [ ] Manual screen-reader and zoom review ([#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17))
+- [ ] Further performance gains ([#28](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/28))
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
