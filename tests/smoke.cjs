@@ -283,6 +283,40 @@ async function check(name, fn) {
     await ctx.close();
   });
 
+  await check('content stays visible if main.js fails to load', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    await page.route('**/js/main.js', (route) => route.abort());
+    await page.goto(base);
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    const hidden = await page.$$eval('[data-reveal]', (els) => els.filter((el) => getComputedStyle(el).opacity !== '1').length);
+    assert.equal(hidden, 0, `${hidden} sections stayed hidden`);
+    await ctx.close();
+  });
+
+  await check('mobile menu moves focus into the links and closes on an outside click', async () => {
+    const { page, ctx } = await open({ width: 390, height: 844 });
+    await page.locator('.nav-toggle').focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), '#about');
+    await page.mouse.click(200, 700);
+    assert.equal(await page.locator('.nav-toggle').getAttribute('aria-expanded'), 'false');
+    await ctx.close();
+  });
+
+  await check('calculator explains when costs reach 100% of sales', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.locator('#calc-food').fill('50');
+    await page.locator('#calc-labor').fill('45');
+    await page.locator('#calc-other').fill('10');
+    await page.waitForTimeout(600);
+    assert.equal(await page.locator('#out-left-usd').textContent(), '$0');
+    assert.match(await page.locator('#out-summary').textContent(), /add up to 105% of sales, so nothing is left/);
+    await ctx.close();
+  });
+
   // Marquee pause control
   await check('marquee can be paused and resumed', async () => {
     const { page, ctx } = await open({ width: 1280, height: 900 });

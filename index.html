@@ -42,7 +42,7 @@
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 
   <script>
-    /* Pre-paint: apply saved or system theme and flag JS (enables scroll reveals) */
+    /* Pre-paint: apply the saved or system theme; flag that JavaScript is available */
     (function () {
       var t = null;
       try { t = localStorage.getItem('tmhs-theme'); } catch (e) {}
@@ -108,7 +108,7 @@
     </div>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ============ HERO ============ -->
     <section class="hero" aria-labelledby="hero-title">
       <div class="wrap hero-grid">
@@ -182,7 +182,7 @@
         <figure class="quote">
           <!-- TODO(verify): placeholder statement, not a real client testimonial -->
           <blockquote><p>Great hospitality looks effortless because the systems behind it are not.</p></blockquote>
-          <footer>Placeholder statement. A real quote or client testimonial will go here.</footer>
+          <figcaption>Placeholder statement. A real quote or client testimonial will go here.</figcaption>
         </figure>
         <ul class="principles">
             <li><span class="ico"><svg aria-hidden="true"><use href="#i-users"/></svg></span><span><b>Guests first</b><span>Every change should make the experience better, not just cheaper.</span></span></li>
@@ -288,7 +288,7 @@
             <span class="band" id="out-band">On target</span>
             <dl class="stats">
               <div><dt>Prime cost</dt><dd id="out-prime-usd">$63,000</dd></div>
-              <div><dt>Left after costs</dt><dd id="out-left-usd">$25,000</dd></div>
+              <div><dt>Left after these costs</dt><dd id="out-left-usd">$25,000</dd></div>
             </dl>
             <p class="calc-summary" id="out-summary" role="status" aria-live="polite"></p>
             <button type="button" class="reset" id="calc-reset">Reset to example values</button>

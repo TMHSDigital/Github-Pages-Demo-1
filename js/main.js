@@ -13,9 +13,18 @@ const CONTACT_EMAIL = '';
   const nav = document.getElementById('nav');
   const setMenu = (open) => {
     nav.classList.toggle('open', open);
+    root.classList.toggle('menu-open', open);
     toggle.setAttribute('aria-expanded', String(open));
   };
-  toggle.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+  toggle.addEventListener('click', () => {
+    const open = !nav.classList.contains('open');
+    setMenu(open);
+    // the menu sits before its button in the DOM, so bring keyboard users into it
+    if (open) nav.querySelector('a').focus();
+  });
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !toggle.contains(e.target)) setMenu(false);
+  });
   nav.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && nav.classList.contains('open')) {
@@ -24,9 +33,12 @@ const CONTACT_EMAIL = '';
     }
   });
 
+  window.matchMedia('(min-width: 921px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+
   /* Reveal on scroll (content is visible by default without JS) */
   const reveals = document.querySelectorAll('[data-reveal]');
   if (!reduced && 'IntersectionObserver' in window) {
+    root.classList.add('reveal-on'); // CSS hides [data-reveal] only from here on
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
         if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target); }
@@ -51,6 +63,13 @@ const CONTACT_EMAIL = '';
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     map.forEach((_, id) => { const s = document.getElementById(id); if (s) spy.observe(s); });
+    // back at the hero, no section is current
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      new IntersectionObserver(([en]) => {
+        if (en.isIntersecting && en.intersectionRatio > 0.5) links.forEach((a) => a.removeAttribute('aria-current'));
+      }, { threshold: [0.5, 0.75] }).observe(hero);
+    }
   }
 
   /* Header shadow once the page has scrolled */
@@ -61,12 +80,25 @@ const CONTACT_EMAIL = '';
     onScroll();
   }
 
-  /* Hero scene pointer parallax (fine pointers only) */
+  /* Pause decorative loops while they are off screen */
   const scene = document.getElementById('scene');
+  const marquee = document.getElementById('marquee');
+  let sceneVisible = true;
+  if ('IntersectionObserver' in window) {
+    const vis = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        en.target.classList.toggle('is-offscreen', !en.isIntersecting);
+        if (en.target === scene) sceneVisible = en.isIntersecting;
+      });
+    });
+    [scene, marquee].forEach((el) => el && vis.observe(el));
+  }
+
+  /* Hero scene pointer parallax (fine pointers only, while the scene is visible) */
   if (scene && !reduced && window.matchMedia('(pointer: fine)').matches) {
     let ticking = false;
     window.addEventListener('pointermove', (e) => {
-      if (ticking) return;
+      if (ticking || !sceneVisible) return;
       ticking = true;
       requestAnimationFrame(() => {
         const r = scene.getBoundingClientRect();
@@ -80,7 +112,6 @@ const CONTACT_EMAIL = '';
   }
 
   /* Marquee pause control */
-  const marquee = document.getElementById('marquee');
   const pause = document.getElementById('marquee-toggle');
   if (marquee && pause) {
     pause.addEventListener('click', () => {
@@ -100,5 +131,4 @@ const CONTACT_EMAIL = '';
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
-  root.classList.add('ready');
 })();

@@ -88,7 +88,11 @@ window.TMHSCalc = TMHSCalc;
 
     clearTimeout(summaryTimer);
     summaryTimer = setTimeout(() => {
-      const money = sales ? ' About ' + TMHSCalc.usd((sales * leftPct) / 100) + ' is left after these costs.' : ' Enter your monthly sales to see dollar amounts.';
+      const total = food + labor + other;
+      let money;
+      if (!sales) money = ' Enter your monthly sales to see dollar amounts.';
+      else if (total >= 100) money = ' These costs add up to ' + total + '% of sales, so nothing is left for rent, other overheads or profit.';
+      else money = ' About ' + TMHSCalc.usd((sales * leftPct) / 100) + ' is left after these costs.';
       $('out-summary').textContent = 'Prime cost is ' + pct + '%, ' + band.label.toLowerCase() + '.' + money;
     }, 450);
   };

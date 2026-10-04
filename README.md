@@ -39,7 +39,7 @@ No framework, no runtime dependencies.
     <td width="25%" align="center" valign="top"><h3>2 themes</h3><sub>Light and dark, following<br>the system setting</sub></td>
     <td width="25%" align="center" valign="top"><h3>0 requests</h3><sub>No third-party requests,<br>cookies or analytics</sub></td>
     <td width="25%" align="center" valign="top"><h3>0 violations</h3><sub>axe-core, WCAG 2.2 A/AA,<br>in both themes</sub></td>
-    <td width="25%" align="center" valign="top"><h3>26 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
+    <td width="25%" align="center" valign="top"><h3>29 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
   </tr>
 </table>
 
@@ -279,8 +279,8 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 | **JavaScript lint** | ESLint | No errors |
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
 | **Features** | Playwright | Theme toggle persists and follows the system; calculator maths, live readout, caret-safe formatting and reset; marquee pauses; one header call to action per layout; valid JSON-LD |
-| **No JavaScript** | Playwright | All content visible, mobile nav links reachable, dead controls hidden |
-| **Keyboard** | Playwright | Skip link first, menu and FAQ operable, Escape returns focus, visible focus rings |
+| **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
+| **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, FAQ operable, visible focus rings |
 | **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion |
 | **Performance and quality** | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
 | **Links** | internal and external checkers | No broken links |
