@@ -34,36 +34,15 @@ The official marketing site: a fast, accessible, single-page build with no frame
 
 ## Contents
 
-<table width="100%">
-  <tr>
-    <td width="33%" valign="top">
+<div align="center">
 
-**The site**<br>
-[Preview](#preview)<br>
-[What's on the page](#whats-on-the-page)<br>
-[Design system](#design-system)
+**The site** &nbsp;·&nbsp; [Preview](#preview) &nbsp;·&nbsp; [What's on the page](#whats-on-the-page) &nbsp;·&nbsp; [Design system](#design-system)
 
-</td>
-    <td width="33%" valign="top">
+**Build and run** &nbsp;·&nbsp; [Quick start](#quick-start) &nbsp;·&nbsp; [Project structure](#project-structure) &nbsp;·&nbsp; [Customize](#customize) &nbsp;·&nbsp; [Deployment](#deployment)
 
-**Build and run**<br>
-[Quick start](#quick-start)<br>
-[Project structure](#project-structure)<br>
-[Customize](#customize)<br>
-[Deployment](#deployment)
+**Quality** &nbsp;·&nbsp; [Quality gates](#quality-gates) &nbsp;·&nbsp; [Tech stack](#tech-stack) &nbsp;·&nbsp; [Privacy](#privacy) &nbsp;·&nbsp; [Roadmap](#roadmap)
 
-</td>
-    <td width="33%" valign="top">
-
-**Quality**<br>
-[Quality gates](#quality-gates)<br>
-[Tech stack](#tech-stack)<br>
-[Privacy](#privacy)<br>
-[Roadmap](#roadmap)
-
-</td>
-  </tr>
-</table>
+</div>
 
 <br>
 
@@ -129,12 +108,12 @@ Tokens live at the top of [`css/style.css`](css/style.css) and follow the TM Hos
 
 <table width="100%">
   <tr>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-0E1A33?style=for-the-badge" alt="Navy swatch"><br><sub><b>Navy</b><br><code>#0E1A33</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-203164?style=for-the-badge" alt="Brand navy swatch"><br><sub><b>Brand</b><br><code>#203164</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-336193?style=for-the-badge" alt="Brand blue swatch"><br><sub><b>Brand&nbsp;blue</b><br><code>#336193</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-1F4E8C?style=for-the-badge" alt="Button blue swatch"><br><sub><b>Action</b><br><code>#1F4E8C</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-00A5F6?style=for-the-badge" alt="Logo blue swatch"><br><sub><b>Logo&nbsp;blue</b><br><code>#00A5F6</code></sub></td>
-    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-F7F8FA?style=for-the-badge" alt="Background swatch"><br><sub><b>Canvas</b><br><code>#F7F8FA</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-0E1A33?style=for-the-badge" width="120" height="36" alt="Navy swatch"><br><sub><b>Navy</b><br><code>#0E1A33</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-203164?style=for-the-badge" width="120" height="36" alt="Brand navy swatch"><br><sub><b>Brand</b><br><code>#203164</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-336193?style=for-the-badge" width="120" height="36" alt="Brand blue swatch"><br><sub><b>Brand&nbsp;blue</b><br><code>#336193</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-1F4E8C?style=for-the-badge" width="120" height="36" alt="Button blue swatch"><br><sub><b>Action</b><br><code>#1F4E8C</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-00A5F6?style=for-the-badge" width="120" height="36" alt="Logo blue swatch"><br><sub><b>Logo&nbsp;blue</b><br><code>#00A5F6</code></sub></td>
+    <td align="center" width="16%"><img src="https://img.shields.io/badge/%20-%20-F7F8FA?style=for-the-badge" width="120" height="36" alt="Background swatch"><br><sub><b>Canvas</b><br><code>#F7F8FA</code></sub></td>
   </tr>
 </table>
 
