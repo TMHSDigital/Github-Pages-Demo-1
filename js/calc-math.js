@@ -7,16 +7,31 @@ const TMHSCalc = (() => {
   const MAX_SALES = 10000000;
   const ML_PER_OZ = 29.5735;
 
-  // Whole dollars, for monthly sales
+  // Normalises typed numbers to a plain decimal string: "1,234.56" and "1.234,56" both become
+  // "1234.56", and a lone comma before one or two digits is a decimal comma ("4,20" is 4.20)
+  const toDecimal = (text) => {
+    const s = String(text).replace(/[^\d.,]/g, '');
+    const comma = s.lastIndexOf(',');
+    if (comma > s.lastIndexOf('.') && /^,\d{1,2}$/.test(s.slice(comma))) {
+      return s.slice(0, comma).replace(/[.,]/g, '') + '.' + s.slice(comma + 1);
+    }
+    return s.replace(/,/g, '');
+  };
+
+  // Whole dollars, for monthly sales. Accepts shorthand: "$120k" is 120,000 and "1.5M" is 1,500,000.
+  const SUFFIX = { k: 1e3, m: 1e6 };
   const parseMoney = (text) => {
-    const whole = String(text).split('.')[0]; // ignore cents
-    const n = parseInt(whole.replace(/[^\d]/g, ''), 10);
-    return Number.isFinite(n) ? Math.min(n, MAX_SALES) : 0;
+    const raw = String(text).trim().toLowerCase();
+    const suffix = /\d\s*([km])\b/.exec(raw);
+    const n = parseFloat(toDecimal(raw));
+    if (!Number.isFinite(n)) return 0;
+    const dollars = suffix ? Math.round(n * SUFFIX[suffix[1]]) : Math.floor(n); // plain amounts ignore cents
+    return Math.min(dollars, MAX_SALES);
   };
 
   // Dollars and cents (or ounces), for ingredient costs, prices and pours
   const parseAmount = (text, max = 100000) => {
-    const n = parseFloat(String(text).replace(/[^\d.]/g, ''));
+    const n = parseFloat(toDecimal(text));
     return Number.isFinite(n) ? Math.min(Math.round(n * 100) / 100, max) : 0;
   };
 

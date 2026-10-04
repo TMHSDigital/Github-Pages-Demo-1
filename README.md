@@ -17,7 +17,7 @@ No framework, no runtime dependencies.
 
 <br>
 
-[![Deploy](https://img.shields.io/github/deployments/TMHSDigital/Github-Pages-Demo-1/github-pages?label=deploy&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/deployments/github-pages)
+[![Deploy](https://img.shields.io/github/deployments/TMHSDigital/Github-Pages-Demo-1/github-pages?label=deploy&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml)
 [![CI](https://img.shields.io/github/actions/workflow/status/TMHSDigital/Github-Pages-Demo-1/ci.yml?branch=main&label=ci&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml)
 [![Lighthouse accessibility](https://img.shields.io/badge/lighthouse_a11y-100-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![Lighthouse performance](https://img.shields.io/badge/lighthouse_perf-95%2B-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
@@ -295,7 +295,7 @@ npm run build && cd _site && python -m http.server 8000
 | **HTML validity** | `html-validate` | No errors |
 | **JavaScript lint** | ESLint | No errors |
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
-| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
+| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k) and decimal-comma input, per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
 | **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
 | **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, toolkit tabs follow the ARIA arrow/Home/End pattern, focus stays put when rows are added or removed, FAQ operable, visible focus rings |
 | **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |

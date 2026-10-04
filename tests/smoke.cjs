@@ -283,6 +283,41 @@ async function check(name, fn) {
     await ctx.close();
   });
 
+  await check('shorthand sales, decimal commas and caps show the value actually used', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    await page.goto(base, { waitUntil: 'networkidle' });
+    // "120k" and "1.5m" can be typed key by key, update live and are tidied on leaving the field
+    const input = page.locator('#calc-revenue');
+    await input.fill('');
+    await input.pressSequentially('120k');
+    assert.equal(await input.inputValue(), '120k');
+    assert.equal(await page.locator('#out-prime-usd').textContent(), '$75,600');
+    await page.keyboard.press('Tab');
+    assert.equal(await input.inputValue(), '120,000');
+    await input.fill('');
+    await input.pressSequentially('1.5m');
+    await page.keyboard.press('Tab');
+    assert.equal(await input.inputValue(), '1,500,000');
+    // a decimal comma is a decimal point, and an over-cap amount shows the capped value it is costed at
+    await page.locator('#tab-plate').click();
+    const cost = page.locator('#plate-rows [data-k="cost"]').first();
+    await cost.fill('4,20');
+    assert.equal(await page.locator('#plate-out-cost').textContent(), '$6.20');
+    await page.keyboard.press('Tab');
+    assert.equal(await cost.inputValue(), '4.20');
+    await cost.fill('6000');
+    await page.keyboard.press('Tab');
+    assert.equal(await cost.inputValue(), '1000.00');
+    assert.equal(await page.locator('#plate-out-cost').textContent(), '$1,002.00');
+    // the shared link reopens exactly what is on screen
+    const link = await page.evaluate(() => window.TMHSTools.shareUrl());
+    await page.goto(link, { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('#plate-rows [data-k="cost"]').first().inputValue(), '1000.00');
+    assert.equal(await page.locator('#plate-out-cost').textContent(), '$1,002.00');
+    await ctx.close();
+  });
+
   await check('content stays visible if main.js fails to load', async () => {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const page = await ctx.newPage();
@@ -417,6 +452,13 @@ async function check(name, fn) {
     assert.ok(Math.abs(r.price - 20.6667) < 1e-3); assert.equal(r.noTarget, 0);
     assert.ok(Math.abs(r.pct - 28.1818) < 1e-3); assert.equal(r.noPrice, 0);
     assert.equal(r.amount, 1234.57); assert.equal(r.capped, 20);
+    // shorthand sales and decimal commas are read as meant, not digit by digit
+    const p = await page.evaluate(() => ({
+      money: ['$120k', '1.5M', '120 K', '100,000', '2.5k'].map(TMHSCalc.parseMoney),
+      amounts: ['4,20', '12,5', '1,234', '1,234.56', '1.234,56', '.5'].map((s) => TMHSCalc.parseAmount(s)),
+    }));
+    assert.deepEqual(p.money, [120000, 1500000, 120000, 100000, 2500]);
+    assert.deepEqual(p.amounts, [4.2, 12.5, 1234, 1234.56, 1234.56, 0.5]);
     assert.deepEqual(r.vs, ['strong', 'watch', 'attention']);
     assert.deepEqual(r.wi, { pointMonthly: 2000, pointYearly: 24000, gapPts: 15, gapYearly: 360000 });
     assert.equal(r.under.gapPts, 0);

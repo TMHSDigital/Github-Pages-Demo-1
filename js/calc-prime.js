@@ -102,8 +102,16 @@
     }, 450);
   };
 
-  // Reformat with thousands separators while keeping the caret after the same digit
+  const tidyRevenue = () => {
+    const n = C.parseMoney(revenue.value);
+    revenue.value = n ? n.toLocaleString('en-US') : '';
+  };
+
+  // Reformat with thousands separators while keeping the caret after the same digit.
+  // Shorthand ("120k", "1.5m") or a decimal point is left as typed until the field is left,
+  // so it can be finished; the numbers update live either way.
   revenue.addEventListener('input', () => {
+    if (/[.km]/i.test(revenue.value)) { update(); return; }
     const caret = revenue.selectionStart ?? revenue.value.length;
     const digitsBefore = revenue.value.slice(0, caret).replace(/[^\d]/g, '').length;
     const n = C.parseMoney(revenue.value);
@@ -115,6 +123,7 @@
     if (document.activeElement === revenue) revenue.setSelectionRange(pos, pos);
     update();
   });
+  revenue.addEventListener('change', tidyRevenue);
   Object.values(ranges).forEach((el) => el.addEventListener('input', update));
 
   const defaults = { revenue: revenue.defaultValue, food: ranges.food.defaultValue, labor: ranges.labor.defaultValue, other: ranges.other.defaultValue };
@@ -138,7 +147,7 @@
     label: 'prime cost',
     get: () => ({ sales: current.sales, food: current.food, labor: current.labor, other: current.other }),
     set: (s) => {
-      if (s.sales != null) { const n = C.parseMoney(s.sales); revenue.value = n ? n.toLocaleString('en-US') : ''; }
+      if (s.sales != null) { revenue.value = String(s.sales); tidyRevenue(); }
       for (const k of Object.keys(ranges)) if (s[k] != null) clampRange(ranges[k], s[k]);
       update();
     },

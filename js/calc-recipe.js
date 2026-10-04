@@ -6,6 +6,9 @@
 (() => {
   const C = window.TMHSCalc;
   const MAX_ROWS = 12;
+  // One cap per field, used for typing, tidying on blur and reading shared links alike
+  const MAX_PRICE = 10000; // menu or drink price
+  const MAX_EXTRA = 1000; // mixers, garnish and ice
   const SIZES = [375, 700, 750, 1000, 1750];
   const nearestSize = (ml) => SIZES.reduce((a, b) => (Math.abs(b - ml) < Math.abs(a - ml) ? b : a));
   // share links store rows as name_cost*name_cost, so those two characters are kept out of names
@@ -19,8 +22,9 @@
       costWord: 'food cost',
       item: 'plate',
       fields: { name: 'name', cost: 'cost' },
+      max: { cost: 1000 },
       rowCost: (r) => r.cost,
-      fromParts: ([name, cost]) => ({ name: cleanName(name), cost: C.parseAmount(cost, 1000) }),
+      fromParts: ([name, cost], max) => ({ name: cleanName(name), cost: C.parseAmount(cost, max.cost) }),
       toParts: (r) => [r.name, r.cost],
       blank: () => ({ name: '', cost: 0 }),
       defaults: () => ({
@@ -36,9 +40,10 @@
       costWord: 'pour cost',
       item: 'drink',
       fields: { name: 'name', price: 'bottle price', ml: 'bottle size', oz: 'pour in ounces' },
+      max: { price: 5000, oz: 20 },
       rowCost: (r) => C.pourCost(r.price, r.ml, r.oz),
-      fromParts: ([name, price, ml, oz]) => ({
-        name: cleanName(name), price: C.parseAmount(price, 5000), ml: nearestSize(C.parseAmount(ml, 5000) || 750), oz: C.parseAmount(oz, 20),
+      fromParts: ([name, price, ml, oz], max) => ({
+        name: cleanName(name), price: C.parseAmount(price, max.price), ml: nearestSize(C.parseAmount(ml, 5000) || 750), oz: C.parseAmount(oz, max.oz),
       }),
       toParts: (r) => [r.name, r.price, r.ml, r.oz],
       blank: () => ({ name: '', price: 0, ml: 750, oz: 0 }),
@@ -93,8 +98,8 @@
 
     const update = () => {
       state.target = +target.value;
-      state.price = C.parseAmount(price.value);
-      if (extra) state.extra = C.parseAmount(extra.value, 1000);
+      state.price = C.parseAmount(price.value, MAX_PRICE);
+      if (extra) state.extra = C.parseAmount(extra.value, MAX_EXTRA);
 
       $('target-out').textContent = target.value + '%';
       target.setAttribute('aria-valuetext', target.value + '% ' + cfg.costWord);
@@ -141,13 +146,17 @@
       const k = el.dataset.k;
       if (k === 'name') { r.name = cleanName(el.value); labelRow(li, +li.dataset.i); }
       else if (k === 'ml') r.ml = +el.value;
-      else r[k] = C.parseAmount(el.value, k === 'oz' ? 20 : 5000);
+      else r[k] = C.parseAmount(el.value, cfg.max[k]);
       update();
     });
-    // Tidy amounts to cents once the visitor leaves a field
+    // Once the visitor leaves a field, show the amount exactly as it is used: tidied to cents
+    // (ounces as typed), with a decimal comma read as a point and anything over the cap clamped
+    const capFor = (el) => (el === price ? MAX_PRICE : el === extra ? MAX_EXTRA : cfg.max[el.dataset.k]);
     panel.addEventListener('focusout', (e) => {
       const el = e.target;
-      if (el.matches('[inputmode="decimal"]:not([data-k="oz"])') && el.value.trim()) el.value = money2(C.parseAmount(el.value, 100000)) || '';
+      if (!el.matches('[inputmode="decimal"]') || !el.value.trim()) return;
+      const v = C.parseAmount(el.value, capFor(el));
+      el.value = el.dataset.k === 'oz' ? plain(v) : money2(v);
     });
     list.addEventListener('click', (e) => {
       const del = e.target.closest('.row-del');
@@ -187,10 +196,10 @@
         target: state.target, price: state.price || '', ...(extra ? { extra: state.extra || '' } : {}),
       }),
       set: (s) => apply({
-        rows: typeof s.rows === 'string' && s.rows ? s.rows.split('*').map((p) => cfg.fromParts(p.split('_'))) : undefined,
+        rows: typeof s.rows === 'string' && s.rows ? s.rows.split('*').map((p) => cfg.fromParts(p.split('_'), cfg.max)) : undefined,
         target: s.target != null ? C.parseAmount(s.target, 100) : undefined,
-        price: s.price != null ? C.parseAmount(s.price) : undefined,
-        extra: s.extra != null ? C.parseAmount(s.extra, 1000) : undefined,
+        price: s.price != null ? C.parseAmount(s.price, MAX_PRICE) : undefined,
+        extra: s.extra != null ? C.parseAmount(s.extra, MAX_EXTRA) : undefined,
       }),
       summary: () => {
         const lines = state.rows.filter((r) => r.name || cfg.rowCost(r)).map((r) => '- ' + (r.name || 'Ingredient') + ': ' + C.usd2(cfg.rowCost(r)));
