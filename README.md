@@ -39,7 +39,7 @@ No framework, no runtime dependencies.
     <td width="25%" align="center" valign="top"><h3>2 themes</h3><sub>Light and dark, following<br>the system setting</sub></td>
     <td width="25%" align="center" valign="top"><h3>0 requests</h3><sub>No third-party requests,<br>cookies or analytics</sub></td>
     <td width="25%" align="center" valign="top"><h3>0 violations</h3><sub>axe-core, WCAG 2.2 A/AA,<br>in both themes</sub></td>
-    <td width="25%" align="center" valign="top"><h3>22 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
+    <td width="25%" align="center" valign="top"><h3>26 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
   </tr>
 </table>
 
@@ -130,15 +130,15 @@ No framework, no runtime dependencies.
 
 | Section | Purpose |
 | :-- | :-- |
-| **Header** | Sticky glass bar with section links, a scroll-aware current-section indicator and a dark/light toggle. |
+| **Header** | Sticky glass bar with section links, a current-section indicator, a reading-progress line and a dark/light toggle with a circular reveal. |
 | **Hero** | Value proposition, two calls to action and an animated brand scene (orbiting light, drifting rings, pointer parallax on fine pointers). |
 | **Focus marquee** | Pausable strip of service areas and venue types. It names no clients. |
 | **About** | The story behind the brand, a pull quote and three principles. |
 | **Services** | Bento grid: concept and positioning, operations, financial performance, growth and openings. |
 | **Approach** | Listen, diagnose, build, sustain, joined by a progress line that fills as you scroll. |
-| **Prime cost calculator** | Sliders and a live gauge for food, labor and other costs, with a rule-of-thumb band. Runs entirely in the browser. |
-| **Selected work** | Case-study cards, currently labeled placeholders. |
-| **FAQ** | Native `<details>` accordion, fully keyboard operable. |
+| **Prime cost calculator** | Sliders and a live gauge for food, labor and other costs, with a rule-of-thumb band and a reset. Runs entirely in the browser. |
+| **Selected work** | Case-study cards with an icon and topic per project, currently labeled placeholders. |
+| **FAQ** | Two-column layout: a short intro with an "Ask something else" link beside a native `<details>` accordion. |
 | **Contact** | LinkedIn and Instagram, with an optional `mailto:` once an email is configured. |
 | **404** | Branded error page that resolves its assets correctly from any nested URL. |
 
@@ -164,7 +164,7 @@ No framework, no runtime dependencies.
 | Principle | How it shows up |
 | :-- | :-- |
 | **Tokens** | Fluid type and spacing scales, elevation and glow tokens, with complete light and dark sets. |
-| **Type** | Fraunces (with true italics for accent words) for headings and Inter for text, both self-hosted variable fonts. |
+| **Type** | Fraunces (with true italics for accent words) for headings and Inter for text: self-hosted variable fonts, subset to Latin and trimmed to the weights used (149 KB in total). |
 | **Theme** | Follows the system setting until the visitor chooses, then remembers the choice. No flash on load. |
 | **Contrast** | Every text pairing is chosen for WCAG AA and verified by axe in both themes. The bright logo blue is decorative, or used for text only on navy. |
 | **Motion** | Transforms and opacity only, paused or disabled under `prefers-reduced-motion`. Content is fully visible without JavaScript. |
@@ -251,7 +251,7 @@ Then open <http://localhost:8000>.
 
 ## Deployment
 
-Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS into one file, minifies the scripts and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
+Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
 
 <details>
 <summary><b>Preview the published build locally</b></summary>
@@ -278,7 +278,8 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 | **HTML validity** | `html-validate` | No errors |
 | **JavaScript lint** | ESLint | No errors |
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
-| **Features** | Playwright | Theme toggle persists and follows the system; calculator maths and live readout; marquee pauses; content visible with JavaScript off |
+| **Features** | Playwright | Theme toggle persists and follows the system; calculator maths, live readout, caret-safe formatting and reset; marquee pauses; one header call to action per layout; valid JSON-LD |
+| **No JavaScript** | Playwright | All content visible, mobile nav links reachable, dead controls hidden |
 | **Keyboard** | Playwright | Skip link first, menu and FAQ operable, Escape returns focus, visible focus rings |
 | **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion |
 | **Performance and quality** | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
@@ -355,7 +356,6 @@ No framework, no bundler in development and no runtime dependencies. Playwright,
 **Open to work**
 
 - [ ] Manual screen-reader and zoom review ([#17](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/17))
-- [ ] Further performance gains ([#28](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/28))
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
