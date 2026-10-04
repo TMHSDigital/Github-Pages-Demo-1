@@ -65,7 +65,17 @@
     }
   };
 
+  // Say why a sales entry can't be used (a minus sign, scientific notation) instead of guessing
+  const flagRevenue = () => {
+    const issue = C.moneyIssue(revenue.value);
+    $('calc-revenue-issue').textContent = issue;
+    if (issue) revenue.setAttribute('aria-invalid', 'true');
+    else revenue.removeAttribute('aria-invalid');
+    return issue;
+  };
+
   const update = () => {
+    flagRevenue();
     const sales = C.parseMoney(revenue.value);
     const food = +ranges.food.value;
     const labor = +ranges.labor.value;
@@ -103,15 +113,16 @@
   };
 
   const tidyRevenue = () => {
+    if (flagRevenue()) return; // leave it as typed so it can be corrected
     const n = C.parseMoney(revenue.value);
     revenue.value = n ? n.toLocaleString('en-US') : '';
   };
 
   // Reformat with thousands separators while keeping the caret after the same digit.
-  // Shorthand ("120k", "1.5m") or a decimal point is left as typed until the field is left,
-  // so it can be finished; the numbers update live either way.
+  // Shorthand ("120k", "1.5m"), a decimal point or an entry that needs correcting is left as
+  // typed until the field is left, so it can be finished; the numbers update live either way.
   revenue.addEventListener('input', () => {
-    if (/[.km]/i.test(revenue.value)) { update(); return; }
+    if (/[.km]/i.test(revenue.value) || C.moneyIssue(revenue.value)) { update(); return; }
     const caret = revenue.selectionStart ?? revenue.value.length;
     const digitsBefore = revenue.value.slice(0, caret).replace(/[^\d]/g, '').length;
     const n = C.parseMoney(revenue.value);

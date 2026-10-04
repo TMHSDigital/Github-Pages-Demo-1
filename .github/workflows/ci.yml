@@ -23,6 +23,8 @@ jobs:
           cache: npm
       - name: Install pinned tooling
         run: npm ci
+      - name: Calculator maths unit tests
+        run: npm run test:unit
       - name: Calculator pages match the home page
         run: node scripts/sync-tool-pages.cjs --check
       - name: Validate HTML

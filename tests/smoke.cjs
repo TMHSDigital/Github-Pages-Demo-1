@@ -300,6 +300,21 @@ async function check(name, fn) {
     await input.pressSequentially('1.5m');
     await page.keyboard.press('Tab');
     assert.equal(await input.inputValue(), '1,500,000');
+    // dots grouping thousands are thousands, not cents (#34)
+    await input.fill('120.000');
+    assert.equal(await page.locator('#out-prime-usd').textContent(), '$75,600');
+    await page.keyboard.press('Tab');
+    assert.equal(await input.inputValue(), '120,000');
+    // a negative amount is explained and left as typed, not silently made positive
+    await input.fill('-5000');
+    assert.match(await page.locator('#calc-revenue-issue').textContent(), /negative/);
+    assert.equal(await input.getAttribute('aria-invalid'), 'true');
+    assert.equal(await page.locator('#out-prime-usd').textContent(), '$0');
+    await page.keyboard.press('Tab');
+    assert.equal(await input.inputValue(), '-5000');
+    await input.fill('100,000');
+    assert.equal(await page.locator('#calc-revenue-issue').textContent(), '');
+    assert.equal(await input.getAttribute('aria-invalid'), null);
     // a decimal comma is a decimal point, and an over-cap amount shows the capped value it is costed at
     await page.locator('#tab-plate').click();
     const cost = page.locator('#plate-rows [data-k="cost"]').first();

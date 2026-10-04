@@ -23,9 +23,12 @@ npm ci                              # pinned tooling, only needed to run checks 
 ## Before you commit
 
 ```bash
-npm run check     # html-validate, ESLint, then layout, keyboard, theme, calculator and axe checks on the source and the published build
+npm run test:unit # calculator maths only, in Node: no browser, under a second
+npm run check     # unit tests, html-validate, ESLint, then layout, keyboard, theme, calculator and axe checks on the source and the published build
 npm run links     # external link check
 ```
+
+If you change `js/calc-math.js`, add cases to the tables in `tests/calc-math.test.cjs`.
 
 If you change the header, footer, icon sprite or a calculator in `index.html`, run `npm run sync` so the pages in `tools/` match (CI checks this).
 

@@ -40,7 +40,7 @@ No framework, no runtime dependencies.
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>2&nbsp;themes</h3><sub>Light&nbsp;and&nbsp;dark,<br>follows&nbsp;your&nbsp;system</sub></td>
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;requests</h3><sub>No&nbsp;third&#8209;party&nbsp;calls,<br>cookies&nbsp;or&nbsp;analytics</sub></td>
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;violations</h3><sub>axe&#8209;core,&nbsp;WCAG&nbsp;2.2&nbsp;AA,<br>in&nbsp;both&nbsp;themes</sub></td>
-    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>48&nbsp;checks</h3><sub>Browser&nbsp;tests&nbsp;run<br>on&nbsp;every&nbsp;push</sub></td>
+    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>61&nbsp;checks</h3><sub>Browser&nbsp;tests,&nbsp;plus&nbsp;unit&nbsp;tests,<br>on&nbsp;every&nbsp;push</sub></td>
   </tr>
 </table>
 
@@ -249,7 +249,9 @@ Then open <http://localhost:8000>.
 ├── assets/
 │   ├── fonts/               Self-hosted Fraunces (upright and italic) and Inter, latin variable woff2
 │   └── images/              Logo, small logo, favicon, apple-touch icon, social card
-├── tests/smoke.cjs          Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
+├── tests/
+│   ├── calc-math.test.cjs   Unit tests for the calculator maths (node:test, no browser)
+│   └── smoke.cjs            Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
 ├── scripts/
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
 │   ├── sync-tool-pages.cjs  Copies the shared header, footer, sprite and tool markup from index.html into tools/*/
@@ -296,10 +298,11 @@ npm run build && cd _site && python -m http.server 8000
 
 | Gate | Tool | Standard |
 | :-- | :-- | :-- |
+| **Calculator maths** | `node:test` | Table-driven unit tests for every calculation and input parser, run first |
 | **HTML validity** | `html-validate` | No errors |
 | **JavaScript lint** | ESLint | No errors |
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
-| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k) and decimal-comma input, per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
+| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k), decimal-comma and dot-grouped (120.000) input, negative sales flagged, per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
 | **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
 | **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, toolkit tabs follow the ARIA arrow/Home/End pattern, focus stays put when rows are added or removed, FAQ operable, visible focus rings |
 | **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |
@@ -313,7 +316,8 @@ npm run build && cd _site && python -m http.server 8000
 
 ```bash
 npm ci            # pinned tooling; tests use your installed Chrome
-npm run check     # HTML validation, lint, tests on the source and on the published build
+npm run test:unit # calculator maths only, no browser needed
+npm run check     # unit tests, HTML validation, lint, browser tests on the source and on the published build
 npm run links     # external link check
 ```
 

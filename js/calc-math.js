@@ -18,12 +18,24 @@ const TMHSCalc = (() => {
     return s.replace(/,/g, '');
   };
 
+  // Sales that can't be meant as typed: a minus sign or scientific notation. Returns why, or ''.
+  const moneyIssue = (text) => {
+    const raw = String(text).trim();
+    if (/(^|[^\d\s])\s*-\s*\d/.test(raw)) return 'Sales can’t be negative. Enter the amount without a minus sign.';
+    if (/\d\s*e\s*[+-]?\d/i.test(raw)) return 'Type the full amount, for example 1,000,000 or 1m.';
+    return '';
+  };
+
   // Whole dollars, for monthly sales. Accepts shorthand: "$120k" is 120,000 and "1.5M" is 1,500,000.
+  // Dots grouping thousands ("120.000", "1.234.567") read as thousands, since sales has no cents.
   const SUFFIX = { k: 1e3, m: 1e6 };
+  const DOT_THOUSANDS = /^\d{1,3}(\.\d{3})+$/;
   const parseMoney = (text) => {
     const raw = String(text).trim().toLowerCase();
+    if (moneyIssue(raw)) return 0;
     const suffix = /\d\s*([km])\b/.exec(raw);
-    const n = parseFloat(toDecimal(raw));
+    const plain = toDecimal(raw);
+    const n = parseFloat(!suffix && DOT_THOUSANDS.test(plain) ? plain.replace(/\./g, '') : plain);
     if (!Number.isFinite(n)) return 0;
     const dollars = suffix ? Math.round(n * SUFFIX[suffix[1]]) : Math.floor(n); // plain amounts ignore cents
     return Math.min(dollars, MAX_SALES);
@@ -71,7 +83,7 @@ const TMHSCalc = (() => {
   const usd2 = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const pct1 = (n) => (Math.round(n * 10) / 10).toLocaleString('en-US') + '%';
 
-  return { parseMoney, parseAmount, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW };
+  return { parseMoney, moneyIssue, parseAmount, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW };
 })();
 
 window.TMHSCalc = TMHSCalc;
