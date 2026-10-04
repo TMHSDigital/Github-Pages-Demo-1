@@ -21,6 +21,12 @@
   --brand-2: #336193;
   --logo-blue: #00A5F6;
 
+  /* Calculator result bands (shown on the navy result panel in both themes) */
+  --band-strong: #6EE7B7;
+  --band-target: #86CCF8;
+  --band-watch: #FCD34D;
+  --band-attention: #FCA5A5;
+
   /* Fluid type scale */
   --step--1: clamp(.8rem, .78rem + .1vw, .875rem);
   --step-0: clamp(1rem, .97rem + .15vw, 1.0625rem);
@@ -71,6 +77,11 @@
   --on-dark-soft: #C3CFE6;
   --on-dark-accent: #86CCF8;
   --grain-opacity: .035;
+  /* Cost breakdown bar */
+  --seg-food: #00A5F6;
+  --seg-labor: #1F4E8C;
+  --seg-other: #9AA9C6;
+  --seg-left: #2FB37E;
 }
 
 [data-theme="dark"] {
@@ -96,4 +107,7 @@
   --btn-shadow: 0 10px 28px -10px rgba(0, 165, 246, .6);
   --dark-section: #0F1D3F;
   --grain-opacity: .06;
+  --seg-labor: #6C8FD0;
+  --seg-other: #4A5C82;
+  --seg-left: #6EE7B7;
 }

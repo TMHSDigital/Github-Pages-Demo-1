@@ -19,6 +19,7 @@ em { font-style: italic; font-weight: 500; }
 .d2, [data-d="2"] { --i: 2; }
 .d3, [data-d="3"] { --i: 3; }
 .flush-top { padding-top: 0; }
+[hidden] { display: none !important; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .wrap { width: min(100% - 2.5rem, var(--maxw)); margin-inline: auto; }
@@ -75,7 +76,9 @@ main:focus { outline: none; } /* skip-link target */
 /* Print: plain, ink-friendly, with link targets spelled out */
 @media print {
   *, *::before, *::after { color: #000 !important; background: transparent !important; box-shadow: none !important; text-shadow: none !important; }
-  .site-header, .skip-link, .scene, .proof, .pause, .reset, .to-top, .cover, .site-footer ul, .theme-toggle { display: none !important; }
+  .site-header, .skip-link, .scene, .proof, .pause, .reset, .to-top, .cover, .site-footer ul, .theme-toggle,
+  .tabs, .tools-bar, .sticky-cta, .composer, .row-del, .add-row, .split, .case-outline { display: none !important; }
+  .rows-head, .row { break-inside: avoid; }
   [data-reveal] { opacity: 1 !important; transform: none !important; }
   main:focus { outline: none; }
   .section { padding-block: 1.5rem; }

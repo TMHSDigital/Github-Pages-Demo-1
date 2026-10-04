@@ -360,11 +360,252 @@ async function check(name, fn) {
       // exercise the interactive parts
       await page.locator('#theme-toggle').click();
       await page.locator('#calc-food').fill('40');
+      await page.locator('#tab-cocktail').click();
+      await page.locator('#cocktail-add').click();
+      await page.locator('#talk-numbers').click();
+      await page.locator('.topics label').first().click();
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.waitForTimeout(600);
       assert.deepEqual(await page.evaluate(() => window.__csp), []);
       await page.goto(base + '404.html', { waitUntil: 'networkidle' });
       assert.deepEqual(await page.evaluate(() => window.__csp), []);
+      await ctx.close();
+    });
+  }
+
+  // Operator toolkit: tabs, plate and cocktail costing, shared links
+  const STUB_CLIPBOARD = () => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (t) => { window.__copied = t; } } });
+  const calm = async (viewport, extra = {}) => {
+    const ctx = await browser.newContext({ viewport, reducedMotion: 'reduce', ...extra });
+    await ctx.addInitScript(STUB_CLIPBOARD);
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    return { ctx, page, errors };
+  };
+
+  await check('toolkit tabs follow the ARIA tabs keyboard pattern', async () => {
+    const { page, ctx } = await calm({ width: 1280, height: 900 });
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.locator('#tab-prime').focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'tab-plate');
+    assert.equal(await page.locator('#tab-plate').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('#tab-prime').getAttribute('tabindex'), '-1');
+    assert.equal(await page.locator('#plate').isVisible(), true);
+    assert.equal(await page.locator('#calc').isVisible(), false);
+    await page.keyboard.press('End');
+    assert.equal(await page.locator('#cocktail').isVisible(), true);
+    await page.keyboard.press('ArrowRight'); // wraps to the first tab
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'tab-prime');
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'tab-cocktail');
+    await ctx.close();
+  });
+
+  await check('plate and cocktail maths (pure functions)', async () => {
+    const { page, ctx } = await open({ width: 1280, height: 900 });
+    const r = await page.evaluate(() => ({
+      perOz: TMHSCalc.costPerOz(30, 750), pour: TMHSCalc.pourCost(30, 750, 2), noBottle: TMHSCalc.costPerOz(30, 0),
+      price: TMHSCalc.priceAtTarget(6.2, 30), noTarget: TMHSCalc.priceAtTarget(6.2, 0),
+      pct: TMHSCalc.costPct(6.2, 22), noPrice: TMHSCalc.costPct(6.2, 0),
+      amount: TMHSCalc.parseAmount('$1,234.567'), capped: TMHSCalc.parseAmount('900', 20),
+      vs: [[20, 20], [22, 20], [23.5, 20]].map(([a, t]) => TMHSCalc.vsTarget(a, t).key),
+      wi: TMHSCalc.whatIf(200000, 75), under: TMHSCalc.whatIf(100000, 55),
+    }));
+    assert.ok(Math.abs(r.perOz - 1.18294) < 1e-4); assert.ok(Math.abs(r.pour - 2.36588) < 1e-4); assert.equal(r.noBottle, 0);
+    assert.ok(Math.abs(r.price - 20.6667) < 1e-3); assert.equal(r.noTarget, 0);
+    assert.ok(Math.abs(r.pct - 28.1818) < 1e-3); assert.equal(r.noPrice, 0);
+    assert.equal(r.amount, 1234.57); assert.equal(r.capped, 20);
+    assert.deepEqual(r.vs, ['strong', 'watch', 'attention']);
+    assert.deepEqual(r.wi, { pointMonthly: 2000, pointYearly: 24000, gapPts: 15, gapYearly: 360000 });
+    assert.equal(r.under.gapPts, 0);
+    await ctx.close();
+  });
+
+  await check('prime cost shows the cost breakdown and what-if savings', async () => {
+    const { page, ctx } = await calm({ width: 1280, height: 900 });
+    await page.goto(base, { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('#wi-gap').textContent(), '+$36,000 a year');
+    await page.fill('#calc-revenue', '200000');
+    await page.locator('#calc-food').fill('40');
+    await page.locator('#calc-labor').fill('35');
+    assert.equal(await page.locator('#wi-point').textContent(), '$2,000 a month');
+    assert.equal(await page.locator('#wi-gap').textContent(), '+$360,000 a year');
+    assert.equal(await page.locator('#split-left').textContent(), '13%');
+    assert.equal(await page.locator('.calc-out').first().getAttribute('data-band'), 'attention');
+    await page.locator('#calc-food').fill('25');
+    await page.locator('#calc-labor').fill('30');
+    assert.equal(await page.locator('#wi-gap').textContent(), 'Already there');
+    await ctx.close();
+  });
+
+  await check('plate cost prices the example and rows can be added to the cap and removed', async () => {
+    const { page, ctx } = await calm({ width: 1280, height: 900 });
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.locator('#tab-plate').click();
+    assert.equal(await page.locator('#plate-out-price').textContent(), '$20.67');
+    assert.equal(await page.locator('#plate-out-pct').textContent(), '28.2%');
+    assert.equal(await page.locator('#plate-band').textContent(), 'At or under target');
+    // a new row takes focus; typing a cost updates the totals
+    await page.locator('#plate-add').click();
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Ingredient 5 name');
+    await page.keyboard.type('Bread');
+    await page.locator('#plate-rows [data-k="cost"]').nth(4).fill('0.80');
+    assert.equal(await page.locator('#plate-out-cost').textContent(), '$7.00');
+    assert.equal(await page.locator('#plate-band').textContent(), 'Slightly over target');
+    // removing a row moves focus to the next remove button
+    await page.locator('#plate-rows .row-del').first().click();
+    assert.equal(await page.locator('#plate-rows .row').count(), 4);
+    assert.equal(await page.evaluate(() => document.activeElement.getAttribute('aria-label')), 'Remove Starch');
+    for (let i = 0; i < 10; i++) if (await page.locator('#plate-add').isEnabled()) await page.locator('#plate-add').click();
+    assert.equal(await page.locator('#plate-rows .row').count(), 12);
+    assert.equal(await page.locator('#plate-add').isDisabled(), true);
+    assert.match(await page.locator('#plate-add-note').textContent(), /maximum of 12/);
+    // without a price, profit is shown at the suggested price and no band is claimed
+    await page.fill('#plate-price', '');
+    assert.equal(await page.locator('#plate-out-pct').textContent(), 'Add your price');
+    assert.equal(await page.locator('#plate-band').isVisible(), false);
+    await page.locator('#plate-reset').click();
+    assert.equal(await page.locator('#plate-rows .row').count(), 4);
+    assert.equal(await page.locator('#plate-out-price').textContent(), '$20.67');
+    await ctx.close();
+  });
+
+  await check('a shared link opens the cocktail tool with its numbers', async () => {
+    const { page, ctx, errors } = await calm({ width: 1280, height: 900 });
+    await page.goto(base + '?tool=cocktail&rows=Gin_30_750_2*Bad_x_y_z&target=25&price=12&extra=0#calculator', { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('#tab-cocktail').getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('#cocktail').isVisible(), true);
+    assert.equal(await page.locator('#cocktail-rows .row').count(), 2);
+    assert.equal(await page.locator('#cocktail-rows .r-out').first().textContent(), '$2.37');
+    assert.equal(await page.locator('#cocktail-out-price').textContent(), '$9.46');
+    assert.equal(await page.locator('#cocktail-out-pct').textContent(), '19.7%');
+    assert.equal(await page.locator('#cocktail-target-out').textContent(), '25%');
+    // nonsense values are ignored rather than breaking the page
+    await page.goto(base + '?tool=nope&sales=abc', { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('#tab-prime').getAttribute('aria-selected'), 'true');
+    assert.deepEqual(errors, []);
+    await ctx.close();
+  });
+
+  await check('copy link round-trips the current tool and numbers', async () => {
+    const { page, ctx } = await calm({ width: 1280, height: 900 });
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.locator('#tab-plate').click();
+    await page.fill('#plate-price', '25');
+    await page.locator('#plate-rows [data-k="name"]').first().fill('Short rib');
+    await page.locator('#copy-link').click();
+    await page.waitForFunction(() => window.__copied);
+    const link = await page.evaluate(() => window.__copied);
+    await page.waitForFunction(() => document.getElementById('share-status').textContent);
+    assert.match(link, /\?tool=plate&rows=Short\+rib_4\.2\*/);
+    assert.match(link, /#calculator$/);
+    assert.match(await page.locator('#share-status').textContent(), /Link copied/);
+    const second = await ctx.newPage();
+    await second.goto(link, { waitUntil: 'networkidle' });
+    assert.equal(await second.locator('#plate-price').inputValue(), '25.00');
+    assert.equal(await second.locator('#plate-rows [data-k="name"]').first().inputValue(), 'Short rib');
+    await ctx.close();
+  });
+
+  // Contact: inquiry builder and quick-contact bar
+  await check('talk through these numbers brings the results into a copyable message', async () => {
+    const { page, ctx } = await calm({ width: 1280, height: 900 });
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.locator('#talk-numbers').click();
+    assert.equal(await page.locator('#inq-calc').isChecked(), true);
+    await page.locator('.topics label', { hasText: 'Costs' }).click();
+    await page.locator('.topics label', { hasText: 'Menu' }).click();
+    await page.selectOption('#inq-venue', 'Independent restaurant');
+    await page.fill('#inq-note', 'Two sites, opening a third.');
+    const text = await page.locator('#inq-preview').textContent();
+    assert.match(text, /I run an independent restaurant and would like help with costs and margins and menu and pricing\./);
+    assert.match(text, /Two sites, opening a third\./);
+    assert.match(text, /My numbers from your prime cost calculator:\nMonthly sales: \$100,000/);
+    assert.match(text, /Prime cost: 63% \(on target\)/);
+    assert.match(text, /Link: http.*\?tool=prime&sales=100000/);
+    await page.locator('#inq-copy').click();
+    await page.waitForFunction(() => window.__copied);
+    assert.equal(await page.evaluate(() => window.__copied), text);
+    await page.waitForFunction(() => document.getElementById('inq-status').textContent);
+    assert.match(await page.locator('#inq-status').textContent(), /Paste it into a LinkedIn message/);
+    assert.equal(await page.locator('#inq-email').isVisible(), false);
+    await ctx.close();
+  });
+
+  // The address is set in the source; the minified build folds the empty constant away, so this runs on source only
+  if (!process.env.SITE_DIR) {
+    await check('setting CONTACT_EMAIL turns on the email links', async () => {
+      const { page, ctx } = await calm({ width: 1280, height: 900 });
+      await page.route('**/js/inquiry.js', async (route) => {
+        const body = (await (await route.fetch()).text()).replace(/CONTACT_EMAIL\s*=\s*(''|"")/, 'CONTACT_EMAIL="hello@example.com"');
+        route.fulfill({ body, contentType: 'text/javascript' });
+      });
+      await page.goto(base, { waitUntil: 'networkidle' });
+      assert.match(await page.locator('#email-cta').getAttribute('href'), /^mailto:hello@example\.com\?subject=/);
+      assert.equal(await page.locator('#email-cta').getAttribute('target'), null);
+      assert.equal(await page.locator('#inq-email').isVisible(), true);
+      await page.locator('.topics label', { hasText: 'Operations' }).click();
+      const href = await page.locator('#inq-email').getAttribute('href');
+      assert.match(href, /^mailto:hello@example\.com\?subject=Hospitality%20strategy%20inquiry&body=/);
+      assert.match(decodeURIComponent(href), /would like help with operations and systems/);
+      await ctx.close();
+    });
+  }
+
+  await check('mobile quick-contact bar shows between the hero and the contact section', async () => {
+    const { page, ctx } = await calm({ width: 375, height: 800 });
+    await page.goto(base, { waitUntil: 'networkidle' });
+    const shown = () => page.locator('#sticky-cta').evaluate((el) => getComputedStyle(el).visibility === 'visible');
+    assert.equal(await shown(), false);
+    await page.evaluate(() => document.getElementById('services').scrollIntoView());
+    await page.waitForTimeout(200);
+    assert.equal(await shown(), true);
+    await page.locator('#tab-plate').dispatchEvent('click');
+    await page.locator('#plate-price').focus(); // out of the way while typing
+    await page.waitForTimeout(100);
+    assert.equal(await shown(), false);
+    await page.locator('#plate-price').blur();
+    await page.evaluate(() => document.getElementById('contact').scrollIntoView());
+    await page.waitForTimeout(200);
+    assert.equal(await shown(), false);
+    await ctx.close();
+    const desk = await calm({ width: 1280, height: 900 });
+    await desk.page.goto(base, { waitUntil: 'networkidle' });
+    await desk.page.evaluate(() => document.getElementById('services').scrollIntoView());
+    assert.equal(await desk.page.locator('#sticky-cta').isVisible(), false);
+    await desk.ctx.close();
+  });
+
+  await check('without JavaScript only the prime cost calculator shows', async () => {
+    const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
+    const page = await ctx.newPage();
+    await page.goto(base);
+    assert.equal(await page.locator('#calc').isVisible(), true);
+    assert.equal(await page.locator('#out-prime-pct').textContent(), '63%');
+    for (const sel of ['#tool-tabs', '#plate', '#cocktail', '.tools-bar', '#composer', '#sticky-cta']) {
+      assert.equal(await page.locator(sel).isVisible(), false, `${sel} is visible`);
+    }
+    assert.equal(await page.locator('#email-cta').isVisible(), true);
+    await ctx.close();
+  });
+
+  for (const [w, h, theme] of [[1280, 900, 'light'], [1280, 900, 'dark'], [375, 800, 'light'], [375, 800, 'dark']]) {
+    await check(`axe WCAG A/AA: 0 violations on the plate and cocktail tools and filled message at ${w}px, ${theme} theme`, async () => {
+      const { page, ctx } = await calm({ width: w, height: h });
+      await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch (e) {} }, theme);
+      await page.goto(base, { waitUntil: 'networkidle' });
+      await page.evaluate(AXE);
+      const scan = () => page.evaluate(() => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] })
+        .then((r) => r.violations.map((v) => `${v.id} (${v.nodes.length}): ${v.nodes.slice(0, 2).map((n) => n.target.join(' ')).join(' | ')}`)));
+      await page.locator('#tab-plate').click();
+      await page.locator('#plate-add').click();
+      assert.deepEqual(await scan(), []);
+      await page.locator('#tab-cocktail').click();
+      await page.locator('#talk-numbers').click();
+      await page.locator('.topics label').first().click();
+      assert.deepEqual(await scan(), []);
       await ctx.close();
     });
   }

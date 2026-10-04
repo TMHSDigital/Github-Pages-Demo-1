@@ -1,51 +1,26 @@
 'use strict';
 
-// Prime cost calculator. Everything runs in the browser; nothing is sent or stored.
-// Bands are common rules of thumb and are flagged TODO(verify) in index.html.
-const TMHSCalc = (() => {
-  const MAX_SALES = 10000000;
-
-  const parseMoney = (text) => {
-    const whole = String(text).split('.')[0]; // ignore cents
-    const n = parseInt(whole.replace(/[^\d]/g, ''), 10);
-    return Number.isFinite(n) ? Math.min(n, MAX_SALES) : 0;
-  };
-
-  const primeCostPct = (food, labor) => food + labor;
-  const leftoverPct = (food, labor, other) => Math.max(0, 100 - food - labor - other);
-
-  // under 60 strong, 60 to <65 on target, 65 to <70 watch, 70+ needs attention
-  const band = (pct) => {
-    if (pct < 60) return { key: 'strong', label: 'Strong', color: '#6EE7B7' };
-    if (pct < 65) return { key: 'target', label: 'On target', color: '#86CCF8' };
-    if (pct < 70) return { key: 'watch', label: 'Watch closely', color: '#FCD34D' };
-    return { key: 'attention', label: 'Needs attention', color: '#FCA5A5' };
-  };
-
-  const usd = (n) => '$' + Math.round(n).toLocaleString('en-US');
-
-  return { parseMoney, primeCostPct, leftoverPct, band, usd };
-})();
-
-window.TMHSCalc = TMHSCalc;
-
+// Prime cost tool: readout, gauge, cost breakdown and what-if savings.
 (() => {
   const form = document.getElementById('calc');
   if (!form) return;
 
+  const C = window.TMHSCalc;
   const $ = (id) => document.getElementById(id);
   const revenue = $('calc-revenue');
   const ranges = { food: $('calc-food'), labor: $('calc-labor'), other: $('calc-other') };
+  const out = form.querySelector('.calc-out');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const view = { pct: 0, prime: 0, left: 0 };
   let raf = 0;
   let summaryTimer = 0;
+  let current = { sales: 0, food: 0, labor: 0, other: 0, pct: 0, band: C.band(0) };
 
   const paint = () => {
     $('out-prime-pct').textContent = Math.round(view.pct) + '%';
-    $('out-prime-usd').textContent = TMHSCalc.usd(view.prime);
-    $('out-left-usd').textContent = TMHSCalc.usd(view.left);
+    $('out-prime-usd').textContent = C.usd(view.prime);
+    $('out-left-usd').textContent = C.usd(view.left);
   };
 
   const tween = (target) => {
@@ -63,8 +38,35 @@ window.TMHSCalc = TMHSCalc;
     raf = requestAnimationFrame(step);
   };
 
+  // Stacked bar of where each sales dollar goes; scaled down if costs pass 100%
+  const paintSplit = (food, labor, other, leftPct) => {
+    const scale = Math.max(100, food + labor + other);
+    for (const [k, v] of Object.entries({ food, labor, other, left: leftPct })) {
+      const seg = form.querySelector('.seg-' + k);
+      if (seg) seg.style.setProperty('--w', (v / scale) * 100 + '%');
+      const label = $('split-' + k);
+      if (label) label.textContent = v + '%';
+    }
+  };
+
+  const paintWhatIf = (sales, pct) => {
+    const w = C.whatIf(sales, pct);
+    $('wi-point').textContent = sales ? C.usd(w.pointMonthly) + ' a month' : 'Enter your sales';
+    $('wi-point-yr').textContent = sales ? C.usd(w.pointYearly) + ' a year' : '';
+    if (!sales) {
+      $('wi-gap').textContent = 'Enter your sales';
+      $('wi-gap-note').textContent = '';
+    } else if (w.gapPts > 0) {
+      $('wi-gap').textContent = '+' + C.usd(w.gapYearly) + ' a year';
+      $('wi-gap-note').textContent = 'if prime cost came down ' + w.gapPts + (w.gapPts === 1 ? ' point' : ' points');
+    } else {
+      $('wi-gap').textContent = 'Already there';
+      $('wi-gap-note').textContent = 'prime cost is ' + C.STRONG_BELOW + '% or lower';
+    }
+  };
+
   const update = () => {
-    const sales = TMHSCalc.parseMoney(revenue.value);
+    const sales = C.parseMoney(revenue.value);
     const food = +ranges.food.value;
     const labor = +ranges.labor.value;
     const other = +ranges.other.value;
@@ -75,17 +77,19 @@ window.TMHSCalc = TMHSCalc;
       el.style.setProperty('--fill', ((el.value - el.min) / (el.max - el.min)) * 100 + '%');
     }
 
-    const pct = TMHSCalc.primeCostPct(food, labor);
-    const leftPct = TMHSCalc.leftoverPct(food, labor, other);
-    const band = TMHSCalc.band(pct);
+    const pct = C.primeCostPct(food, labor);
+    const leftPct = C.leftoverPct(food, labor, other);
+    const band = C.band(pct);
 
-    const gauge = $('gauge-fill');
-    gauge.style.setProperty('--gauge', band.color);
-    gauge.setAttribute('stroke-dashoffset', String(100 - Math.min(pct, 100)));
-    form.querySelector('.calc-out').style.setProperty('--gauge', band.color);
+    $('gauge-fill').setAttribute('stroke-dashoffset', String(100 - Math.min(pct, 100)));
+    out.setAttribute('data-band', band.key);
     $('out-band').textContent = band.label;
 
     tween({ pct, prime: (sales * pct) / 100, left: (sales * leftPct) / 100 });
+    paintSplit(food, labor, other, leftPct);
+    paintWhatIf(sales, pct);
+    current = { sales, food, labor, other, pct, band };
+    document.dispatchEvent(new CustomEvent('tmhs:calc', { detail: { tool: 'prime' } }));
 
     clearTimeout(summaryTimer);
     summaryTimer = setTimeout(() => {
@@ -93,7 +97,7 @@ window.TMHSCalc = TMHSCalc;
       let money;
       if (!sales) money = ' Enter your monthly sales to see dollar amounts.';
       else if (total >= 100) money = ' These costs add up to ' + total + '% of sales, so nothing is left for rent, other overheads or profit.';
-      else money = ' About ' + TMHSCalc.usd((sales * leftPct) / 100) + ' is left after these costs.';
+      else money = ' About ' + C.usd((sales * leftPct) / 100) + ' is left after these costs.';
       $('out-summary').textContent = 'Prime cost is ' + pct + '%, ' + band.label.toLowerCase() + '.' + money;
     }, 450);
   };
@@ -102,7 +106,7 @@ window.TMHSCalc = TMHSCalc;
   revenue.addEventListener('input', () => {
     const caret = revenue.selectionStart ?? revenue.value.length;
     const digitsBefore = revenue.value.slice(0, caret).replace(/[^\d]/g, '').length;
-    const n = TMHSCalc.parseMoney(revenue.value);
+    const n = C.parseMoney(revenue.value);
     revenue.value = n ? n.toLocaleString('en-US') : '';
     let pos = 0;
     for (let seen = 0; pos < revenue.value.length && seen < digitsBefore; pos++) {
@@ -124,6 +128,26 @@ window.TMHSCalc = TMHSCalc;
       update();
     });
   }
+
+  const clampRange = (el, v) => {
+    const n = parseInt(v, 10);
+    if (Number.isFinite(n)) el.value = String(Math.min(+el.max, Math.max(+el.min, n)));
+  };
+
+  window.TMHSTools.tools.prime = {
+    label: 'prime cost',
+    get: () => ({ sales: current.sales, food: current.food, labor: current.labor, other: current.other }),
+    set: (s) => {
+      if (s.sales != null) { const n = C.parseMoney(s.sales); revenue.value = n ? n.toLocaleString('en-US') : ''; }
+      for (const k of Object.keys(ranges)) if (s[k] != null) clampRange(ranges[k], s[k]);
+      update();
+    },
+    summary: () => [
+      'Monthly sales: ' + (current.sales ? C.usd(current.sales) : 'not entered'),
+      'Food and beverage ' + current.food + '%, labor ' + current.labor + '%, other controllable costs ' + current.other + '%',
+      'Prime cost: ' + current.pct + '% (' + current.band.label.toLowerCase() + ')',
+    ],
+  };
 
   update();
 })();

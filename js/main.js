@@ -1,9 +1,5 @@
 'use strict';
 
-// Set to a real address to turn the contact button into a mailto link.
-// While empty, the page links to LinkedIn instead.
-const CONTACT_EMAIL = '';
-
 (() => {
   const root = document.documentElement;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -121,13 +117,22 @@ const CONTACT_EMAIL = '';
     });
   }
 
-  /* Contact CTA and footer year */
-  const cta = document.getElementById('email-cta');
-  if (CONTACT_EMAIL && cta) {
-    cta.href = `mailto:${CONTACT_EMAIL}?subject=Hospitality%20strategy%20inquiry`;
-    cta.removeAttribute('target');
-    cta.firstChild.textContent = 'Email me ';
+  /* Mobile quick-contact bar: shown once the hero is passed, hidden at the contact section */
+  const sticky = document.getElementById('sticky-cta');
+  const contact = document.getElementById('contact');
+  const hero = document.querySelector('.hero');
+  if (sticky && contact && hero && 'IntersectionObserver' in window) {
+    const seen = { hero: true, contact: false, typing: false };
+    const sync = () => sticky.classList.toggle('is-shown', !seen.hero && !seen.contact && !seen.typing && !root.classList.contains('menu-open'));
+    const isField = (el) => el && el.matches && el.matches('input:not([type="range"]):not([type="checkbox"]), select, textarea');
+    document.addEventListener('focusin', (e) => { seen.typing = isField(e.target); sync(); });
+    document.addEventListener('focusout', () => { seen.typing = false; sync(); });
+    new IntersectionObserver(([en]) => { seen.hero = en.isIntersecting; sync(); }).observe(hero);
+    new IntersectionObserver(([en]) => { seen.contact = en.isIntersecting; sync(); }).observe(contact);
+    new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['class'] });
   }
+
+  /* Footer year */
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 

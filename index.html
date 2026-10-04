@@ -72,6 +72,13 @@
       <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9A2.2 2.2 0 0 0 5 15zM12 15l-3-3a22 22 0 0 1 2-4 12 12 0 0 1 11-6c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></symbol>
       <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
       <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+      <symbol id="i-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/></symbol>
+      <symbol id="i-plate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></symbol>
       <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
     </defs>
   </svg>
@@ -89,7 +96,7 @@
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#approach">Approach</a></li>
-          <li><a href="#calculator">Calculator</a></li>
+          <li><a href="#calculator">Tools</a></li>
           <li><a href="#work">Work</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
@@ -118,7 +125,7 @@
           <p class="lead">TM Hospitality Strategies partners with restaurant and hospitality operators to turn good food and good service into a business that runs well and grows on purpose.</p>
           <div class="btn-row">
             <a class="btn" href="#contact">Start a conversation <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            <a class="btn btn-ghost" href="#calculator">Try the margin calculator</a>
+            <a class="btn btn-ghost" href="#calculator">Try the free calculators</a>
           </div>
           <!-- TODO(verify): confirm each of these promises matches how you actually work -->
           <ul class="trust">
@@ -249,52 +256,178 @@
       </div>
     </section>
 
-    <!-- ============ CALCULATOR ============ -->
+    <!-- ============ TOOLKIT ============ -->
     <section class="section" id="calculator" aria-labelledby="calc-title">
       <div class="wrap">
         <div class="section-head" data-reveal>
-          <p class="eyebrow">Free tool</p>
-          <h2 id="calc-title">What is your <em>prime cost</em>?</h2>
-          <p>Prime cost, food plus labor, is the number most operators watch first. Move the sliders to see where you stand.</p>
+          <p class="eyebrow">Free tools</p>
+          <h2 id="calc-title">Run the <em>numbers</em></h2>
+          <p>Three quick calculators: prime cost for the whole business, plate cost for a dish and pour cost for a drink. Everything runs in your browser.</p>
         </div>
-        <div class="calc" id="calc" role="group" aria-labelledby="calc-title" data-reveal>
-          <div class="calc-form">
-            <div class="field">
-              <label for="calc-revenue">Monthly sales</label>
-              <div class="money"><span aria-hidden="true">$</span><input id="calc-revenue" name="revenue" type="text" inputmode="numeric" autocomplete="off" value="100,000" aria-describedby="calc-revenue-hint"></div>
-              <p id="calc-revenue-hint" class="sr-only">Enter your total monthly sales in dollars.</p>
-            </div>
-            <div class="field">
-              <div class="lab"><label for="calc-food">Food and beverage cost</label><span class="val" id="calc-food-out" aria-hidden="true">31%</span></div>
-              <input id="calc-food" name="food" type="range" aria-valuetext="31% of sales" min="15" max="50" step="1" value="31">
-            </div>
-            <div class="field">
-              <div class="lab"><label for="calc-labor">Labor cost</label><span class="val" id="calc-labor-out" aria-hidden="true">32%</span></div>
-              <input id="calc-labor" name="labor" type="range" aria-valuetext="32% of sales" min="15" max="50" step="1" value="32">
-            </div>
-            <div class="field">
-              <div class="lab"><label for="calc-other">Other controllable costs</label><span class="val" id="calc-other-out" aria-hidden="true">12%</span></div>
-              <input id="calc-other" name="other" type="range" aria-valuetext="12% of sales" min="0" max="30" step="1" value="12">
-            </div>
+        <div class="toolkit" data-reveal>
+          <div class="tabs" id="tool-tabs" role="tablist" aria-label="Calculators">
+            <span class="tab-ink" aria-hidden="true"></span>
+            <button type="button" role="tab" id="tab-prime" data-tool="prime" aria-controls="calc" aria-selected="true"><svg aria-hidden="true"><use href="#i-chart"/></svg>Prime cost</button>
+            <button type="button" role="tab" id="tab-plate" data-tool="plate" aria-controls="plate" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-plate"/></svg>Plate cost</button>
+            <button type="button" role="tab" id="tab-cocktail" data-tool="cocktail" aria-controls="cocktail" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-glass"/></svg>Cocktail cost</button>
           </div>
-          <div class="calc-out">
-            <div class="gauge">
-              <svg viewBox="0 0 220 124" aria-hidden="true">
-                <path class="track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100"/>
-                <path class="bar-fill" id="gauge-fill" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="37"/>
-              </svg>
-              <div class="read"><b id="out-prime-pct">63%</b><span>Prime cost</span></div>
+
+          <!-- Prime cost -->
+          <div class="calc" id="calc" role="tabpanel" aria-labelledby="tab-prime">
+            <div class="calc-form">
+              <div class="field">
+                <label for="calc-revenue">Monthly sales</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="calc-revenue" name="revenue" type="text" inputmode="numeric" autocomplete="off" value="100,000" aria-describedby="calc-revenue-hint"></div>
+                <p id="calc-revenue-hint" class="sr-only">Enter your total monthly sales in dollars.</p>
+              </div>
+              <div class="field">
+                <div class="lab"><label for="calc-food">Food and beverage cost</label><span class="val" id="calc-food-out" aria-hidden="true">31%</span></div>
+                <input id="calc-food" name="food" type="range" aria-valuetext="31% of sales" min="15" max="50" step="1" value="31">
+              </div>
+              <div class="field">
+                <div class="lab"><label for="calc-labor">Labor cost</label><span class="val" id="calc-labor-out" aria-hidden="true">32%</span></div>
+                <input id="calc-labor" name="labor" type="range" aria-valuetext="32% of sales" min="15" max="50" step="1" value="32">
+              </div>
+              <div class="field">
+                <div class="lab"><label for="calc-other">Other controllable costs</label><span class="val" id="calc-other-out" aria-hidden="true">12%</span></div>
+                <input id="calc-other" name="other" type="range" aria-valuetext="12% of sales" min="0" max="30" step="1" value="12">
+              </div>
+              <div class="split" aria-hidden="true">
+                <p class="split-label">Where each sales dollar goes</p>
+                <div class="split-bar"><span class="seg seg-food"></span><span class="seg seg-labor"></span><span class="seg seg-other"></span><span class="seg seg-left"></span></div>
+                <ul class="split-key">
+                  <li class="k-food">Food &amp; bev <b id="split-food">31%</b></li>
+                  <li class="k-labor">Labor <b id="split-labor">32%</b></li>
+                  <li class="k-other">Other <b id="split-other">12%</b></li>
+                  <li class="k-left">Left <b id="split-left">25%</b></li>
+                </ul>
+              </div>
+              <dl class="whatif">
+                <div><dt>Each point of prime cost is worth</dt><dd><b id="wi-point">$1,000 a month</b><span id="wi-point-yr">$12,000 a year</span></dd></div>
+                <div><dt>Getting prime cost to 60%</dt><dd><b id="wi-gap">+$36,000 a year</b><span id="wi-gap-note">if prime cost came down 3 points</span></dd></div>
+              </dl>
             </div>
-            <span class="band" id="out-band">On target</span>
-            <dl class="stats">
-              <div><dt>Prime cost</dt><dd id="out-prime-usd">$63,000</dd></div>
-              <div><dt>Left after these costs</dt><dd id="out-left-usd">$25,000</dd></div>
-            </dl>
-            <p class="calc-summary" id="out-summary" role="status" aria-live="polite"></p>
-            <button type="button" class="reset" id="calc-reset">Reset to example values</button>
+            <div class="calc-out" data-band="target">
+              <div class="gauge">
+                <svg viewBox="0 0 220 124" aria-hidden="true">
+                  <path class="track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100"/>
+                  <path class="bar-fill" id="gauge-fill" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="37"/>
+                </svg>
+                <div class="read"><b id="out-prime-pct">63%</b><span>Prime cost</span></div>
+              </div>
+              <span class="band" id="out-band">On target</span>
+              <dl class="stats">
+                <div><dt>Prime cost</dt><dd id="out-prime-usd">$63,000</dd></div>
+                <div><dt>Left after these costs</dt><dd id="out-left-usd">$25,000</dd></div>
+              </dl>
+              <p class="calc-summary" id="out-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="calc-reset">Reset to example values</button>
+            </div>
+            <!-- TODO(verify): confirm benchmark ranges (rule-of-thumb bands below) before relying on them -->
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> Bands are common rules of thumb (under 60% strong, 60-65% on target, 65-70% watch, over 70% needs attention) and vary by concept. Nothing you enter is sent or stored.</p>
           </div>
-          <!-- TODO(verify): confirm benchmark ranges (rule-of-thumb bands below) before relying on them -->
-          <p class="calc-note"><strong>Illustration only, not advice.</strong> Bands are common rules of thumb (under 60% strong, 60-65% on target, 65-70% watch, over 70% needs attention) and vary by concept. Nothing you enter is sent or stored.</p>
+
+          <!-- Plate cost -->
+          <div class="calc recipe" id="plate" role="tabpanel" aria-labelledby="tab-plate" hidden>
+            <div class="calc-form">
+              <!-- TODO(verify): the example recipe and 30% target are illustrations, not benchmarks -->
+              <fieldset class="recipe-rows">
+                <legend>Ingredients for one plate <span class="hint">Example recipe</span></legend>
+                <div class="rows-head" aria-hidden="true"><span>Ingredient</span><span>Cost</span></div>
+                <ul class="rows" id="plate-rows"></ul>
+                <p class="rows-empty" id="plate-empty" hidden>No ingredients yet. Add one to start.</p>
+                <button type="button" class="add-row" id="plate-add"><svg aria-hidden="true"><use href="#i-plus"/></svg>Add ingredient</button>
+                <p class="add-note" id="plate-add-note" role="status"></p>
+              </fieldset>
+              <div class="field">
+                <div class="lab"><label for="plate-target">Target food cost</label><span class="val" id="plate-target-out" aria-hidden="true">30%</span></div>
+                <input id="plate-target" type="range" min="15" max="50" step="1" value="30" aria-valuetext="30% food cost">
+              </div>
+              <div class="field">
+                <label for="plate-price">Your menu price <span class="opt">optional</span></label>
+                <div class="money"><span aria-hidden="true">$</span><input id="plate-price" type="text" inputmode="decimal" autocomplete="off" value="22.00"></div>
+              </div>
+            </div>
+            <div class="calc-out" data-band="strong">
+              <div class="readout"><span class="readout-k">Suggested menu price</span><b id="plate-out-price">$20.67</b><span id="plate-out-target">at 30% food cost</span></div>
+              <span class="band" id="plate-band">At or under target</span>
+              <dl class="stats stats-3">
+                <div><dt>Plate cost</dt><dd id="plate-out-cost">$6.20</dd></div>
+                <div><dt>Food cost at your price</dt><dd id="plate-out-pct">28.2%</dd></div>
+                <div><dt>Gross profit <span id="plate-profit-at">at your price</span></dt><dd id="plate-out-profit">$15.80</dd></div>
+              </dl>
+              <p class="calc-summary" id="plate-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="plate-reset">Reset to the example</button>
+            </div>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example recipe and target are placeholders, so set your own. Suggested price is plate cost divided by your target food cost.</p>
+          </div>
+
+          <!-- Cocktail cost -->
+          <div class="calc recipe" id="cocktail" role="tabpanel" aria-labelledby="tab-cocktail" hidden>
+            <div class="calc-form">
+              <!-- TODO(verify): the example recipe, bottle prices and 20% target are illustrations, not benchmarks -->
+              <fieldset class="recipe-rows">
+                <legend>Pours in one drink <span class="hint">Example recipe</span></legend>
+                <div class="rows-head" aria-hidden="true"><span>Ingredient</span><span>Bottle price</span><span>Size</span><span>Pour</span><span>Cost</span></div>
+                <ul class="rows" id="cocktail-rows"></ul>
+                <p class="rows-empty" id="cocktail-empty" hidden>No pours yet. Add one to start.</p>
+                <button type="button" class="add-row" id="cocktail-add"><svg aria-hidden="true"><use href="#i-plus"/></svg>Add a pour</button>
+                <p class="add-note" id="cocktail-add-note" role="status"></p>
+              </fieldset>
+              <div class="field">
+                <label for="cocktail-extra">Mixers, garnish and ice</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="cocktail-extra" type="text" inputmode="decimal" autocomplete="off" value="0.40"></div>
+              </div>
+              <div class="field">
+                <div class="lab"><label for="cocktail-target">Target pour cost</label><span class="val" id="cocktail-target-out" aria-hidden="true">20%</span></div>
+                <input id="cocktail-target" type="range" min="10" max="40" step="1" value="20" aria-valuetext="20% pour cost">
+              </div>
+              <div class="field">
+                <label for="cocktail-price">Your drink price <span class="opt">optional</span></label>
+                <div class="money"><span aria-hidden="true">$</span><input id="cocktail-price" type="text" inputmode="decimal" autocomplete="off" value="14.00"></div>
+              </div>
+            </div>
+            <div class="calc-out" data-band="attention">
+              <div class="readout"><span class="readout-k">Suggested drink price</span><b id="cocktail-out-price">$18.56</b><span id="cocktail-out-target">at 20% pour cost</span></div>
+              <span class="band" id="cocktail-band">Over target</span>
+              <dl class="stats stats-3">
+                <div><dt>Cost per drink</dt><dd id="cocktail-out-cost">$3.71</dd></div>
+                <div><dt>Pour cost at your price</dt><dd id="cocktail-out-pct">26.5%</dd></div>
+                <div><dt>Gross profit <span id="cocktail-profit-at">at your price</span></dt><dd id="cocktail-out-profit">$10.29</dd></div>
+              </dl>
+              <p class="calc-summary" id="cocktail-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="cocktail-reset">Reset to the example</button>
+            </div>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example recipe, bottle prices and target are placeholders, so set your own. Pour cost uses 29.57 ml to the ounce.</p>
+          </div>
+
+          <div class="tools-bar">
+            <div class="share">
+              <button type="button" class="btn btn-ghost btn-sm" id="copy-link"><svg aria-hidden="true"><use href="#i-link"/></svg>Copy a link to these numbers</button>
+              <p class="share-status" id="share-status" role="status"></p>
+              <label class="sr-only" for="share-url">Link to these numbers</label>
+              <input class="share-url" id="share-url" type="text" readonly hidden>
+            </div>
+            <a class="btn btn-sm" id="talk-numbers" href="#contact">Talk through these numbers <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+
+          <template id="plate-row">
+            <li class="row">
+              <input class="r-name" type="text" maxlength="40" autocomplete="off" data-k="name" aria-label="Ingredient name">
+              <span class="money sm"><span aria-hidden="true">$</span><input type="text" inputmode="decimal" autocomplete="off" data-k="cost" aria-label="Ingredient cost"></span>
+              <button type="button" class="row-del" aria-label="Remove ingredient"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+            </li>
+          </template>
+          <template id="cocktail-row">
+            <li class="row">
+              <input class="r-name" type="text" maxlength="40" autocomplete="off" data-k="name" aria-label="Ingredient name">
+              <span class="money sm r-price"><span aria-hidden="true">$</span><input type="text" inputmode="decimal" autocomplete="off" data-k="price" aria-label="Bottle price"></span>
+              <select class="r-ml" data-k="ml" aria-label="Bottle size"><option value="375">375 ml</option><option value="700">700 ml</option><option value="750">750 ml</option><option value="1000">1 L</option><option value="1750">1.75 L</option></select>
+              <span class="money sm r-oz"><input type="text" inputmode="decimal" autocomplete="off" data-k="oz" aria-label="Pour in ounces"><span aria-hidden="true">oz</span></span>
+              <span class="r-out" aria-hidden="true">$0.00</span>
+              <button type="button" class="row-del" aria-label="Remove ingredient"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+            </li>
+          </template>
         </div>
       </div>
     </section>
@@ -304,13 +437,47 @@
       <div class="wrap">
         <div class="section-head" data-reveal>
           <p class="eyebrow">Selected work</p>
-          <h2 id="work-title">Case studies, <em>coming soon</em></h2>
-          <p>Real engagements will appear here. The cards below are labeled placeholders so the layout can be reviewed.</p>
+          <h2 id="work-title">Case studies, <em>in the making</em></h2>
+          <p>Write-ups of real engagements will appear here, each told the same way: the challenge, the approach and the measured outcome. Until then, these cards are labeled placeholders.</p>
         </div>
+        <!-- TODO(verify): replace each placeholder with a real project, the challenge and the measured outcome -->
         <div class="cases">
-          <article class="case" data-reveal><div class="cover v1"><span class="tag">Placeholder</span><span class="cover-ico"><svg aria-hidden="true"><use href="#i-chart"/></svg></span><span class="cover-meta">Menu &amp; pricing</span></div><div class="case-body"><h3>Neighborhood restaurant</h3><p>Menu and pricing review. Replace with a real project, the challenge and the measured outcome.</p></div></article>
-          <article class="case d1" data-reveal><div class="cover v2"><span class="tag">Placeholder</span><span class="cover-ico"><svg aria-hidden="true"><use href="#i-cog"/></svg></span><span class="cover-meta">Operations</span></div><div class="case-body"><h3>Multi-unit group</h3><p>Operations playbook rollout. Replace with a real project, the challenge and the measured outcome.</p></div></article>
-          <article class="case d2" data-reveal><div class="cover v3"><span class="tag">Placeholder</span><span class="cover-ico"><svg aria-hidden="true"><use href="#i-rocket"/></svg></span><span class="cover-meta">Opening</span></div><div class="case-body"><h3>New concept launch</h3><p>Opening plan and budget. Replace with a real project, the challenge and the measured outcome.</p></div></article>
+          <article class="case" data-reveal>
+            <div class="cover"><span class="tag">Placeholder</span><span class="cover-ico"><svg aria-hidden="true"><use href="#i-chart"/></svg></span><span class="cover-meta">Menu &amp; pricing</span></div>
+            <div class="case-body">
+              <h3>Neighborhood restaurant</h3>
+              <p>Menu and pricing review.</p>
+              <ul class="case-outline">
+                <li><span>Challenge</span><i aria-hidden="true"></i></li>
+                <li><span>Approach</span><i aria-hidden="true"></i></li>
+                <li><span>Outcome</span><i aria-hidden="true"></i></li>
+              </ul>
+            </div>
+          </article>
+          <article class="case d1" data-reveal>
+            <div class="cover"><span class="tag">Placeholder</span><span class="cover-ico"><svg aria-hidden="true"><use href="#i-cog"/></svg></span><span class="cover-meta">Operations</span></div>
+            <div class="case-body">
+              <h3>Multi-unit group</h3>
+              <p>Operations playbook rollout.</p>
+              <ul class="case-outline">
+                <li><span>Challenge</span><i aria-hidden="true"></i></li>
+                <li><span>Approach</span><i aria-hidden="true"></i></li>
+                <li><span>Outcome</span><i aria-hidden="true"></i></li>
+              </ul>
+            </div>
+          </article>
+          <article class="case d2" data-reveal>
+            <div class="cover"><span class="tag">Placeholder</span><span class="cover-ico"><svg aria-hidden="true"><use href="#i-rocket"/></svg></span><span class="cover-meta">Opening</span></div>
+            <div class="case-body">
+              <h3>New concept launch</h3>
+              <p>Opening plan and budget.</p>
+              <ul class="case-outline">
+                <li><span>Challenge</span><i aria-hidden="true"></i></li>
+                <li><span>Approach</span><i aria-hidden="true"></i></li>
+                <li><span>Outcome</span><i aria-hidden="true"></i></li>
+              </ul>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -338,12 +505,44 @@
     <section class="section flush-top" id="contact" aria-labelledby="contact-title">
       <div class="wrap">
         <div class="cta-panel" data-reveal>
-          <div class="wrap-in">
-            <h2 id="contact-title">Let's talk about <em>your next move</em></h2>
-            <p>Tell me about your concept and what you want to change. I'll reply with honest next steps.</p>
-            <div class="btn-row center">
-              <a class="btn" id="email-cta" href="https://www.linkedin.com/company/tm-hospitality-strategies/" target="_blank" rel="noopener noreferrer">Message on LinkedIn <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-              <a class="btn btn-ghost" href="https://www.instagram.com/tmhs.ig/" target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
+          <div class="wrap-in cta-grid">
+            <div class="cta-copy">
+              <h2 id="contact-title">Let's talk about <em>your next move</em></h2>
+              <p>Tell me about your concept and what you want to change. I'll reply with honest next steps.</p>
+              <div class="btn-row">
+                <a class="btn" id="email-cta" href="https://www.linkedin.com/company/tm-hospitality-strategies/" target="_blank" rel="noopener noreferrer">Message on LinkedIn <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <a class="btn btn-ghost" href="https://www.instagram.com/tmhs.ig/" target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
+              </div>
+            </div>
+            <div class="composer" id="composer" role="group" aria-labelledby="composer-title" tabindex="-1">
+              <h3 id="composer-title">Not sure where to start? Draft it here.</h3>
+              <fieldset class="topics">
+                <legend>What would you like help with?</legend>
+                <label class="pick"><input type="checkbox" value="concept and positioning"><span>Concept</span></label>
+                <label class="pick"><input type="checkbox" value="operations and systems"><span>Operations</span></label>
+                <label class="pick"><input type="checkbox" value="costs and margins"><span>Costs &amp; margins</span></label>
+                <label class="pick"><input type="checkbox" value="menu and pricing"><span>Menu &amp; pricing</span></label>
+                <label class="pick"><input type="checkbox" value="a new opening"><span>New opening</span></label>
+              </fieldset>
+              <div class="cfield">
+                <label for="inq-venue">Type of business</label>
+                <select id="inq-venue"><option value="">Choose one (optional)</option><option>Independent restaurant</option><option>Restaurant group</option><option>Hotel</option><option>Café or bar</option><option>Catering business</option></select>
+              </div>
+              <div class="cfield">
+                <label for="inq-note">Anything else <span class="opt">optional</span></label>
+                <textarea id="inq-note" rows="3" maxlength="600"></textarea>
+              </div>
+              <label class="pick-line"><input type="checkbox" id="inq-calc"> Include my numbers from the calculators</label>
+              <div class="preview">
+                <p class="preview-k">Your message</p>
+                <p class="preview-text" id="inq-preview"></p>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="btn btn-light" id="inq-copy"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy message</button>
+                <a class="btn btn-ghost" id="inq-email" href="#contact" hidden><svg aria-hidden="true"><use href="#i-mail"/></svg>Email this message</a>
+              </div>
+              <p class="inq-hint" id="inq-hint">Copy it, then paste it into a LinkedIn message.</p>
+              <p class="inq-status" id="inq-status" role="status"></p>
             </div>
           </div>
         </div>
@@ -363,7 +562,7 @@
           <ul>
             <li><a href="#services">Services</a></li>
             <li><a href="#approach">Approach</a></li>
-            <li><a href="#calculator">Prime cost calculator</a></li>
+            <li><a href="#calculator">Cost calculators</a></li>
             <li><a href="#faq">FAQ</a></li>
           </ul>
         </div>
@@ -381,10 +580,15 @@
         <a class="to-top" href="#top">Back to top <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
     </div>
+    <a class="sticky-cta" id="sticky-cta" href="#contact">Start a conversation <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
   </footer>
 
   <script src="js/theme.js" defer></script>
-  <script src="js/calculator.js" defer></script>
+  <script src="js/calc-math.js" defer></script>
+  <script src="js/calc-prime.js" defer></script>
+  <script src="js/calc-recipe.js" defer></script>
+  <script src="js/calc-tabs.js" defer></script>
+  <script src="js/inquiry.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>
