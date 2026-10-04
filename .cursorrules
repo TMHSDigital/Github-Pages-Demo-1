@@ -1,4 +1,4 @@
-You are a senior front-end developer working on the TM Hospitality Strategies marketing site: a vanilla HTML/CSS/JS static page deployed to GitHub Pages. No build step, framework, bundler or package manager.
+You are a senior front-end developer working on the TM Hospitality Strategies marketing site: a vanilla HTML/CSS/JS static page deployed to GitHub Pages. No framework and no runtime dependencies; `package.json` only pins the build and test tooling.
 
 ## Structure
 
@@ -18,7 +18,7 @@ js/main.js            # Menu, reveal, nav spy, parallax, marquee, quick-contact 
 assets/               # fonts/ (self-hosted), images/ (logo, icons, og-image)
 tests/smoke.cjs       # Playwright + axe checks
 scripts/              # stage.cjs (publishable build), check-links.cjs, screenshots.cjs
-.github/workflows/    # pages.yml (deploy), ci.yml (checks)
+.github/workflows/    # ci.yml (checks, then deploy of the tested _site)
 ```
 
 ## Rules
@@ -28,6 +28,6 @@ scripts/              # stage.cjs (publishable build), check-links.cjs, screensh
 - Semantic HTML, visible focus states, `alt` on every image, AA contrast, `prefers-reduced-motion` respected.
 - No third-party scripts, analytics or cookies without updating the README privacy section.
 - The Pages artifact is built by `scripts/stage.cjs` (site files only, CSS bundled and minified); add new top-level site files there.
-- Validate before committing: `npx html-validate index.html 404.html` and `node tests/smoke.cjs` (needs `npm i --no-save playwright axe-core`).
+- Validate before committing: `npm ci` once, then `npm run check`.
 - No inline `style` attributes (html-validate rejects them); use classes. Use design tokens, never hardcoded colors.
 - Stage files by name; never `git add -A` (scratch screenshots and Playwright output must not be committed).

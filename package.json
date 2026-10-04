@@ -1,0 +1,28 @@
+{
+  "name": "tmhs-website",
+  "private": true,
+  "description": "Build and test tooling for the TM Hospitality Strategies site. The site itself has no runtime dependencies.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "node scripts/stage.cjs",
+    "validate": "html-validate index.html 404.html",
+    "lint": "eslint .",
+    "test": "node tests/smoke.cjs",
+    "test:build": "node scripts/stage.cjs && node -e \"process.env.SITE_DIR='_site'; require('./tests/smoke.cjs')\"",
+    "links": "node scripts/check-links.cjs",
+    "check": "npm run validate && npm run lint && npm test && npm run test:build"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "axe-core": "4.13.0",
+    "esbuild": "0.28.2",
+    "eslint": "10.12.0",
+    "globals": "17.13.0",
+    "html-validate": "11.16.2",
+    "lighthouse": "13.5.0",
+    "playwright": "1.63.0"
+  }
+}

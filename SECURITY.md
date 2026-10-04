@@ -14,7 +14,8 @@ You can expect an acknowledgement within a few days. Once a fix is available it 
 
 ## What the project already does
 
-- GitHub Actions are pinned to full commit SHAs and updated weekly by Dependabot.
+- GitHub Actions are pinned to full commit SHAs, and build and test tooling to exact versions in `package-lock.json` (installed with `npm ci`); Dependabot proposes updates weekly.
+- The site deploys only after every CI check passes, and the deployed files are the exact build the checks ran against.
 - Workflows use least-privilege `permissions`.
 - The published artifact contains only the built site files (see `scripts/stage.cjs`), not the repository.
 - Published pages carry a Content-Security-Policy (`<meta>` tag, as GitHub Pages cannot set headers): scripts, styles, fonts and images load only from the site itself, inline blocks are allowed by SHA-256 hash, and plugins and form submissions are disabled. CI fails if anything on the page violates it.

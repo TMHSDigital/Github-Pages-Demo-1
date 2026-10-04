@@ -1,5 +1,8 @@
 name: CI
 
+# Checks run on every push and pull request. On main, the deploy job then
+# publishes the exact _site/ the checks tested, and only if they all passed.
+
 on:
   push:
     branches: ["main"]
@@ -16,26 +19,27 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7
         with:
-          node-version: 20
+          node-version: 24
+          cache: npm
+      - name: Install pinned tooling
+        run: npm ci
       - name: Validate HTML
-        run: npx --yes html-validate index.html 404.html
+        run: npm run validate
       - name: Lint JS
-        run: npx --yes eslint@8 --no-eslintrc --env browser,es2021 --parser-options ecmaVersion:2021 js/*.js
-      - name: Install test tooling
-        run: npm i --no-save playwright axe-core esbuild
+        run: npm run lint
       - name: Smoke, keyboard and accessibility tests (source)
-        run: node tests/smoke.cjs
+        run: npm test
       - name: Stage the publishable site
-        run: node scripts/stage.cjs
+        run: npm run build
       - name: Smoke, keyboard and accessibility tests (staged build)
         run: SITE_DIR=_site node tests/smoke.cjs
       - name: Check external links
-        run: node scripts/check-links.cjs
+        run: npm run links
       - name: Lighthouse budgets
         run: |
           (cd _site && python3 -m http.server 8000 >/dev/null 2>&1 &)
           sleep 2
-          npx --yes lighthouse http://localhost:8000/ --output=json --output-path=lh.json --chrome-flags="--headless=new --no-sandbox" --quiet
+          npx lighthouse http://localhost:8000/ --output=json --output-path=lh.json --chrome-flags="--headless=new --no-sandbox" --quiet
           python3 - <<'PY'
           import json, sys
           cats = json.load(open('lh.json'))['categories']
@@ -58,3 +62,26 @@ jobs:
           print(missing)
           sys.exit(1 if missing else 0)
           PY
+      - name: Upload the tested site for deployment
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9  # v5
+        with:
+          path: _site
+
+  deploy:
+    needs: checks
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d  # v6
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346  # v5

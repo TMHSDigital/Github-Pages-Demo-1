@@ -1,8 +1,8 @@
 'use strict';
 /**
  * Smoke, keyboard and accessibility checks.
- * Run: npm i --no-save playwright axe-core && node tests/smoke.cjs
- * Staged build: node scripts/stage.cjs && SITE_DIR=_site node tests/smoke.cjs
+ * Run: npm ci && npm test
+ * Staged build: npm run test:build
  * Uses the system Chrome (channel "chrome"); no browser download needed.
  */
 const http = require('node:http');
@@ -138,7 +138,7 @@ async function check(name, fn) {
   for (const [w, h, extra, theme] of [[375, 800, {}, 'light'], [375, 800, {}, 'dark'], [1280, 900, {}, 'light'], [1280, 900, {}, 'dark'], [1280, 900, { reducedMotion: 'reduce' }, 'light']]) {
     await check(`axe WCAG A/AA: 0 violations at ${w}px, ${theme} theme${extra.reducedMotion ? ', reduced motion' : ''}`, async () => {
       const ctx = await browser.newContext({ viewport: { width: w, height: h }, ...extra });
-      await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch (e) {} }, theme);
+      await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch { /* storage blocked */ } }, theme);
       const page = await ctx.newPage();
       await page.goto(base, { waitUntil: 'networkidle' });
       // scroll through so every reveal has played before scanning
@@ -594,7 +594,7 @@ async function check(name, fn) {
   for (const [w, h, theme] of [[1280, 900, 'light'], [1280, 900, 'dark'], [375, 800, 'light'], [375, 800, 'dark']]) {
     await check(`axe WCAG A/AA: 0 violations on the plate and cocktail tools and filled message at ${w}px, ${theme} theme`, async () => {
       const { page, ctx } = await calm({ width: w, height: h });
-      await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch (e) {} }, theme);
+      await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch { /* storage blocked */ } }, theme);
       await page.goto(base, { waitUntil: 'networkidle' });
       await page.evaluate(AXE);
       const scan = () => page.evaluate(() => axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] })

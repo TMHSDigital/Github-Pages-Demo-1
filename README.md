@@ -17,7 +17,7 @@ No framework, no runtime dependencies.
 
 <br>
 
-[![Deploy](https://img.shields.io/github/actions/workflow/status/TMHSDigital/Github-Pages-Demo-1/pages.yml?branch=main&label=deploy&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/pages.yml)
+[![Deploy](https://img.shields.io/github/deployments/TMHSDigital/Github-Pages-Demo-1/github-pages?label=deploy&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/deployments/github-pages)
 [![CI](https://img.shields.io/github/actions/workflow/status/TMHSDigital/Github-Pages-Demo-1/ci.yml?branch=main&label=ci&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml)
 [![Lighthouse accessibility](https://img.shields.io/badge/lighthouse_a11y-100-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![Lighthouse performance](https://img.shields.io/badge/lighthouse_perf-95%2B-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
@@ -252,11 +252,12 @@ Then open <http://localhost:8000>.
 │   ├── check-links.cjs      External link checker
 │   └── screenshots.cjs      Regenerates docs/screenshots, the banner and the social card
 ├── docs/                    README banner source and screenshots
+├── package.json             Pinned build and test tooling (no runtime dependencies)
+├── eslint.config.cjs        Lint rules
 ├── CONTRIBUTING.md  SECURITY.md  LICENSE
 └── .github/
-    ├── workflows/pages.yml  Builds and deploys the site to GitHub Pages
-    ├── workflows/ci.yml     Validation, tests, Lighthouse, link checks
-    └── dependabot.yml       Weekly GitHub Actions updates
+    ├── workflows/ci.yml     Validation, tests, Lighthouse, link checks, then deploy
+    └── dependabot.yml       Weekly GitHub Actions and npm tooling updates
 ```
 
 </details>
@@ -267,14 +268,14 @@ Then open <http://localhost:8000>.
 
 ## Deployment
 
-Every push to `main` runs [`pages.yml`](.github/workflows/pages.yml), which builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs) and publishes it to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
+Every push to `main` runs [`ci.yml`](.github/workflows/ci.yml): it builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs), runs every quality gate against it, and only if they all pass publishes that exact `_site/` to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy and copies only site files (`index.html`, `404.html`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
 
 <details>
 <summary><b>Preview the published build locally</b></summary>
 
 ```bash
-npm i --no-save esbuild
-node scripts/stage.cjs && cd _site && python -m http.server 8000
+npm ci
+npm run build && cd _site && python -m http.server 8000
 ```
 
 </details>
@@ -287,7 +288,7 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 
 ## Quality gates
 
-<sub><a href="https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml"><code>ci.yml</code></a> runs on every push and pull request.</sub>
+<sub><a href="https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml"><code>ci.yml</code></a> runs on every push and pull request. Tool versions are pinned in <code>package.json</code> and installed with <code>npm ci</code>.</sub>
 
 | Gate | Tool | Standard |
 | :-- | :-- | :-- |
@@ -307,11 +308,9 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 <summary><b>Run the checks locally</b></summary>
 
 ```bash
-npm i --no-save playwright axe-core esbuild    # uses your installed Chrome
-npx html-validate index.html 404.html
-node tests/smoke.cjs
-node scripts/stage.cjs && SITE_DIR=_site node tests/smoke.cjs    # the published build
-node scripts/check-links.cjs
+npm ci            # pinned tooling; tests use your installed Chrome
+npm run check     # HTML validation, lint, tests on the source and on the published build
+npm run links     # external link check
 ```
 
 </details>

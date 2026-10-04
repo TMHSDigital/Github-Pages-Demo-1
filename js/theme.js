@@ -11,8 +11,8 @@
   const media = window.matchMedia('(prefers-color-scheme: dark)');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  const read = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
-  const write = (v) => { try { localStorage.setItem(KEY, v); } catch (e) { /* storage unavailable: theme still changes for this visit */ } };
+  const read = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
+  const write = (v) => { try { localStorage.setItem(KEY, v); } catch { /* storage unavailable: theme still changes for this visit */ } };
 
   const apply = (theme) => {
     root.setAttribute('data-theme', theme);

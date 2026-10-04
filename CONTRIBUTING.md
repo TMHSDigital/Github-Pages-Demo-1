@@ -17,16 +17,14 @@ Thanks for helping with the TM Hospitality Strategies site. It is a small, depen
 git clone https://github.com/TMHSDigital/Github-Pages-Demo-1.git
 cd Github-Pages-Demo-1
 python -m http.server 8000          # open http://localhost:8000
-npm i --no-save playwright axe-core esbuild   # only needed to run checks (uses your installed Chrome)
+npm ci                              # pinned tooling, only needed to run checks (uses your installed Chrome)
 ```
 
 ## Before you commit
 
 ```bash
-npx html-validate index.html 404.html
-node tests/smoke.cjs                        # layout, keyboard, theme, calculator, axe
-node scripts/stage.cjs && SITE_DIR=_site node tests/smoke.cjs   # same checks on the published build
-node scripts/check-links.cjs
+npm run check     # html-validate, ESLint, then layout, keyboard, theme, calculator and axe checks on the source and the published build
+npm run links     # external link check
 ```
 
 If you change the page visibly, regenerate the README images and social card with `node scripts/screenshots.cjs`.
@@ -35,7 +33,8 @@ If you change the page visibly, regenerate the README images and social card wit
 
 - Keep commits focused, with a short imperative subject.
 - Stage files by name rather than `git add -A`, so scratch files and tool output are never committed.
-- CI (`.github/workflows/ci.yml`) runs the checks above plus Lighthouse budgets. A change should leave all of them green.
+- CI (`.github/workflows/ci.yml`) runs the checks above plus Lighthouse budgets, and deploys to GitHub Pages only when they all pass. A change should leave all of them green.
+- Tooling versions are pinned in `package.json`; Dependabot proposes updates weekly.
 
 ## Reporting problems
 

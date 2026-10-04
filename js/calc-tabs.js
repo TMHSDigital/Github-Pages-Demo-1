@@ -81,7 +81,7 @@
         await navigator.clipboard.writeText(href);
         field.hidden = true;
         say('Link copied. Anyone who opens it sees these numbers.');
-      } catch (e) {
+      } catch {
         // Clipboard blocked: show the link, selected, to copy by hand
         field.value = href;
         field.hidden = false;

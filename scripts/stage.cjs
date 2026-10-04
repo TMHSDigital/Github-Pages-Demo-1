@@ -5,7 +5,7 @@
  * minified stylesheet (inlined into the home page), minified scripts and a
  * hash-based Content-Security-Policy. Fonts and images are copied as is.
  *
- * Run: npm i --no-save esbuild && node scripts/stage.cjs
+ * Run: npm ci && npm run build
  */
 const fs = require('node:fs');
 const path = require('node:path');

@@ -1,7 +1,7 @@
 'use strict';
 /**
  * Regenerates the README screenshots in docs/screenshots/ and the social card.
- * Run: npm i --no-save playwright && node scripts/screenshots.cjs
+ * Run: npm ci && node scripts/screenshots.cjs
  */
 const http = require('node:http');
 const fs = require('node:fs');
@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
 
   const shot = async (name, { viewport, theme = 'light', at, action, dir = OUT, scale = 1.5, clip }) => {
     const ctx = await browser.newContext({ viewport, deviceScaleFactor: scale, reducedMotion: 'reduce' });
-    await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch (e) {} }, theme);
+    await ctx.addInitScript((t) => { try { localStorage.setItem('tmhs-theme', t); } catch { /* storage blocked */ } }, theme);
     const page = await ctx.newPage();
     await page.goto(base, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);

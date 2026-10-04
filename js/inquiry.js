@@ -69,7 +69,7 @@ const CONTACT_EMAIL = '';
     try {
       await navigator.clipboard.writeText(compose());
       status.textContent = CONTACT_EMAIL ? 'Message copied.' : 'Message copied. Paste it into a LinkedIn message.';
-    } catch (e) {
+    } catch {
       // Clipboard blocked: select the preview so it can be copied by hand
       const range = document.createRange();
       range.selectNodeContents(preview);
