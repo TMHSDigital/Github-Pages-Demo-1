@@ -193,8 +193,40 @@
               <p class="calc-summary" id="out-summary" role="status" aria-live="polite"></p>
               <button type="button" class="reset" id="calc-reset">Reset to example values</button>
             </div>
+            <section class="tracker" id="tracker" aria-labelledby="tracker-title">
+              <div class="tracker-head">
+                <p class="tracker-title" id="tracker-title">Track it month by month</p>
+                <p>Save each month's numbers to see which way prime cost is heading. Saved months stay in this browser only, until you clear them.</p>
+              </div>
+              <div class="tracker-save">
+                <div class="tracker-field">
+                  <label for="tracker-month">Month</label>
+                  <input type="month" id="tracker-month" min="2000-01">
+                </div>
+                <button type="button" class="btn btn-sm" id="tracker-save">Save this month</button>
+              </div>
+              <p class="add-note" id="tracker-status" role="status"></p>
+              <p class="tracker-empty" id="tracker-empty">No months saved yet. Set this month's numbers above, then save them.</p>
+              <div class="tracker-view" id="tracker-view" hidden>
+                <p class="tracker-summary" id="tracker-summary"></p>
+                <svg class="tracker-chart" id="tracker-chart" aria-hidden="true" focusable="false"></svg>
+                <div class="table-scroll">
+                  <table class="tracker-table">
+                    <caption class="sr-only">Saved months, newest first</caption>
+                    <thead><tr><th scope="col">Month</th><th scope="col">Sales</th><th scope="col">Food &amp; bev</th><th scope="col">Labor</th><th scope="col">Prime cost</th><th scope="col"><span class="sr-only">Remove</span></th></tr></thead>
+                    <tbody id="tracker-rows"></tbody>
+                  </table>
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn btn-ghost btn-sm" id="tracker-export">Download as CSV</button>
+                  <button type="button" class="btn btn-ghost btn-sm" id="tracker-import">Import a CSV</button>
+                  <input type="file" id="tracker-file" accept=".csv,text/csv" hidden>
+                  <button type="button" class="btn btn-ghost btn-sm" id="tracker-clear">Clear saved months</button>
+                </div>
+              </div>
+            </section>
             <!-- TODO(verify): confirm benchmark ranges (rule-of-thumb bands below) before relying on them -->
-            <p class="calc-note"><strong>Illustration only, not advice.</strong> Bands are common rules of thumb (under 60% strong, 60-65% on target, 65-70% watch, over 70% needs attention) and vary by concept. Nothing you enter is sent or stored.</p>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> Bands are common rules of thumb (under 60% strong, 60-65% on target, 65-70% watch, over 70% needs attention) and vary by concept. Nothing you enter is sent anywhere, and nothing is stored unless you save a month (then only in this browser).</p>
           </div>
           <!-- /sync:tool-prime -->
           <div class="tools-bar">
@@ -230,7 +262,7 @@
         <p>So $63,000 of the month's sales went to prime cost. With other controllable costs at 12%, about $25,000 is left for rent, other overheads and profit. At these sales, each point of prime cost is worth $1,000 a month, or $12,000 a year.</p>
 
         <h3>Reading the result</h3>
-        <p>The calculator labels a result using common rules of thumb: under 60% strong, 60 to 65% on target, 65 to 70% worth watching and over 70% needing attention. Healthy ranges differ by concept, since a counter-service café, a full-service dining room and a bar run very different mixes of food and labor, so the trend in your own numbers from month to month usually says more than any single benchmark.</p>
+        <p>The calculator labels a result using common rules of thumb: under 60% strong, 60 to 65% on target, 65 to 70% worth watching and over 70% needing attention. Healthy ranges differ by concept, since a counter-service café, a full-service dining room and a bar run very different mixes of food and labor, so the trend in your own numbers from month to month usually says more than any single benchmark. Save each month under the calculator to see that trend build up; saved months stay in your browser.</p>
 
         <h3>More free tools</h3>
         <ul class="other-tools">
@@ -290,6 +322,7 @@
   <script src="../../js/theme.js" defer></script>
   <script src="../../js/calc-math.js" defer></script>
   <script src="../../js/calc-prime.js" defer></script>
+  <script src="../../js/calc-tracker.js" defer></script>
   <script src="../../js/calc-tabs.js" defer></script>
   <script src="../../js/main.js" defer></script>
 </body>

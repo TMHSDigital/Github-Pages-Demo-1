@@ -147,7 +147,7 @@ No framework, no runtime dependencies.
 | **About** | The story behind the brand, a pull quote and three principles. |
 | **Services** | Bento grid: concept and positioning, operations, financial performance, growth and openings. |
 | **Approach** | Listen, diagnose, build, sustain, joined by a progress line that fills as you scroll. |
-| **Operator toolkit** | Three tabbed calculators that run entirely in the browser. **Prime cost**: sliders, or typed percentages and dollar amounts straight from the P&L, a live gauge and rule-of-thumb band, a breakdown of where each sales dollar goes and what each point of prime cost is worth. **Plate cost** and **cocktail cost**: ingredient or pour rows (bottle price, size and pour), a target cost % and an optional menu price, giving a suggested price, actual cost % and gross profit. Any result can be shared as a link, and "Talk through these numbers" carries it into the contact message. |
+| **Operator toolkit** | Three tabbed calculators that run entirely in the browser. **Prime cost**: sliders, or typed percentages and dollar amounts straight from the P&L, a live gauge and rule-of-thumb band, a month-by-month tracker (trend chart, table, CSV export and import, kept only in the browser), a breakdown of where each sales dollar goes and what each point of prime cost is worth. **Plate cost** and **cocktail cost**: ingredient or pour rows (bottle price, size and pour), a target cost % and an optional menu price, giving a suggested price, actual cost % and gross profit. Any result can be shared as a link, and "Talk through these numbers" carries it into the contact message. |
 | **Selected work** | Case-study cards with a blueprint cover and a challenge, approach and outcome outline, labeled as placeholders until real write-ups exist. |
 | **FAQ** | Two-column layout: a short intro with an "Ask something else" link beside a native `<details>` accordion. |
 | **Contact** | LinkedIn and Instagram, plus a message builder: pick topics and a business type, add a note and, optionally, the calculator results, then copy the message or (once an email is configured) send it with `mailto:`. On mobile a quick-contact bar appears between the hero and this section. |
@@ -242,6 +242,7 @@ Then open <http://localhost:8000>.
 │   ├── theme.js             Dark/light toggle (pre-paint snippet lives in index.html)
 │   ├── calc-math.js         Pure calculator maths (TMHSCalc) and the tool registry
 │   ├── calc-prime.js        Prime cost tool: gauge, breakdown, what-if
+│   ├── calc-tracker.js      Prime cost month-by-month tracker (localStorage, chart, CSV)
 │   ├── calc-recipe.js       Plate and cocktail cost tools (one shared row-based tool)
 │   ├── calc-tabs.js         Toolkit tabs, shared links and copy link
 │   ├── inquiry.js           Contact message builder and CONTACT_EMAIL
@@ -303,7 +304,7 @@ npm run build && cd _site && python -m http.server 8000
 | **HTML validity** | `html-validate` | No errors |
 | **JavaScript lint** | ESLint | No errors |
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
-| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k), decimal-comma and dot-grouped (120.000) input, negative sales flagged, prime cost lines typed as dollars or decimal percentages, per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers, the address bar then follows edits so a reload keeps them, and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
+| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k), decimal-comma and dot-grouped (120.000) input, negative sales flagged, prime cost lines typed as dollars or decimal percentages, the month tracker (save, trend, CSV round trip, remove, two-step clear, blocked storage), per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers, the address bar then follows edits so a reload keeps them, and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
 | **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
 | **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, toolkit tabs follow the ARIA arrow/Home/End pattern, focus stays put when rows are added or removed, FAQ operable, visible focus rings |
 | **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |
@@ -352,7 +353,7 @@ npm run build && npm run lighthouse   # Lighthouse floors for every page in the 
 
 ## Privacy and security
 
-- The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculators and the message builder run locally and never store or send what you enter. A shared calculator link carries its numbers in the URL, and only to whoever you give it to; after opening one, the address bar keeps up with your changes (still only in the URL, never stored).
+- The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculators and the message builder run locally and never send what you enter. The only thing ever stored is a month the visitor chooses to save in the prime cost tracker, and that stays in their browser's `localStorage` until they remove it or clear the tracker. A shared calculator link carries its numbers in the URL, and only to whoever you give it to; after opening one, the address bar keeps up with your changes (still only in the URL, never stored).
 - The published pages carry a strict Content-Security-Policy: only the site's own files run, and the few inline blocks are allowed by hash (generated in `scripts/stage.cjs`).
 - GitHub Actions are pinned to commit SHAs and kept current by Dependabot.
 - Found a vulnerability? See [SECURITY.md](SECURITY.md) and report it privately through the repository's **Security** tab.

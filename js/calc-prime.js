@@ -191,8 +191,10 @@
 
   const describe = (k) => C.pct1(current[k]) + (lines[k].mode === 'usd' ? ' (' + C.usd(lines[k].value) + ')' : '');
 
-  window.TMHSTools.tools.prime = {
+  const tool = {
     label: 'prime cost',
+    // The numbers in use, each cost as a % of sales (for the month tracker)
+    snapshot: () => ({ sales: current.sales, food: current.food, labor: current.labor, other: current.other }),
     get: () => ({
       sales: current.sales,
       ...Object.fromEntries(KEYS.map((k) => (lines[k].mode === 'usd' ? [k + '_usd', lines[k].value] : [k, lines[k].value]))),
@@ -209,8 +211,10 @@
       'Monthly sales: ' + (current.sales ? C.usd(current.sales) : 'not entered'),
       'Food and beverage ' + describe('food') + ', labor ' + describe('labor') + ', other controllable costs ' + describe('other'),
       'Prime cost: ' + C.pct1(current.pct) + ' (' + current.band.label.toLowerCase() + ')',
+      ...(tool.history && tool.history() ? [tool.history()] : []), // set by the month tracker
     ],
   };
+  window.TMHSTools.tools.prime = tool;
 
   update();
 })();
