@@ -21,6 +21,7 @@ No framework, no runtime dependencies.
 [![CI](https://img.shields.io/github/actions/workflow/status/TMHSDigital/Github-Pages-Demo-1/ci.yml?branch=main&label=ci&style=flat-square&labelColor=203164&color=00A5F6)](https://github.com/TMHSDigital/Github-Pages-Demo-1/actions/workflows/ci.yml)
 [![Lighthouse accessibility](https://img.shields.io/badge/lighthouse_a11y-100-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![Lighthouse performance](https://img.shields.io/badge/lighthouse_perf-95%2B-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
+<br>
 [![axe](https://img.shields.io/badge/axe--core-0_violations-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![WCAG](https://img.shields.io/badge/WCAG_2.2_AA-automated_checks-00A5F6?style=flat-square&labelColor=203164)](#quality-gates)
 [![Dependencies](https://img.shields.io/badge/runtime_dependencies-0-00A5F6?style=flat-square&labelColor=203164)](#tech-stack)
@@ -34,12 +35,12 @@ No framework, no runtime dependencies.
 
 <br>
 
-<table width="100%">
+<table align="center">
   <tr>
-    <td width="25%" align="center" valign="top"><h3>2 themes</h3><sub>Light and dark, following<br>the system setting</sub></td>
-    <td width="25%" align="center" valign="top"><h3>0 requests</h3><sub>No third-party requests,<br>cookies or analytics</sub></td>
-    <td width="25%" align="center" valign="top"><h3>0 violations</h3><sub>axe-core, WCAG 2.2 A/AA,<br>in both themes</sub></td>
-    <td width="25%" align="center" valign="top"><h3>35 checks</h3><sub>Automated browser tests<br>on every push</sub></td>
+    <td align="center" valign="top"><h3>2&nbsp;themes</h3><sub>Light&nbsp;and&nbsp;dark,<br>follows&nbsp;your&nbsp;system</sub></td>
+    <td align="center" valign="top"><h3>0&nbsp;requests</h3><sub>No&nbsp;third&#8209;party&nbsp;calls,<br>cookies&nbsp;or&nbsp;analytics</sub></td>
+    <td align="center" valign="top"><h3>0&nbsp;violations</h3><sub>axe&#8209;core,&nbsp;WCAG&nbsp;2.2&nbsp;AA,<br>in&nbsp;both&nbsp;themes</sub></td>
+    <td align="center" valign="top"><h3>35&nbsp;checks</h3><sub>Browser&nbsp;tests&nbsp;run<br>on&nbsp;every&nbsp;push</sub></td>
   </tr>
 </table>
 
@@ -52,11 +53,11 @@ No framework, no runtime dependencies.
 <summary><b>Table of contents</b></summary>
 <br>
 
-| | |
-| :-- | :-- |
-| **The site** | [Preview](#preview) · [What's on the page](#whats-on-the-page) · [Design system](#design-system) |
-| **Build and run** | [Quick start](#quick-start) · [Customize](#customize) · [Project structure](#project-structure) · [Deployment](#deployment) |
-| **Quality** | [Quality gates](#quality-gates) · [Tech stack](#tech-stack) · [Privacy and security](#privacy-and-security) · [Roadmap](#roadmap) |
+<table align="center">
+  <tr><td align="right"><b>1&nbsp;·&nbsp;The&nbsp;site</b></td><td><a href="#preview">Preview</a> · <a href="#whats-on-the-page">What's on the page</a> · <a href="#design-system">Design system</a></td></tr>
+  <tr><td align="right"><b>2&nbsp;·&nbsp;Build&nbsp;and&nbsp;run</b></td><td><a href="#quick-start">Quick start</a> · <a href="#customize">Customize</a> · <a href="#project-structure">Project structure</a> · <a href="#deployment">Deployment</a></td></tr>
+  <tr><td align="right"><b>3&nbsp;·&nbsp;Quality</b></td><td><a href="#quality-gates">Quality gates</a> · <a href="#tech-stack">Tech stack</a> · <a href="#privacy-and-security">Privacy and security</a> · <a href="#roadmap">Roadmap</a></td></tr>
+</table>
 
 </details>
 
@@ -317,11 +318,9 @@ node scripts/check-links.cjs
 ![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-0E1A33?style=for-the-badge&logo=githubpages&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-1F4E8C?style=for-the-badge&logo=githubactions&logoColor=white)
 
+<sub>No framework, no bundler in development and no runtime dependencies.<br>Playwright, axe-core and esbuild are used only for testing and publishing and are never shipped.</sub>
+
 </div>
-
-<br>
-
-No framework, no bundler in development and no runtime dependencies. Playwright, axe-core and esbuild are used only for testing and publishing and are never shipped.
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
