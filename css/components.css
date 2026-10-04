@@ -151,6 +151,13 @@ html:not(.js) .theme-toggle, html:not(.js) .nav-toggle { display: none; }
 .calc-form { padding: var(--space-m); display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; align-content: start; min-width: 0; }
 .field > label, .field .lab { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-weight: 600; font-size: .95rem; margin-bottom: .55rem; }
 .field .val { font: 600 1.15rem/1 var(--serif); color: var(--accent-text); font-variant-numeric: tabular-nums; }
+.field .lab { align-items: center; }
+.val-in { width: 7.5rem; flex: none; text-align: right; font: 600 1.05rem/1 var(--serif); color: var(--accent-text); font-variant-numeric: tabular-nums; background: var(--bg); border: 1.5px solid var(--line); border-radius: var(--radius-ctl); padding: .45rem .6rem; transition: border-color .2s, box-shadow .2s; }
+.val-in:hover { border-color: color-mix(in srgb, var(--accent-text) 45%, var(--line)); }
+.val-in:focus-visible { border-color: var(--accent-text); box-shadow: 0 0 0 4px var(--glow); outline: 3px solid var(--logo-blue); outline-offset: 2px; }
+.calc-hint { margin: -.5rem 0 0; font-size: .86rem; color: var(--text-soft); }
+.cost-alt { margin: .45rem 0 0; font-size: .84rem; color: var(--text-soft); font-variant-numeric: tabular-nums; }
+.cost-alt:empty { display: none; }
 .money { display: flex; align-items: center; border: 1.5px solid var(--line); border-radius: var(--radius-ctl); background: var(--bg); padding: 0 1rem; transition: border-color .2s, box-shadow .2s; }
 .money:focus-within { border-color: var(--accent-text); box-shadow: 0 0 0 4px var(--glow); outline: 3px solid var(--logo-blue); outline-offset: 2px; }
 .money span { color: var(--text-soft); font-weight: 600; }

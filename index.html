@@ -286,17 +286,21 @@
                 <p id="calc-revenue-hint" class="sr-only">Enter your total monthly sales in dollars, for example 120,000 or 120k.</p>
                 <p id="calc-revenue-issue" class="add-note" role="status"></p>
               </div>
+              <p class="calc-hint" id="calc-cost-hint">Drag a slider, or type a percentage (31.5%) or a dollar amount from your P&amp;L ($31,240).</p>
               <div class="field">
-                <div class="lab"><label for="calc-food">Food and beverage cost</label><span class="val" id="calc-food-out" aria-hidden="true">31%</span></div>
+                <div class="lab"><label for="calc-food">Food and beverage cost</label><input class="val-in" id="calc-food-in" type="text" inputmode="decimal" autocomplete="off" value="31%" aria-label="Food and beverage cost, typed as a percentage of sales or a dollar amount" aria-describedby="calc-cost-hint calc-food-alt"></div>
                 <input id="calc-food" name="food" type="range" aria-valuetext="31% of sales" min="15" max="50" step="1" value="31">
+                <p class="cost-alt" id="calc-food-alt">$31,000 a month</p>
               </div>
               <div class="field">
-                <div class="lab"><label for="calc-labor">Labor cost</label><span class="val" id="calc-labor-out" aria-hidden="true">32%</span></div>
+                <div class="lab"><label for="calc-labor">Labor cost</label><input class="val-in" id="calc-labor-in" type="text" inputmode="decimal" autocomplete="off" value="32%" aria-label="Labor cost, typed as a percentage of sales or a dollar amount" aria-describedby="calc-cost-hint calc-labor-alt"></div>
                 <input id="calc-labor" name="labor" type="range" aria-valuetext="32% of sales" min="15" max="50" step="1" value="32">
+                <p class="cost-alt" id="calc-labor-alt">$32,000 a month</p>
               </div>
               <div class="field">
-                <div class="lab"><label for="calc-other">Other controllable costs</label><span class="val" id="calc-other-out" aria-hidden="true">12%</span></div>
+                <div class="lab"><label for="calc-other">Other controllable costs</label><input class="val-in" id="calc-other-in" type="text" inputmode="decimal" autocomplete="off" value="12%" aria-label="Other controllable costs, typed as a percentage of sales or a dollar amount" aria-describedby="calc-cost-hint calc-other-alt"></div>
                 <input id="calc-other" name="other" type="range" aria-valuetext="12% of sales" min="0" max="30" step="1" value="12">
+                <p class="cost-alt" id="calc-other-alt">$12,000 a month</p>
               </div>
               <div class="split" aria-hidden="true">
                 <p class="split-label">Where each sales dollar goes</p>

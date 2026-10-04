@@ -228,7 +228,54 @@ async function check(name, fn) {
     await page.locator('#calc-food').focus();
     await page.keyboard.press('ArrowRight');
     assert.equal(await page.locator('#calc-food').inputValue(), '32');
-    assert.equal(await page.locator('#calc-food-out').textContent(), '32%');
+    assert.equal(await page.locator('#calc-food-in').inputValue(), '32%');
+    await ctx.close();
+  });
+
+  await check('prime cost takes P&L dollar amounts and decimal percentages (#35)', async () => {
+    const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto(base, { waitUntil: 'networkidle' });
+    // dollars from the P&L, typed before the sales figure changes, stay dollars
+    await page.locator('#calc-food-in').fill('$31,240');
+    await page.locator('#calc-labor-in').fill('33980');
+    await page.locator('#calc-other-in').fill('12.5%');
+    await page.locator('#calc-other-in').blur();
+    assert.equal(await page.locator('#calc-food-in').inputValue(), '$31,240');
+    assert.equal(await page.locator('#calc-labor-in').inputValue(), '$33,980');
+    assert.equal(await page.locator('#calc-other-in').inputValue(), '12.5%');
+    assert.equal(await page.locator('#calc-food-alt').textContent(), '31.2% of sales');
+    assert.equal(await page.locator('#calc-other-alt').textContent(), '$12,500 a month');
+    assert.equal(await page.locator('#out-prime-pct').textContent(), '65.2%');
+    assert.equal(await page.locator('#out-band').textContent(), 'Watch closely');
+    // the slider follows to the nearest whole point and announces the exact share
+    assert.equal(await page.locator('#calc-food').inputValue(), '31');
+    assert.equal(await page.locator('#calc-food').getAttribute('aria-valuetext'), '31.2% of sales');
+    // a new sales figure re-reads the dollar lines as shares of it
+    await page.locator('#calc-revenue').fill('130,000');
+    assert.equal(await page.locator('#calc-food-alt').textContent(), '24% of sales');
+    assert.equal(await page.locator('#out-prime-pct').textContent(), '50.1%');
+    assert.match(await page.locator('#wi-gap').textContent(), /Already there/);
+    // dragging a slider makes that line a percentage again
+    await page.locator('#calc-food').fill('30');
+    assert.equal(await page.locator('#calc-food-in').inputValue(), '30%');
+    // shared links keep dollar lines as dollars
+    const link = await page.evaluate(() => window.TMHSTools.shareUrl());
+    assert.match(link, /food=30&labor_usd=33980&other=12\.5/);
+    const second = await ctx.newPage();
+    await second.goto(link, { waitUntil: 'networkidle' });
+    assert.equal(await second.locator('#calc-labor-in').inputValue(), '$33,980');
+    assert.equal(await second.locator('#out-prime-pct').textContent(), '56.1%');
+    // the message builder spells out both
+    await second.locator('#inq-calc').check();
+    assert.match(await second.locator('#inq-preview').textContent(), /labor 26\.1% \(\$33,980\)/);
+    // nothing usable typed: the field goes back to the value in use
+    await page.locator('#calc-labor-in').fill('abc');
+    await page.locator('#calc-labor-in').blur();
+    assert.equal(await page.locator('#calc-labor-in').inputValue(), '$33,980');
+    assert.deepEqual(errors, []);
     await ctx.close();
   });
 

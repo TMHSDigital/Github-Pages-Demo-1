@@ -47,8 +47,24 @@ const TMHSCalc = (() => {
     return Number.isFinite(n) ? Math.min(Math.round(n * 100) / 100, max) : 0;
   };
 
-  const primeCostPct = (food, labor) => food + labor;
-  const leftoverPct = (food, labor, other) => Math.max(0, 100 - food - labor - other);
+  // A prime cost line as typed: a percentage of sales ("31.5%", "31,5", "31") or a dollar amount
+  // from the P&L ("$31,240", "31.2k", or any plain number over 100). Returns { mode, value }, or
+  // null when there is nothing usable to read.
+  const round1 = (n) => Math.round(n * 10) / 10;
+  const parseCost = (text) => {
+    const raw = String(text).trim();
+    if (!/\d/.test(raw) || moneyIssue(raw)) return null;
+    const pct = Math.min(round1(parseAmount(raw, 1000)), 100);
+    if (raw.includes('%')) return { mode: 'pct', value: pct };
+    const dollars = parseMoney(raw);
+    if (raw.includes('$') || /\d\s*[km]\b/i.test(raw) || dollars > 100) return { mode: 'usd', value: dollars };
+    return { mode: 'pct', value: pct };
+  };
+  // That line as a % of sales: dollar amounts need sales to become a share
+  const lineShare = (cost, sales) => (cost.mode === 'usd' ? (sales > 0 ? round1((cost.value / sales) * 100) : 0) : cost.value);
+
+  const primeCostPct = (food, labor) => round1(food + labor);
+  const leftoverPct = (food, labor, other) => Math.max(0, round1(100 - food - labor - other));
 
   // under 60 strong, 60 to <65 on target, 65 to <70 watch, 70+ needs attention
   const STRONG_BELOW = 60;
@@ -63,8 +79,8 @@ const TMHSCalc = (() => {
   const whatIf = (sales, pct) => ({
     pointMonthly: sales / 100,
     pointYearly: (sales / 100) * 12,
-    gapPts: Math.max(0, pct - STRONG_BELOW),
-    gapYearly: (Math.max(0, pct - STRONG_BELOW) * sales * 12) / 100,
+    gapPts: Math.max(0, round1(pct - STRONG_BELOW)),
+    gapYearly: (Math.max(0, round1(pct - STRONG_BELOW)) * sales * 12) / 100,
   });
 
   const costPerOz = (bottlePrice, bottleMl) => (bottleMl > 0 ? bottlePrice / (bottleMl / ML_PER_OZ) : 0);
@@ -83,7 +99,7 @@ const TMHSCalc = (() => {
   const usd2 = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const pct1 = (n) => (Math.round(n * 10) / 10).toLocaleString('en-US') + '%';
 
-  return { parseMoney, moneyIssue, parseAmount, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW };
+  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW };
 })();
 
 window.TMHSCalc = TMHSCalc;

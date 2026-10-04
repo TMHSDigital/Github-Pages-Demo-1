@@ -32,7 +32,7 @@ const server = http.createServer((req, res) => {
     const page = await ctx.newPage();
     await page.goto(base, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
-    if (at) await page.evaluate((sel) => window.scrollTo(0, document.querySelector(sel).offsetTop - 72), at);
+    if (at) await page.evaluate((sel) => window.scrollTo(0, document.querySelector(sel).getBoundingClientRect().top + window.scrollY - 72), at);
     if (action) await action(page);
     await page.waitForTimeout(250);
     await page.screenshot({ path: path.join(dir, name), clip });
@@ -45,8 +45,8 @@ const server = http.createServer((req, res) => {
   await shot('hero-dark.png', { viewport: desk, theme: 'dark' });
   await shot('services.png', { viewport: { width: 1280, height: 720 }, at: '#services' });
   await shot('approach.png', { viewport: { width: 1280, height: 720 }, at: '#approach' });
-  await shot('calculator.png', { viewport: { width: 1280, height: 800 }, at: '#calculator' });
-  await shot('calculator-dark.png', { viewport: { width: 1280, height: 800 }, at: '#calculator', theme: 'dark', action: (p) => p.locator('#tab-cocktail').click() });
+  await shot('calculator.png', { viewport: { width: 1280, height: 900 }, at: '#tool-tabs' });
+  await shot('calculator-dark.png', { viewport: { width: 1280, height: 900 }, at: '#tool-tabs', theme: 'dark', action: (p) => p.locator('#tab-cocktail').click() });
   await shot('work.png', { viewport: { width: 1280, height: 760 }, at: '#work' });
   await shot('contact.png', {
     viewport: { width: 1280, height: 900 }, at: '#contact',

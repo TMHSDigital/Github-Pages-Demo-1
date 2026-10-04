@@ -61,6 +61,28 @@ test('parseAmount: caps', () => {
   assert.equal(C.parseAmount('25', 20), 20);
 });
 
+test('parseCost: percentages and P&L dollar amounts (#35)', () => {
+  const cases = [
+    ['31', 'pct', 31], ['31.5', 'pct', 31.5], ['31,5', 'pct', 31.5], ['31.5%', 'pct', 31.5], ['31.25 %', 'pct', 31.3],
+    ['100', 'pct', 100], ['150%', 'pct', 100],
+    ['$31,240', 'usd', 31240], ['31240', 'usd', 31240], ['31.240', 'usd', 31240], ['31.2k', 'usd', 31200], ['$90', 'usd', 90], ['101', 'usd', 101],
+  ];
+  for (const [input, mode, value] of cases) assert.deepEqual({ ...C.parseCost(input) }, { mode, value }, input);
+  for (const input of ['', '%', '$', 'abc', '-31', '1e3']) assert.equal(C.parseCost(input), null, input);
+});
+
+test('lineShare turns a cost line into a % of sales', () => {
+  assert.equal(C.lineShare({ mode: 'pct', value: 31.5 }, 100000), 31.5);
+  assert.equal(C.lineShare({ mode: 'usd', value: 31240 }, 100000), 31.2);
+  assert.equal(C.lineShare({ mode: 'usd', value: 31240 }, 0), 0);
+});
+
+test('derived percentages carry no floating-point noise', () => {
+  assert.equal(C.primeCostPct(31.2, 32.1), 63.3);
+  assert.equal(C.leftoverPct(31.2, 32.1, 12.3), 24.4);
+  assert.equal(C.whatIf(100000, 63.4).gapPts, 3.4);
+});
+
 table('band boundaries', (p) => C.band(p).key, [
   [0, 'strong'], [59.9, 'strong'], [60, 'target'], [64.9, 'target'], [65, 'watch'], [69.9, 'watch'], [70, 'attention'], [120, 'attention'],
 ]);

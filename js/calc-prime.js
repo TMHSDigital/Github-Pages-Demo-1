@@ -1,6 +1,8 @@
 'use strict';
 
 // Prime cost tool: readout, gauge, cost breakdown and what-if savings.
+// Each cost line is held as typed: a % of sales, or a dollar amount from the P&L that becomes
+// a % once sales is known, so sales and costs can be entered in any order.
 (() => {
   const form = document.getElementById('calc');
   if (!form) return;
@@ -8,17 +10,20 @@
   const C = window.TMHSCalc;
   const $ = (id) => document.getElementById(id);
   const revenue = $('calc-revenue');
-  const ranges = { food: $('calc-food'), labor: $('calc-labor'), other: $('calc-other') };
+  const KEYS = ['food', 'labor', 'other'];
+  const ranges = Object.fromEntries(KEYS.map((k) => [k, $('calc-' + k)]));
+  const typed = Object.fromEntries(KEYS.map((k) => [k, $('calc-' + k + '-in')]));
   const out = form.querySelector('.calc-out');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const lines = Object.fromEntries(KEYS.map((k) => [k, { mode: 'pct', value: +ranges[k].value }]));
   const view = { pct: 0, prime: 0, left: 0 };
   let raf = 0;
   let summaryTimer = 0;
   let current = { sales: 0, food: 0, labor: 0, other: 0, pct: 0, band: C.band(0) };
 
   const paint = () => {
-    $('out-prime-pct').textContent = Math.round(view.pct) + '%';
+    $('out-prime-pct').textContent = C.pct1(view.pct);
     $('out-prime-usd').textContent = C.usd(view.prime);
     $('out-left-usd').textContent = C.usd(view.left);
   };
@@ -32,6 +37,7 @@
       const p = Math.min((now - t0) / 550, 1);
       const e = 1 - Math.pow(1 - p, 3);
       for (const k of Object.keys(target)) view[k] = from[k] + (target[k] - from[k]) * e;
+      if (p === 1) Object.assign(view, target); // land exactly, so the readout shows no rounding drift
       paint();
       if (p < 1) raf = requestAnimationFrame(step);
     };
@@ -45,9 +51,11 @@
       const seg = form.querySelector('.seg-' + k);
       if (seg) seg.style.setProperty('--w', (v / scale) * 100 + '%');
       const label = $('split-' + k);
-      if (label) label.textContent = v + '%';
+      if (label) label.textContent = C.pct1(v);
     }
   };
+
+  const points = (n) => (Math.round(n * 10) / 10).toLocaleString('en-US') + (n === 1 ? ' point' : ' points');
 
   const paintWhatIf = (sales, pct) => {
     const w = C.whatIf(sales, pct);
@@ -58,7 +66,7 @@
       $('wi-gap-note').textContent = '';
     } else if (w.gapPts > 0) {
       $('wi-gap').textContent = '+' + C.usd(w.gapYearly) + ' a year';
-      $('wi-gap-note').textContent = 'if prime cost came down ' + w.gapPts + (w.gapPts === 1 ? ' point' : ' points');
+      $('wi-gap-note').textContent = 'if prime cost came down ' + points(w.gapPts);
     } else {
       $('wi-gap').textContent = 'Already there';
       $('wi-gap-note').textContent = 'prime cost is ' + C.STRONG_BELOW + '% or lower';
@@ -74,19 +82,31 @@
     return issue;
   };
 
+  // A cost line as it reads in its field: dollars stay dollars, a % shows one decimal at most
+  const lineText = (line, pct) => (line.mode === 'usd' ? C.usd(line.value) : C.pct1(pct));
+  // The other way to read it, under the slider
+  const altText = (line, pct, sales) => {
+    if (line.mode === 'usd') return sales ? C.pct1(pct) + ' of sales' : 'Enter your monthly sales to turn this into a percentage';
+    return sales ? C.usd((sales * pct) / 100) + ' a month' : '';
+  };
+
   const update = () => {
     flagRevenue();
     const sales = C.parseMoney(revenue.value);
-    const food = +ranges.food.value;
-    const labor = +ranges.labor.value;
-    const other = +ranges.other.value;
+    const share = Object.fromEntries(KEYS.map((k) => [k, C.lineShare(lines[k], sales)]));
 
-    for (const [k, el] of Object.entries(ranges)) {
-      $('calc-' + k + '-out').textContent = el.value + '%';
-      el.setAttribute('aria-valuetext', el.value + '% of sales'); // the visible % label is hidden from screen readers
+    for (const k of KEYS) {
+      const el = ranges[k];
+      const p = share[k];
+      // The slider shows the nearest whole point it can; the typed value is what is used
+      el.value = String(Math.min(+el.max, Math.max(+el.min, Math.round(p))));
+      el.setAttribute('aria-valuetext', C.pct1(p) + ' of sales'); // the typed field is announced separately
       el.style.setProperty('--fill', ((el.value - el.min) / (el.max - el.min)) * 100 + '%');
+      if (document.activeElement !== typed[k]) typed[k].value = lineText(lines[k], p);
+      $('calc-' + k + '-alt').textContent = altText(lines[k], p, sales);
     }
 
+    const { food, labor, other } = share;
     const pct = C.primeCostPct(food, labor);
     const leftPct = C.leftoverPct(food, labor, other);
     const band = C.band(pct);
@@ -103,12 +123,12 @@
 
     clearTimeout(summaryTimer);
     summaryTimer = setTimeout(() => {
-      const total = food + labor + other;
+      const total = Math.round((food + labor + other) * 10) / 10;
       let money;
       if (!sales) money = ' Enter your monthly sales to see dollar amounts.';
-      else if (total >= 100) money = ' These costs add up to ' + total + '% of sales, so nothing is left for rent, other overheads or profit.';
+      else if (total >= 100) money = ' These costs add up to ' + C.pct1(total) + ' of sales, so nothing is left for rent, other overheads or profit.';
       else money = ' About ' + C.usd((sales * leftPct) / 100) + ' is left after these costs.';
-      $('out-summary').textContent = 'Prime cost is ' + pct + '%, ' + band.label.toLowerCase() + '.' + money;
+      $('out-summary').textContent = 'Prime cost is ' + C.pct1(pct) + ', ' + band.label.toLowerCase() + '.' + money;
     }, 450);
   };
 
@@ -135,37 +155,60 @@
     update();
   });
   revenue.addEventListener('change', tidyRevenue);
-  Object.values(ranges).forEach((el) => el.addEventListener('input', update));
 
-  const defaults = { revenue: revenue.defaultValue, food: ranges.food.defaultValue, labor: ranges.labor.defaultValue, other: ranges.other.defaultValue };
+  for (const k of KEYS) {
+    // Dragging a slider sets that line as a percentage
+    ranges[k].addEventListener('input', () => {
+      lines[k] = { mode: 'pct', value: +ranges[k].value };
+      update();
+    });
+    // Typing updates live without touching the field; leaving it shows the value as used
+    typed[k].addEventListener('input', () => {
+      const line = C.parseCost(typed[k].value);
+      if (line) { lines[k] = line; update(); }
+    });
+    typed[k].addEventListener('blur', update);
+  }
+
+  const defaults = { revenue: revenue.defaultValue, ...Object.fromEntries(KEYS.map((k) => [k, +ranges[k].defaultValue])) };
   const reset = $('calc-reset');
   if (reset) {
     reset.addEventListener('click', () => {
       revenue.value = defaults.revenue;
-      ranges.food.value = defaults.food;
-      ranges.labor.value = defaults.labor;
-      ranges.other.value = defaults.other;
+      for (const k of KEYS) lines[k] = { mode: 'pct', value: defaults[k] };
       update();
     });
   }
 
-  const clampRange = (el, v) => {
-    const n = parseInt(v, 10);
-    if (Number.isFinite(n)) el.value = String(Math.min(+el.max, Math.max(+el.min, n)));
+  // From a shared link: "food=31.5" is a percentage, "food_usd=31240" a dollar amount
+  const readLine = (s, k) => {
+    const usd = parseFloat(s[k + '_usd']);
+    if (Number.isFinite(usd) && usd >= 0) return { mode: 'usd', value: Math.min(Math.round(usd), 10000000) };
+    const pct = parseFloat(s[k]);
+    if (Number.isFinite(pct)) return { mode: 'pct', value: Math.min(100, Math.max(0, Math.round(pct * 10) / 10)) };
+    return null;
   };
+
+  const describe = (k) => C.pct1(current[k]) + (lines[k].mode === 'usd' ? ' (' + C.usd(lines[k].value) + ')' : '');
 
   window.TMHSTools.tools.prime = {
     label: 'prime cost',
-    get: () => ({ sales: current.sales, food: current.food, labor: current.labor, other: current.other }),
+    get: () => ({
+      sales: current.sales,
+      ...Object.fromEntries(KEYS.map((k) => (lines[k].mode === 'usd' ? [k + '_usd', lines[k].value] : [k, lines[k].value]))),
+    }),
     set: (s) => {
       if (s.sales != null) { revenue.value = String(s.sales); tidyRevenue(); }
-      for (const k of Object.keys(ranges)) if (s[k] != null) clampRange(ranges[k], s[k]);
+      for (const k of KEYS) {
+        const line = readLine(s, k);
+        if (line) lines[k] = line;
+      }
       update();
     },
     summary: () => [
       'Monthly sales: ' + (current.sales ? C.usd(current.sales) : 'not entered'),
-      'Food and beverage ' + current.food + '%, labor ' + current.labor + '%, other controllable costs ' + current.other + '%',
-      'Prime cost: ' + current.pct + '% (' + current.band.label.toLowerCase() + ')',
+      'Food and beverage ' + describe('food') + ', labor ' + describe('labor') + ', other controllable costs ' + describe('other'),
+      'Prime cost: ' + C.pct1(current.pct) + ' (' + current.band.label.toLowerCase() + ')',
     ],
   };
 
