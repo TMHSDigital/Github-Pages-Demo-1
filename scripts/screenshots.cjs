@@ -78,6 +78,23 @@ const server = http.createServer((req, res) => {
     }),
   });
 
+  // A social card per calculator page (rendered from docs/tool-card.html). The stat is the
+  // page's worked example, so it matches what the calculator opens on.
+  const CARDS = [
+    { slug: 'prime-cost-calculator', title: 'Prime cost', em: 'calculator', tag: 'Food, beverage and labor as a share of sales, and what each point is worth.', stat: '63%', statLabel: 'prime cost on the worked example' },
+    { slug: 'plate-cost-calculator', title: 'Plate cost', em: 'calculator', tag: 'Cost a dish ingredient by ingredient and price it at your target food cost.', stat: '$20.67', statLabel: 'suggested price at a 30% food cost' },
+    { slug: 'pour-cost-calculator', title: 'Cocktail pour cost', em: 'calculator', tag: 'Cost a drink from bottle prices and pours, and price it at your target pour cost.', stat: '$18.56', statLabel: 'suggested price at a 20% pour cost' },
+  ];
+  for (const { slug, ...text } of CARDS) {
+    const ctx = await browser.newContext({ viewport: { width: 1200, height: 630 } });
+    const page = await ctx.newPage();
+    await page.goto(base + 'docs/tool-card.html?' + new URLSearchParams(text), { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: path.join(ROOT, 'assets', 'images', `og-${slug}.png`) });
+    await ctx.close();
+    console.log(`wrote og-${slug}.png`);
+  }
+
   // README banner (rendered from docs/banner.html)
   {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 340 }, deviceScaleFactor: 1.5 });

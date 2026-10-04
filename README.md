@@ -215,9 +215,9 @@ Then open <http://localhost:8000>.
 | **Example recipes and targets** | Edit `defaults()` in [`js/calc-recipe.js`](js/calc-recipe.js) and the matching static values in `index.html`. |
 | **Contact email** | Set `CONTACT_EMAIL` in [`js/inquiry.js`](js/inquiry.js). While empty, the buttons point to LinkedIn and the message is copied instead of emailed. |
 | **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
-| **Social card, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. |
+| **Social cards, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. It also renders one social card per calculator page from `docs/tool-card.html` (text set in the `CARDS` list in the script). |
 | **Header, footer or a calculator** | Edit it in `index.html` (the blocks between `sync:` markers), then run `npm run sync` to update the pages in `tools/`. CI fails if they drift apart. |
-| **Repo name or domain** | Update `og:url`, canonical and JSON-LD URLs (home and `tools/*/`), `sitemap.xml`, `robots.txt` and the `<base>` in `404.html`. |
+| **Repo name or domain** | Update `og:url`, `og:image`, canonical and JSON-LD URLs (home and `tools/*/`), `sitemap.xml`, `SITE_URL` in `scripts/stage.cjs`, `robots.txt` and the `<base>` in `404.html`. |
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
@@ -248,7 +248,7 @@ Then open <http://localhost:8000>.
 │   └── main.js              Menu, scroll reveal, nav spy, parallax, marquee pause, quick-contact bar
 ├── assets/
 │   ├── fonts/               Self-hosted Fraunces (upright and italic) and Inter, latin variable woff2
-│   └── images/              Logo, small logo, favicon, apple-touch icon, social card
+│   └── images/              Logo, small logo, favicon, apple-touch icon, social cards (site and one per calculator)
 ├── tests/
 │   ├── calc-math.test.cjs   Unit tests for the calculator maths (node:test, no browser)
 │   └── smoke.cjs            Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
@@ -258,7 +258,7 @@ Then open <http://localhost:8000>.
 │   ├── check-links.cjs      External link checker
 │   ├── lighthouse.cjs       Lighthouse floors for every page in the sitemap
 │   └── screenshots.cjs      Regenerates docs/screenshots, the banner and the social card
-├── docs/                    README banner source and screenshots
+├── docs/                    README banner and calculator social card sources, screenshots
 ├── package.json             Pinned build and test tooling (no runtime dependencies)
 ├── eslint.config.cjs        Lint rules
 ├── CONTRIBUTING.md  SECURITY.md  LICENSE
@@ -275,7 +275,7 @@ Then open <http://localhost:8000>.
 
 ## Deployment
 
-Every push to `main` runs [`ci.yml`](.github/workflows/ci.yml): it builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs), runs every quality gate against it, and only if they all pass publishes that exact `_site/` to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy and copies only site files (`index.html`, `404.html`, the calculator pages in `tools/`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
+Every push to `main` runs [`ci.yml`](.github/workflows/ci.yml): it builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs), runs every quality gate against it, and only if they all pass publishes that exact `_site/` to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy, dates each sitemap entry from the page's last commit and copies only site files (`index.html`, `404.html`, the calculator pages in `tools/`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
 
 <details>
 <summary><b>Preview the published build locally</b></summary>

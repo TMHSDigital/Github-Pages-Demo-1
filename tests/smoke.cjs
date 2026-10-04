@@ -781,8 +781,15 @@ async function check(name, fn) {
         assert.equal(levels.filter((l) => l === 1).length, 1);
         levels.reduce((prev, l) => { assert.ok(l - prev <= 1, `heading jumps h${prev} -> h${l}`); return l; }, 1);
         assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), `https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/${t.slug}/`);
-        const ld = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
-        assert.equal(ld['@type'], 'WebApplication');
+        const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).map((s) => JSON.parse(s));
+        assert.deepEqual(ld.map((d) => d['@type']), ['WebApplication', 'BreadcrumbList']);
+        const crumbs = ld[1].itemListElement;
+        assert.equal(crumbs.at(-1).item, `https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/${t.slug}/`);
+        assert.deepEqual(crumbs.map((c) => c.position), crumbs.map((_, i) => i + 1));
+        // its own social card, which exists
+        const card = await page.locator('meta[property="og:image"]').getAttribute('content');
+        assert.equal(card, `https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-${t.slug}.png`);
+        assert.ok(fs.existsSync(path.join(ROOT, 'assets', 'images', `og-${t.slug}.png`)), 'social card missing');
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'page scrolls sideways');
         assert.deepEqual(errors, []);
         await ctx.close();
@@ -845,6 +852,12 @@ async function check(name, fn) {
     assert.deepEqual(hrefs, TOOL_PAGES.map((t) => `tools/${t.slug}/`));
     const sitemap = fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8');
     for (const t of TOOL_PAGES) assert.ok(sitemap.includes(`/tools/${t.slug}/</loc>`), `${t.slug} missing from sitemap`);
+    // the published sitemap dates each page from git; the source carries none to go stale
+    const entries = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].map((m) => m[1]);
+    for (const e of entries) {
+      if (process.env.SITE_DIR) assert.match(e, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/, `no lastmod in ${e.trim()}`);
+      else assert.doesNotMatch(e, /<lastmod>/, 'source sitemap.xml has a hand-written lastmod');
+    }
     await ctx.close();
   });
 

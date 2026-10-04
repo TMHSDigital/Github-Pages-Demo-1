@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculator social card source</title>
+  <!-- Rendered to assets/images/og-<slug>.png (1200x630) by scripts/screenshots.cjs.
+       Text comes from the query string: ?title=&em=&tag=&stat=&statLabel= -->
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <style>
+    html, body { margin: 0; }
+    .card {
+      position: relative; overflow: hidden; width: 1200px; height: 630px; box-sizing: border-box;
+      display: grid; grid-template-columns: 1fr 340px; align-items: center; gap: 56px; padding: 0 80px;
+      background:
+        radial-gradient(640px 420px at 90% 12%, rgba(0, 165, 246, .30), transparent 62%),
+        radial-gradient(560px 360px at 0% 112%, rgba(51, 97, 147, .45), transparent 62%),
+        linear-gradient(160deg, #0F1D3F, #0A1226);
+      color: #EDF1FA;
+    }
+    .rings { position: absolute; right: -120px; top: -110px; width: 620px; height: 620px; color: #86CCF8; opacity: .8; }
+    .copy, .stat { position: relative; }
+    .brand { display: flex; align-items: center; gap: 14px; font: 600 22px/1 var(--serif); color: #fff; margin: 0 0 44px; }
+    .brand span { width: 52px; height: 52px; border-radius: 12px; background: #fff; display: grid; place-items: center; }
+    .brand img { width: 40px; height: auto; }
+    .eyebrow { display: inline-flex; align-items: center; gap: .6rem; font: 600 15px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #86CCF8; margin: 0 0 18px; }
+    .eyebrow::before { content: ""; width: 30px; height: 2px; background: currentColor; opacity: .7; }
+    h1 { font-size: 64px; line-height: 1.02; margin: 0 0 22px; color: #fff; letter-spacing: -.028em; }
+    h1 em { color: #86CCF8; }
+    .tag { font: 400 24px/1.4 var(--sans); color: #C9D3E6; margin: 0; max-width: 30ch; text-wrap: pretty; }
+    .stat { border: 1.5px solid rgba(134, 204, 248, .35); border-radius: 18px; background: rgba(10, 18, 38, .55); padding: 36px 32px; text-align: center; box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .7); }
+    .stat b { display: block; font: 600 84px/1 var(--serif); color: #fff; letter-spacing: -.02em; }
+    .stat small { display: block; margin-top: 14px; text-wrap: balance; font: 500 18px/1.35 var(--sans); color: #86CCF8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <svg class="rings" viewBox="0 0 400 400" fill="none" stroke="currentColor" aria-hidden="true">
+      <circle cx="200" cy="200" r="190" stroke-width="1" stroke-dasharray="2 10" opacity=".5"/>
+      <circle cx="200" cy="200" r="160" stroke-width="1.2" stroke-dasharray="40 14 4 14" opacity=".35"/>
+      <circle cx="200" cy="200" r="130" stroke-width="1" opacity=".22"/>
+    </svg>
+    <div class="copy">
+      <p class="brand"><span><img src="../assets/images/tmhs-logo-96.png" width="96" height="89" alt=""></span>TM Hospitality Strategies</p>
+      <p class="eyebrow">Free calculator</p>
+      <h1 id="title"></h1>
+      <p class="tag" id="tag"></p>
+    </div>
+    <div class="stat"><b id="stat"></b><small id="stat-label"></small></div>
+  </div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    const h1 = document.getElementById('title');
+    h1.textContent = q.get('title') + ' ';
+    const em = document.createElement('em');
+    em.textContent = q.get('em') || '';
+    h1.append(em);
+    document.getElementById('tag').textContent = q.get('tag');
+    document.getElementById('stat').textContent = q.get('stat');
+    document.getElementById('stat-label').textContent = q.get('statLabel');
+  </script>
+</body>
+</html>

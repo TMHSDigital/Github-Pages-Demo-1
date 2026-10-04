@@ -10,6 +10,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { execFileSync } = require('node:child_process');
 const esbuild = require('esbuild');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -21,7 +22,23 @@ for (const entry of fs.readdirSync(OUT)) fs.rmSync(path.join(OUT, entry), { recu
 fs.mkdirSync(path.join(OUT, 'css'), { recursive: true });
 fs.mkdirSync(path.join(OUT, 'js'), { recursive: true });
 
-for (const f of ['robots.txt', 'sitemap.xml']) fs.copyFileSync(path.join(ROOT, f), path.join(OUT, f));
+fs.copyFileSync(path.join(ROOT, 'robots.txt'), path.join(OUT, 'robots.txt'));
+
+// Sitemap: each page's <lastmod> is the date of the last commit that touched its HTML, so it
+// never needs editing by hand. Without git history (or for an uncommitted page) it is today.
+const SITE_URL = 'https://tmhsdigital.github.io/Github-Pages-Demo-1/';
+const today = new Date().toISOString().slice(0, 10);
+const lastCommitDate = (file) => {
+  try {
+    return execFileSync('git', ['log', '-1', '--format=%cs', '--', file], { cwd: ROOT, encoding: 'utf8' }).trim() || today;
+  } catch {
+    return today;
+  }
+};
+fs.writeFileSync(path.join(OUT, 'sitemap.xml'), fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8').replace(
+  /(<loc>([^<]+)<\/loc>)/g,
+  (all, loc, url) => `${loc}\n    <lastmod>${lastCommitDate(url.replace(SITE_URL, '') + 'index.html')}</lastmod>`,
+));
 fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), { recursive: true });
 
 const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
