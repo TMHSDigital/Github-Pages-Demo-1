@@ -8,7 +8,7 @@
 
 ### The official marketing site for TM Hospitality Strategies
 
-A fast, accessible, single-page build with a dark/light theme and a prime cost calculator.<br>
+A fast, accessible, single-page build with a dark/light theme, three operator cost calculators and a message builder.<br>
 No framework, no runtime dependencies.
 
 <br>
@@ -40,7 +40,7 @@ No framework, no runtime dependencies.
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>2&nbsp;themes</h3><sub>Light&nbsp;and&nbsp;dark,<br>follows&nbsp;your&nbsp;system</sub></td>
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;requests</h3><sub>No&nbsp;third&#8209;party&nbsp;calls,<br>cookies&nbsp;or&nbsp;analytics</sub></td>
     <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>0&nbsp;violations</h3><sub>axe&#8209;core,&nbsp;WCAG&nbsp;2.2&nbsp;AA,<br>in&nbsp;both&nbsp;themes</sub></td>
-    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>35&nbsp;checks</h3><sub>Browser&nbsp;tests&nbsp;run<br>on&nbsp;every&nbsp;push</sub></td>
+    <td align="center" valign="top"><img src="docs/spacer.png" width="160" height="1" alt=""><h3>48&nbsp;checks</h3><sub>Browser&nbsp;tests&nbsp;run<br>on&nbsp;every&nbsp;push</sub></td>
   </tr>
 </table>
 
@@ -84,12 +84,22 @@ No framework, no runtime dependencies.
   </tr>
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/calculator.png" width="100%" alt="Prime cost calculator with sliders and a gauge">
-      <br><sub><b>Light</b> · prime cost calculator</sub>
+      <img src="docs/screenshots/calculator.png" width="100%" alt="Prime cost calculator with sliders, a gauge, a cost breakdown bar and what-if savings">
+      <br><sub><b>Light</b> · prime cost</sub>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/calculator-dark.png" width="100%" alt="Calculator in the dark theme">
-      <br><sub><b>Dark</b> · prime cost calculator</sub>
+      <img src="docs/screenshots/calculator-dark.png" width="100%" alt="Cocktail cost calculator in the dark theme, pricing a drink from bottle prices and pours">
+      <br><sub><b>Dark</b> · cocktail cost</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/screenshots/work.png" width="100%" alt="Case study placeholder cards with blueprint covers and a challenge, approach and outcome outline">
+      <br><sub><b>Selected work</b> · placeholders</sub>
+    </td>
+    <td width="50%" align="center" valign="top">
+      <img src="docs/screenshots/contact.png" width="100%" alt="Contact panel with a message builder that includes the calculator results">
+      <br><sub><b>Contact</b> · message builder</sub>
     </td>
   </tr>
   <tr>
@@ -137,10 +147,10 @@ No framework, no runtime dependencies.
 | **About** | The story behind the brand, a pull quote and three principles. |
 | **Services** | Bento grid: concept and positioning, operations, financial performance, growth and openings. |
 | **Approach** | Listen, diagnose, build, sustain, joined by a progress line that fills as you scroll. |
-| **Prime cost calculator** | Sliders and a live gauge for food, labor and other costs, with a rule-of-thumb band and a reset. Runs entirely in the browser. |
-| **Selected work** | Case-study cards with an icon and topic per project, currently labeled placeholders. |
+| **Operator toolkit** | Three tabbed calculators that run entirely in the browser. **Prime cost**: sliders, a live gauge and rule-of-thumb band, a breakdown of where each sales dollar goes and what each point of prime cost is worth. **Plate cost** and **cocktail cost**: ingredient or pour rows (bottle price, size and pour), a target cost % and an optional menu price, giving a suggested price, actual cost % and gross profit. Any result can be shared as a link, and "Talk through these numbers" carries it into the contact message. |
+| **Selected work** | Case-study cards with a blueprint cover and a challenge, approach and outcome outline, labeled as placeholders until real write-ups exist. |
 | **FAQ** | Two-column layout: a short intro with an "Ask something else" link beside a native `<details>` accordion. |
-| **Contact** | LinkedIn and Instagram, with an optional `mailto:` once an email is configured. |
+| **Contact** | LinkedIn and Instagram, plus a message builder: pick topics and a business type, add a note and, optionally, the calculator results, then copy the message or (once an email is configured) send it with `mailto:`. On mobile a quick-contact bar appears between the hero and this section. |
 | **404** | Branded error page that resolves its assets correctly from any nested URL. |
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
@@ -201,8 +211,9 @@ Then open <http://localhost:8000>.
 | :-- | :-- |
 | **Copy and sections** | Edit [`index.html`](index.html). Search for `TODO(verify)` to find placeholder text. |
 | **Colors, fonts, spacing** | Edit the tokens in [`css/tokens.css`](css/tokens.css). Light values are in `:root`, dark in `[data-theme="dark"]`. |
-| **Calculator bands** | Edit `band()` in [`js/calculator.js`](js/calculator.js) and the note under the calculator in `index.html`. Confirm the ranges before relying on them. |
-| **Contact email** | Set `CONTACT_EMAIL` in [`js/main.js`](js/main.js). While empty, the button links to LinkedIn. |
+| **Calculator bands** | Edit `band()` in [`js/calc-math.js`](js/calc-math.js) and the note under the calculator in `index.html`. Band colors are the `--band-*` tokens. Confirm the ranges before relying on them. |
+| **Example recipes and targets** | Edit `defaults()` in [`js/calc-recipe.js`](js/calc-recipe.js) and the matching static values in `index.html`. |
+| **Contact email** | Set `CONTACT_EMAIL` in [`js/inquiry.js`](js/inquiry.js). While empty, the buttons point to LinkedIn and the message is copied instead of emailed. |
 | **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
 | **Social card, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. |
 | **Repo name or domain** | Update `og:url`, canonical, `sitemap.xml`, `robots.txt` and the `<base>` in `404.html`. |
@@ -218,20 +229,24 @@ Then open <http://localhost:8000>.
 
 ```text
 .
-├── index.html               Single page: hero, about, services, approach, calculator, work, FAQ, contact
+├── index.html               Single page: hero, about, services, approach, toolkit, work, FAQ, contact
 ├── 404.html                 Branded error page (uses <base> for the repo path)
 ├── css/
 │   ├── tokens.css           Fonts, brand tokens, fluid scales, light and dark themes
 │   ├── base.css             Reset, typography, layout primitives, buttons, reveal rules
-│   └── components.css       Header, hero scene, marquee, sections, calculator, footer
+│   └── components.css       Header, hero scene, marquee, sections, toolkit, contact, footer
 ├── js/
 │   ├── theme.js             Dark/light toggle (pre-paint snippet lives in index.html)
-│   ├── calculator.js        Prime cost maths (TMHSCalc) and DOM wiring
-│   └── main.js              Menu, scroll reveal, nav spy, parallax, marquee pause, CONTACT_EMAIL
+│   ├── calc-math.js         Pure calculator maths (TMHSCalc) and the tool registry
+│   ├── calc-prime.js        Prime cost tool: gauge, breakdown, what-if
+│   ├── calc-recipe.js       Plate and cocktail cost tools (one shared row-based tool)
+│   ├── calc-tabs.js         Toolkit tabs, shared links and copy link
+│   ├── inquiry.js           Contact message builder and CONTACT_EMAIL
+│   └── main.js              Menu, scroll reveal, nav spy, parallax, marquee pause, quick-contact bar
 ├── assets/
 │   ├── fonts/               Self-hosted Fraunces (upright and italic) and Inter, latin variable woff2
 │   └── images/              Logo, small logo, favicon, apple-touch icon, social card
-├── tests/smoke.cjs          Layout, keyboard, theme, calculator and axe checks (Playwright)
+├── tests/smoke.cjs          Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
 ├── scripts/
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
 │   ├── check-links.cjs      External link checker
@@ -279,12 +294,12 @@ node scripts/stage.cjs && cd _site && python -m http.server 8000
 | **HTML validity** | `html-validate` | No errors |
 | **JavaScript lint** | ESLint | No errors |
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
-| **Features** | Playwright | Theme toggle persists and follows the system; calculator maths, live readout, caret-safe formatting and reset; marquee pauses; one header call to action per layout; valid JSON-LD |
+| **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
 | **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
-| **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, FAQ operable, visible focus rings |
+| **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, toolkit tabs follow the ARIA arrow/Home/End pattern, focus stays put when rows are added or removed, FAQ operable, visible focus rings |
 | **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |
-| **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion |
-| **Security** | Playwright, staged build | Content-Security-Policy present on every page and no violations while using the theme toggle, calculator and 404 page |
+| **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion, including the plate and cocktail tools and a filled-in message |
+| **Security** | Playwright, staged build | Content-Security-Policy present on every page and no violations while using the theme toggle, toolkit tabs, message builder and 404 page |
 | **Performance and quality** | Lighthouse, staged build | Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher |
 | **Links** | internal and external checkers | No broken links |
 
@@ -328,7 +343,7 @@ node scripts/check-links.cjs
 
 ## Privacy and security
 
-- The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculator runs locally and never stores or sends what you enter.
+- The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculators and the message builder run locally and never store or send what you enter. A shared calculator link carries its numbers in the URL, and only to whoever you give it to.
 - The published pages carry a strict Content-Security-Policy: only the site's own files run, and the few inline blocks are allowed by hash (generated in `scripts/stage.cjs`).
 - GitHub Actions are pinned to commit SHAs and kept current by Dependabot.
 - Found a vulnerability? See [SECURITY.md](SECURITY.md) and report it privately through the repository's **Security** tab.
@@ -345,7 +360,7 @@ node scripts/check-links.cjs
 
 - [ ] Replace placeholder copy with real content ([#14](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/14))
 - [ ] Choose a contact method, email or booking link ([#15](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/15))
-- [ ] Confirm the calculator's benchmark bands ([#27](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/27))
+- [ ] Confirm the prime cost bands and the example plate and cocktail recipes and targets ([#27](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/27))
 - [ ] Provide the original vector logo ([#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16))
 - [ ] Add photography and richer visuals ([#20](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/20))
 

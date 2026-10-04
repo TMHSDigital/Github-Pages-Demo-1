@@ -46,7 +46,18 @@ const server = http.createServer((req, res) => {
   await shot('services.png', { viewport: { width: 1280, height: 720 }, at: '#services' });
   await shot('approach.png', { viewport: { width: 1280, height: 720 }, at: '#approach' });
   await shot('calculator.png', { viewport: { width: 1280, height: 800 }, at: '#calculator' });
-  await shot('calculator-dark.png', { viewport: { width: 1280, height: 800 }, at: '#calculator', theme: 'dark' });
+  await shot('calculator-dark.png', { viewport: { width: 1280, height: 800 }, at: '#calculator', theme: 'dark', action: (p) => p.locator('#tab-cocktail').click() });
+  await shot('work.png', { viewport: { width: 1280, height: 760 }, at: '#work' });
+  await shot('contact.png', {
+    viewport: { width: 1280, height: 900 }, at: '#contact',
+    action: async (p) => {
+      await p.locator('#tab-plate').click();
+      await p.locator('#talk-numbers').click();
+      await p.locator('.topics label', { hasText: 'Costs' }).click();
+      await p.selectOption('#inq-venue', 'Independent restaurant');
+      await p.evaluate(() => window.scrollTo(0, document.querySelector('#contact').offsetTop - 72));
+    },
+  });
   await shot('mobile.png', { viewport: { width: 390, height: 844 }, scale: 2 });
   await shot('mobile-menu.png', { viewport: { width: 390, height: 844 }, scale: 2, action: (p) => p.locator('.nav-toggle').click() });
 

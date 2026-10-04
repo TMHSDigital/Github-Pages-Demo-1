@@ -9,8 +9,12 @@ css/tokens.css        # Fonts, brand tokens, fluid scales, light/dark themes
 css/base.css          # Reset, typography, layout, buttons, reveal rules
 css/components.css    # All components and responsive rules
 js/theme.js           # Theme toggle
-js/calculator.js      # Prime cost calculator (TMHSCalc) + wiring
-js/main.js            # Menu, reveal, nav spy, parallax, marquee, CONTACT_EMAIL
+js/calc-math.js       # Pure calculator maths (TMHSCalc) + TMHSTools registry; load first
+js/calc-prime.js      # Prime cost tool
+js/calc-recipe.js     # Plate + cocktail cost tools (one shared row tool, <template> rows)
+js/calc-tabs.js       # Toolkit tabs, ?tool= shared links, copy link
+js/inquiry.js         # Contact message builder, CONTACT_EMAIL
+js/main.js            # Menu, reveal, nav spy, parallax, marquee, quick-contact bar
 assets/               # fonts/ (self-hosted), images/ (logo, icons, og-image)
 tests/smoke.cjs       # Playwright + axe checks
 scripts/              # stage.cjs (publishable build), check-links.cjs, screenshots.cjs
