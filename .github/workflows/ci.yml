@@ -10,11 +10,37 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7
         with:
           node-version: 20
       - name: Validate HTML
         run: npx --yes html-validate index.html 404.html
       - name: Lint JS
         run: npx --yes eslint@8 --no-eslintrc --env browser,es2021 --parser-options ecmaVersion:2021 js/main.js
+      - name: Lighthouse budgets
+        run: |
+          python3 -m http.server 8000 >/dev/null 2>&1 &
+          sleep 2
+          npx --yes lighthouse http://localhost:8000/ --output=json --output-path=lh.json --chrome-flags="--headless=new --no-sandbox" --quiet
+          python3 - <<'PY'
+          import json, sys
+          cats = json.load(open('lh.json'))['categories']
+          bad = {k: round(v['score'] * 100) for k, v in cats.items() if k in ('performance', 'accessibility', 'best-practices', 'seo') and v['score'] < 0.95}
+          print({k: round(v['score'] * 100) for k, v in cats.items()})
+          sys.exit(1 if bad else 0)
+          PY
+      - name: Check internal links
+        run: |
+          python3 - <<'PY'
+          import re, os, sys
+          missing = []
+          for page in ('index.html', '404.html'):
+              for ref in re.findall(r'(?:href|src)="([^"#:?]+)"', open(page, encoding='utf-8').read()):
+                  if ref.startswith('/') or ref == './':
+                      continue
+                  if not os.path.exists(ref):
+                      missing.append((page, ref))
+          print(missing)
+          sys.exit(1 if missing else 0)
+          PY

@@ -51,7 +51,7 @@ Pushing to `main` runs `.github/workflows/pages.yml`, which publishes only the s
 
 ## Privacy
 
-Fonts load from Google Fonts. The site sets no cookies and has no analytics. There is no contact form.
+Fonts (Fraunces, Inter) are self-hosted. The site makes no third-party requests, sets no cookies and has no analytics. There is no contact form.
 
 ## License
 
