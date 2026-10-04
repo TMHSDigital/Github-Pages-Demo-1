@@ -31,5 +31,6 @@ scripts/              # stage.cjs (publishable build), sync-tool-pages.cjs, chec
 - The Pages artifact is built by `scripts/stage.cjs` (site files only, CSS bundled and minified); add new top-level site files there.
 - Blocks between `<!-- sync:NAME -->` markers in index.html (sprite, header, footer, tool panels, row templates) are copied into tools/*/index.html. Edit them in index.html only, then run `npm run sync`.
 - Validate before committing: `npm ci` once, then `npm run check`.
+- Shapes: buttons, tabs, fields and chips use `--radius-ctl` (6px), badges `--radius-tag`; no pill (999px) controls. Cards use `--radius` / `--radius-l`.
 - No inline `style` attributes (html-validate rejects them); use classes. Use design tokens, never hardcoded colors.
 - Stage files by name; never `git add -A` (scratch screenshots and Playwright output must not be committed).
