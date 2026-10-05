@@ -1,0 +1,37 @@
+{
+  "site": "https://tmhsdigital.github.io/Github-Pages-Demo-1/",
+  "tools": [
+    {
+      "slug": "prime-cost-calculator",
+      "key": "prime",
+      "name": "Prime cost calculator",
+      "link": "prime cost",
+      "example": { "selector": "#out-prime-pct", "value": "63%" },
+      "card": { "title": "Prime cost", "tag": "Food, beverage and labor as a share of sales, and what each point is worth.", "statLabel": "prime cost on the worked example" }
+    },
+    {
+      "slug": "plate-cost-calculator",
+      "key": "plate",
+      "name": "Plate cost calculator",
+      "link": "plate cost",
+      "example": { "selector": "#plate-out-price", "value": "$20.67" },
+      "card": { "title": "Plate cost", "tag": "Cost a dish ingredient by ingredient and price it at your target food cost.", "statLabel": "suggested price at a 30% food cost" }
+    },
+    {
+      "slug": "pour-cost-calculator",
+      "key": "cocktail",
+      "name": "Cocktail pour cost calculator",
+      "link": "cocktail pour cost",
+      "example": { "selector": "#cocktail-out-price", "value": "$18.56" },
+      "card": { "title": "Cocktail pour cost", "tag": "Cost a drink from bottle prices and pours, and price it at your target pour cost.", "statLabel": "suggested price at a 20% pour cost" }
+    },
+    {
+      "slug": "break-even-calculator",
+      "key": "breakeven",
+      "name": "Break-even calculator",
+      "link": "break-even",
+      "example": { "selector": "#be-out-month", "value": "$118,421" },
+      "card": { "title": "Break-even", "tag": "The sales you need to cover your costs, per month, week and day, and the guests it takes.", "statLabel": "a month on the worked example" }
+    }
+  ]
+}

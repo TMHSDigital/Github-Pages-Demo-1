@@ -1072,12 +1072,9 @@ async function check(name, fn) {
   });
 
   // Calculator pages (tools/<slug>/): one tool each, held to the same bar as the home page
-  const TOOL_PAGES = [
-    { slug: 'prime-cost-calculator', tool: 'prime', out: '#out-prime-pct', value: '63%' },
-    { slug: 'plate-cost-calculator', tool: 'plate', out: '#plate-out-price', value: '$20.67' },
-    { slug: 'pour-cost-calculator', tool: 'cocktail', out: '#cocktail-out-price', value: '$18.56' },
-    { slug: 'break-even-calculator', tool: 'breakeven', out: '#be-out-month', value: '$118,421' },
-  ];
+  // From the tool registry: each page and the worked-example result it should open on
+  const TOOL_PAGES = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'tools', 'tools.json'), 'utf8')).tools
+    .map((t) => ({ slug: t.slug, tool: t.key, out: t.example.selector, value: t.example.value }));
   for (const t of TOOL_PAGES) {
     const url = `${base}tools/${t.slug}/`;
     await check(`${t.slug}: tool works, headings, metadata, no errors or sideways scroll at 375 and 1280px`, async () => {

@@ -26,7 +26,7 @@ fs.copyFileSync(path.join(ROOT, 'robots.txt'), path.join(OUT, 'robots.txt'));
 
 // Sitemap: each page's <lastmod> is the date of the last commit that touched its HTML, so it
 // never needs editing by hand. Without git history (or for an uncommitted page) it is today.
-const SITE_URL = 'https://tmhsdigital.github.io/Github-Pages-Demo-1/';
+const SITE_URL = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'tools.json'), 'utf8')).site; // the site's address lives in the tool registry
 const today = new Date().toISOString().slice(0, 10);
 const lastCommitDate = (file) => {
   try {

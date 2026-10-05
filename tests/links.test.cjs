@@ -26,7 +26,8 @@ test('ignored hosts and the site\'s own deploy-time paths are skipped', () => {
 
 test('every URL found in the real pages parses', () => {
   const root = path.join(__dirname, '..');
-  const pages = ['index.html', 'README.md', ...fs.readdirSync(path.join(root, 'tools')).map((s) => path.join('tools', s, 'index.html'))];
+  const pages = ['index.html', 'README.md', ...fs.readdirSync(path.join(root, 'tools')).map((s) => path.join('tools', s, 'index.html'))]
+    .filter((p) => fs.existsSync(path.join(root, p)));
   for (const page of pages) {
     for (const url of extractUrls(fs.readFileSync(path.join(root, page), 'utf8'))) {
       assert.doesNotThrow(() => new URL(url), `${page}: ${url}`);

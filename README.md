@@ -217,7 +217,8 @@ Then open <http://localhost:8000>.
 | **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
 | **Social cards, app icons, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. It also renders one social card per calculator page from `docs/tool-card.html` (text set in the `CARDS` list in the script). |
 | **Header, footer or a calculator** | Edit it in `index.html` (the blocks between `sync:` markers), then run `npm run sync` to update the pages in `tools/`. CI fails if they drift apart. |
-| **Repo name or domain** | Update `og:url`, `og:image`, canonical and JSON-LD URLs (home and `tools/*/`), `sitemap.xml`, `SITE_URL` in `scripts/stage.cjs`, `robots.txt` and the `<base>` in `404.html`. |
+| **Add a calculator** | Write its script and its `sync:tool-<key>` panel and tab in `index.html`, create `tools/<slug>/index.html` (copy one and edit the prose), add one entry to [`tools/tools.json`](tools/tools.json), then run `npm run sync` and `node scripts/screenshots.cjs`. The sitemap, manifest shortcuts, links between tool pages, embed snippet, social card and test list all come from that entry, and CI fails if any part is missing. |
+| **Repo name or domain** | Change `site` in `tools/tools.json` and run `npm run sync` (sitemap, embed snippets and credits follow), then update `og:url`, `og:image`, canonical and JSON-LD URLs (home and `tools/*/`), `robots.txt`, the `<base>` in `404.html` and the URL in `scripts/make-tracker-template.py`. |
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
@@ -234,7 +235,7 @@ Then open <http://localhost:8000>.
 ├── 404.html                 Branded error page (uses <base> for the repo path)
 ├── manifest.webmanifest     Web app manifest: name, icons, shortcuts to each calculator
 ├── sw.js                    Service worker source (network first, keeps the pages a visitor opens; the build fills in its version)
-├── tools/                   One indexable page per calculator, with a worked example:
+├── tools/                   tools.json (the tool registry) and one indexable page per calculator, with a worked example:
 │                            prime-cost-calculator/, plate-cost-calculator/, pour-cost-calculator/, break-even-calculator/
 ├── css/
 │   ├── tokens.css           Fonts, brand tokens, fluid scales, light and dark themes
@@ -259,7 +260,7 @@ Then open <http://localhost:8000>.
 │   └── smoke.cjs            Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
 ├── scripts/
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
-│   ├── sync-tool-pages.cjs  Copies the shared header, footer, sprite and tool markup from index.html into tools/*/
+│   ├── sync-tool-pages.cjs  Copies shared markup from index.html into tools/*/; builds tool lists, sitemap and manifest shortcuts from tools/tools.json
 │   ├── check-links.cjs      External link checker
 │   ├── lighthouse.cjs       Lighthouse floors for every page in the sitemap
 │   ├── screenshots.cjs      Regenerates docs/screenshots, the banner, social cards and app icons

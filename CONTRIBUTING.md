@@ -40,7 +40,7 @@ Some committed files are built by scripts. Regenerate them when their inputs cha
 
 | Files | Command | Run it when | Needs |
 | :-- | :-- | :-- | :-- |
-| `tools/*/index.html` (header, footer, sprite and tool blocks) | `npm run sync` | you change a `sync:` block in `index.html` (CI fails if you forget) | Node |
+| `tools/*/index.html` (shared `sync:` blocks and generated `gen:` blocks), `sitemap.xml`, the manifest's shortcuts, the home page's tool links | `npm run sync` | you change a `sync:` block in `index.html` or anything in `tools/tools.json` (CI fails if you forget) | Node |
 | `docs/screenshots/*`, `assets/images/og-*.png` (site and one per calculator), `assets/images/icon-*.png` | `node scripts/screenshots.cjs` | the page changes visibly, a calculator's worked example changes, or a calculator is added (add it to `CARDS`) | Node, Chrome |
 | `assets/downloads/prime-cost-tracker.xlsx` | `python scripts/make-tracker-template.py` | the prime cost bands change (they also live in `js/calc-math.js` and the calculator note) | Python, `pip install -r scripts/requirements.txt` |
 | `_site/` (not committed) | `npm run build` | to preview the published site; `npm run lighthouse` then checks every page in the sitemap against the CI floors | Node, Chrome |

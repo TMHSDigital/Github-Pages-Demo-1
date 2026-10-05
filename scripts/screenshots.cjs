@@ -80,12 +80,9 @@ const server = http.createServer((req, res) => {
 
   // A social card per calculator page (rendered from docs/tool-card.html). The stat is the
   // page's worked example, so it matches what the calculator opens on.
-  const CARDS = [
-    { slug: 'prime-cost-calculator', title: 'Prime cost', em: 'calculator', tag: 'Food, beverage and labor as a share of sales, and what each point is worth.', stat: '63%', statLabel: 'prime cost on the worked example' },
-    { slug: 'plate-cost-calculator', title: 'Plate cost', em: 'calculator', tag: 'Cost a dish ingredient by ingredient and price it at your target food cost.', stat: '$20.67', statLabel: 'suggested price at a 30% food cost' },
-    { slug: 'pour-cost-calculator', title: 'Cocktail pour cost', em: 'calculator', tag: 'Cost a drink from bottle prices and pours, and price it at your target pour cost.', stat: '$18.56', statLabel: 'suggested price at a 20% pour cost' },
-    { slug: 'break-even-calculator', title: 'Break-even', em: 'calculator', tag: 'The sales you need to cover your costs, per month, week and day, and the guests it takes.', stat: '$118,421', statLabel: 'a month on the worked example' },
-  ];
+  // Text and the worked-example result come from the tool registry (tools/tools.json)
+  const CARDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'tools.json'), 'utf8')).tools
+    .map((t) => ({ slug: t.slug, title: t.card.title, em: 'calculator', tag: t.card.tag, stat: t.example.value, statLabel: t.card.statLabel }));
   for (const { slug, ...text } of CARDS) {
     const ctx = await browser.newContext({ viewport: { width: 1200, height: 630 } });
     const page = await ctx.newPage();
