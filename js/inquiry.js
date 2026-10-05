@@ -32,7 +32,9 @@ const CONTACT_EMAIL = '';
 
   const joinList = (a) => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]);
 
-  const compose = () => {
+  // The full message (for the preview and "Copy message"), or the email version: same words, but
+  // the numbers travel as the share link alone, since mail apps cut off long mailto: links
+  const compose = (forEmail = false) => {
     const chosen = topics.filter((t) => t.checked).map((t) => t.value);
     const kind = venue.value;
     const lines = ['Hi TM Hospitality Strategies,', ''];
@@ -42,23 +44,29 @@ const CONTACT_EMAIL = '';
     if (note.value.trim()) lines.push('', note.value.trim());
     const tool = registry && registry.tools[registry.active];
     if (include.checked && tool) {
-      lines.push('', 'My numbers from your ' + tool.label + ' calculator:', ...tool.summary());
-      if (registry.shareUrl) lines.push('Link: ' + registry.shareUrl());
+      if (forEmail && registry.shareUrl) lines.push('', 'My numbers from your ' + tool.label + ' calculator: ' + registry.shareUrl());
+      else {
+        lines.push('', 'My numbers from your ' + tool.label + ' calculator:', ...tool.summary());
+        if (registry.shareUrl) lines.push('Link: ' + registry.shareUrl());
+      }
     }
     lines.push('', 'Thanks,');
     return lines.join('\n');
   };
 
+  // Some mail apps (Outlook on Windows among them) cut off or refuse mailto: links much past 2,000 characters
+  const MAX_MAILTO = 1900;
+  const HINT_EMAIL = 'Email it straight from your mail app, or copy it to send another way.';
   const refresh = () => {
     const text = compose();
     preview.textContent = text;
-    if (email) email.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Hospitality strategy inquiry')}&body=${encodeURIComponent(text)}`;
+    if (!CONTACT_EMAIL || !email) return;
+    const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Hospitality strategy inquiry')}&body=${encodeURIComponent(compose(true))}`;
+    const fits = href.length <= MAX_MAILTO;
+    email.hidden = !fits;
+    email.href = fits ? href : '#contact';
+    hint.textContent = fits ? HINT_EMAIL : `This message is too long to open in a mail app. Copy it and paste it into an email to ${CONTACT_EMAIL}.`;
   };
-
-  if (CONTACT_EMAIL && email) {
-    email.hidden = false;
-    hint.textContent = 'Email it straight from your mail app, or copy it to send another way.';
-  }
 
   box.addEventListener('input', refresh);
   box.addEventListener('change', refresh);

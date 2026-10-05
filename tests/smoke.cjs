@@ -797,6 +797,15 @@ async function check(name, fn) {
     await page.goto(`${base}tools/plate-cost-calculator/?embed=1&theme=dark`, { waitUntil: 'networkidle' });
     assert.equal(await page.getAttribute('html', 'data-theme'), 'dark');
     assert.equal(await page.evaluate(() => localStorage.getItem('tmhs-theme')), null);
+    // ...and keeps it when the visitor's system appearance changes (#50)
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.emulateMedia({ colorScheme: 'light' });
+    assert.equal(await page.getAttribute('html', 'data-theme'), 'dark');
+    // without ?theme=, an embed still follows the system
+    await page.goto(`${base}tools/plate-cost-calculator/?embed=1`, { waitUntil: 'networkidle' });
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.waitForFunction(() => document.documentElement.dataset.theme === 'dark');
+    await page.emulateMedia({ colorScheme: 'light' });
     // edits keep the page embedded across a reload
     await page.fill('#plate-price', '19');
     await page.goto(`${base}tools/plate-cost-calculator/?embed=1&tool=plate&rows=Fish_5&target=30`, { waitUntil: 'networkidle' });
@@ -938,6 +947,24 @@ async function check(name, fn) {
       const href = await page.locator('#inq-email').getAttribute('href');
       assert.match(href, /^mailto:hello@example\.com\?subject=Hospitality%20strategy%20inquiry&body=/);
       assert.match(decodeURIComponent(href), /would like help with operations and systems/);
+      // with numbers included, the email carries the share link rather than every line (#52)
+      await page.check('#inq-calc');
+      const withNumbers = decodeURIComponent(await page.locator('#inq-email').getAttribute('href'));
+      assert.match(withNumbers, /My numbers from your prime cost calculator: http.*\?tool=prime&sales=100000/);
+      assert.doesNotMatch(withNumbers, /Monthly sales:/);
+      assert.match(await page.locator('#inq-preview').textContent(), /Monthly sales: \$100,000/); // the copied message keeps them
+      // a worst case stays under the limit, and past it the button gives way to a copy hint
+      const rows = Array.from({ length: 12 }, (_, i) => `House infused aged rum blend number ${String(i).padStart(2, '0')}_32_750_1.5`).join('*');
+      await page.goto(`${base}?tool=cocktail&rows=${encodeURIComponent(rows)}&target=20&price=16&extra=0.5#contact`, { waitUntil: 'networkidle' });
+      await page.check('#inq-calc');
+      await page.fill('#inq-note', 'We are opening a second bar in the spring and want to get pricing right across the cocktail list before then.');
+      const long = await page.locator('#inq-email').getAttribute('href');
+      assert.ok(long.length <= 1900, `mailto is ${long.length} characters`);
+      await page.fill('#inq-note', 'Queremos revisar los precios de los cócteles y la carta de vinos antes de la apertura. '.repeat(7).slice(0, 600)); // accented text encodes to 6 characters a letter
+      assert.equal(await page.locator('#inq-email').isVisible(), false);
+      assert.match(await page.locator('#inq-hint').textContent(), /too long to open in a mail app\. Copy it and paste it into an email to hello@example\.com/);
+      await page.fill('#inq-note', 'Short note.');
+      assert.equal(await page.locator('#inq-email').isVisible(), true);
       await ctx.close();
     });
   }
