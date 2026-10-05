@@ -259,7 +259,10 @@ Then open <http://localhost:8000>.
 │   └── downloads/           Prime cost tracker spreadsheet template
 ├── tests/
 │   ├── calc-math.test.cjs   Unit tests for the calculator maths (node:test, no browser)
-│   └── smoke.cjs            Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
+│   ├── bands.test.cjs, links.test.cjs  Unit tests: band copies agree, link extraction
+│   ├── smoke.cjs            Browser test runner (Playwright): runs the areas below in parallel
+│   └── browser/             One file per area: site, theme, prime, tracker, recipe, breakeven, foodcost,
+│                            contact, embed-print, build, tool-pages
 ├── scripts/
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
 │   ├── sync-tool-pages.cjs  Copies shared markup from index.html into tools/*/; builds tool lists, sitemap and manifest shortcuts from tools/tools.json

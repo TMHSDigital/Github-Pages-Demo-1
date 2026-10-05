@@ -47,7 +47,7 @@ Some committed files are built by scripts. Regenerate them when their inputs cha
 
 The screenshot script rewrites every image each run, and some differ only by animation timing. Commit just the ones your change affects (`git checkout -- docs/screenshots/` drops the rest).
 
-Browser tests print only the first line of a failure; run `VERBOSE=1 npm test` for the full message.
+Browser tests live in `tests/browser/`, one file per area, and run in parallel. `npm test -- tracker` runs just the areas whose names match (several names are fine), `VERBOSE=1` prints each failure in full, and `SMOKE_WORKERS=1` runs the areas one at a time if you suspect a timing problem. A new check goes in the file for its area; a new area is just a new file there.
 
 ## Commits and pull requests
 

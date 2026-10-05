@@ -22,7 +22,7 @@ js/calc-tabs.js       # Toolkit tabs, ?tool= shared links, copy link
 js/inquiry.js         # Contact message builder, CONTACT_EMAIL
 js/main.js            # Menu, reveal, nav spy, parallax, marquee, quick-contact bar
 assets/               # fonts/ (self-hosted), images/ (logo, icons, og-image)
-tests/smoke.cjs       # Playwright + axe checks
+tests/smoke.cjs       # Browser test runner; checks live in tests/browser/<area>.cjs (npm test -- <area> runs one)
 scripts/              # stage.cjs (publishable build), sync-tool-pages.cjs, check-links.cjs, screenshots.cjs
 .github/workflows/    # ci.yml (checks, then deploy of the tested _site)
 ```
