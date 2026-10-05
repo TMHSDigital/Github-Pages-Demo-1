@@ -66,13 +66,19 @@ const TMHSCalc = (() => {
   const primeCostPct = (food, labor) => round1(food + labor);
   const leftoverPct = (food, labor, other) => Math.max(0, round1(100 - food - labor - other));
 
-  // under 60 strong, 60 to <65 on target, 65 to <70 watch, 70+ needs attention
-  const STRONG_BELOW = 60;
+  // Prime cost bands: the one source for the calculator, tracker and copy. The page notes and
+  // explainer and the spreadsheet template's Settings sheet repeat them; tests/bands.test.cjs
+  // fails if any of those drift from this list. TODO(verify) the thresholds (#27).
+  const BANDS = Object.freeze([
+    { below: 60, key: 'strong', label: 'Strong' },
+    { below: 65, key: 'target', label: 'On target' },
+    { below: 70, key: 'watch', label: 'Watch closely' },
+  ]);
+  const ABOVE = { key: 'attention', label: 'Needs attention' };
+  const STRONG_BELOW = BANDS[0].below;
   const band = (pct) => {
-    if (pct < STRONG_BELOW) return { key: 'strong', label: 'Strong' };
-    if (pct < 65) return { key: 'target', label: 'On target' };
-    if (pct < 70) return { key: 'watch', label: 'Watch closely' };
-    return { key: 'attention', label: 'Needs attention' };
+    const b = BANDS.find((x) => pct < x.below) || ABOVE;
+    return { key: b.key, label: b.label };
   };
 
   // What one point of prime cost is worth, and what reaching the strong band would free up
@@ -105,7 +111,7 @@ const TMHSCalc = (() => {
   const usd2 = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const pct1 = (n) => (Math.round(n * 10) / 10).toLocaleString('en-US') + '%';
 
-  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, breakEven, profitAt, WEEKS_PER_MONTH, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW };
+  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, breakEven, profitAt, WEEKS_PER_MONTH, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW, BANDS };
 })();
 
 window.TMHSCalc = TMHSCalc;

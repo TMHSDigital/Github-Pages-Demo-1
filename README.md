@@ -211,7 +211,7 @@ Then open <http://localhost:8000>.
 | :-- | :-- |
 | **Copy and sections** | Edit [`index.html`](index.html). Search for `TODO(verify)` to find placeholder text. |
 | **Colors, fonts, spacing** | Edit the tokens in [`css/tokens.css`](css/tokens.css). Light values are in `:root`, dark in `[data-theme="dark"]`. |
-| **Calculator bands** | Edit `band()` in [`js/calc-math.js`](js/calc-math.js), the note under the calculator in `index.html` and the bands in `scripts/make-tracker-template.py` (then run `python scripts/make-tracker-template.py`; see [Generated files](CONTRIBUTING.md#generated-files)). Band colors are the `--band-*` tokens. Confirm the ranges before relying on them. |
+| **Calculator bands** | Edit `BANDS` in [`js/calc-math.js`](js/calc-math.js), the note under the calculator in `index.html`, the prime cost explainer and the bands in `scripts/make-tracker-template.py`. `npm run test:unit` fails until all of them agree (then run `python scripts/make-tracker-template.py`; see [Generated files](CONTRIBUTING.md#generated-files)). Band colors are the `--band-*` tokens. Confirm the ranges before relying on them. |
 | **Example recipes and targets** | Edit `defaults()` in [`js/calc-recipe.js`](js/calc-recipe.js) and the matching static values in `index.html`. The break-even example lives in the `value` attributes of its fields in `index.html`. |
 | **Contact email** | Set `CONTACT_EMAIL` in [`js/inquiry.js`](js/inquiry.js). While empty, the buttons point to LinkedIn and the message is copied instead of emailed. |
 | **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |

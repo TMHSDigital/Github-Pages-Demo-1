@@ -28,7 +28,7 @@ npm run check     # unit tests, html-validate, ESLint, then layout, keyboard, th
 npm run links     # external link check (also runs weekly in CI and reports broken links as an issue; it never blocks a deploy)
 ```
 
-If you change `js/calc-math.js`, add cases to the tables in `tests/calc-math.test.cjs`.
+If you change `js/calc-math.js`, add cases to the tables in `tests/calc-math.test.cjs`. If you change the prime cost bands (`BANDS`), `tests/bands.test.cjs` lists every copy that has to follow.
 
 If you change the header, footer, icon sprite or a calculator in `index.html`, run `npm run sync` so the pages in `tools/` match (CI checks this).
 
