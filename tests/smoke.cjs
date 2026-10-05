@@ -708,6 +708,37 @@ async function check(name, fn) {
     await blocked.ctx.close();
   });
 
+  await check('print or save as PDF shows only the tool in use, with a dated link back (#43)', async () => {
+    const { page, ctx, errors } = await calm({ width: 1280, height: 900 });
+    await page.addInitScript(() => { window.print = () => { window.__printed = (window.__printed || 0) + 1; }; });
+    await page.goto(base, { waitUntil: 'networkidle' });
+    await page.locator('#tab-plate').click();
+    await page.locator('#print-numbers').click();
+    assert.equal(await page.evaluate(() => window.__printed), 1);
+    assert.match(await page.locator('#calculator').getAttribute('data-print-stamp'), /^TM Hospitality Strategies, \w+ \d+, \d{4}\. These numbers: http.*\?tool=plate&rows=/);
+    await page.emulateMedia({ media: 'print' });
+    for (const [sel, shown] of [['#calc-title', true], ['#plate', true], ['#plate-out-price', true], ['#calc', false], ['#about', false], ['#contact', false],
+      ['.site-header', false], ['.site-footer', false], ['#tool-tabs', false], ['.tools-bar', false], ['.tool-pages', false]]) {
+      assert.equal(await page.locator(sel).first().isVisible(), shown, `${sel} ${shown ? 'hidden' : 'shown'} in print`);
+    }
+    // once printing is done the page is back to normal
+    await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+    assert.equal(await page.evaluate(() => document.documentElement.classList.contains('print-tool')), false);
+    assert.equal(await page.locator('#about').isVisible(), true, 'a plain print still shows the whole page');
+    assert.deepEqual(errors, []);
+    await ctx.close();
+  });
+
+  await check('the tracker offers a spreadsheet template that exists (#43)', async () => {
+    for (const page of ['', 'tools/prime-cost-calculator/']) {
+      const html = fs.readFileSync(path.join(ROOT, page, 'index.html'), 'utf8');
+      const href = /<a href="([^"]*prime-cost-tracker\.xlsx)" download>/.exec(html);
+      assert.ok(href, `${page || 'home'}: no template link`);
+      const file = fs.readFileSync(path.join(ROOT, page, href[1]));
+      assert.equal(file.subarray(0, 2).toString(), 'PK', 'template is not an xlsx (zip) file');
+    }
+  });
+
   await check('a shared link opens the cocktail tool with its numbers', async () => {
     const { page, ctx, errors } = await calm({ width: 1280, height: 900 });
     await page.goto(base + '?tool=cocktail&rows=Gin_30_750_2*Bad_x_y_z&target=25&price=12&extra=0#calculator', { waitUntil: 'networkidle' });

@@ -94,6 +94,19 @@
     syncTalk();
   }
 
+  /* Print (or save as PDF) just the current tool, stamped with the date and a link back */
+  const print = document.getElementById('print-numbers');
+  if (print) {
+    const root = document.documentElement;
+    print.addEventListener('click', () => {
+      const when = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('calculator').dataset.printStamp = `TM Hospitality Strategies, ${when}. These numbers: ${shareUrl()}`;
+      root.classList.add('print-tool');
+      window.print();
+    });
+    window.addEventListener('afterprint', () => root.classList.remove('print-tool'));
+  }
+
   /* Copy a link to the current tool and numbers */
   const copy = document.getElementById('copy-link');
   const status = document.getElementById('share-status');

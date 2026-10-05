@@ -147,7 +147,7 @@ No framework, no runtime dependencies.
 | **About** | The story behind the brand, a pull quote and three principles. |
 | **Services** | Bento grid: concept and positioning, operations, financial performance, growth and openings. |
 | **Approach** | Listen, diagnose, build, sustain, joined by a progress line that fills as you scroll. |
-| **Operator toolkit** | Three tabbed calculators that run entirely in the browser. **Prime cost**: sliders, or typed percentages and dollar amounts straight from the P&L, a live gauge and rule-of-thumb band, a month-by-month tracker (trend chart, table, CSV export and import, kept only in the browser), a breakdown of where each sales dollar goes and what each point of prime cost is worth. **Plate cost** and **cocktail cost**: ingredient or pour rows (bottle price, size and pour), a target cost % and an optional menu price, giving a suggested price, actual cost % and gross profit. Any result can be shared as a link, and "Talk through these numbers" carries it into the contact message. |
+| **Operator toolkit** | Three tabbed calculators that run entirely in the browser. **Prime cost**: sliders, or typed percentages and dollar amounts straight from the P&L, a live gauge and rule-of-thumb band, a month-by-month tracker (trend chart, table, CSV export and import, kept only in the browser), a breakdown of where each sales dollar goes and what each point of prime cost is worth. **Plate cost** and **cocktail cost**: ingredient or pour rows (bottle price, size and pour), a target cost % and an optional menu price, giving a suggested price, actual cost % and gross profit. Any result can be shared as a link or printed (or saved as a PDF) as a one-page sheet with the date and a link back, and "Talk through these numbers" carries it into the contact message. The prime cost tracker also offers a spreadsheet template with the same formulas and bands. |
 | **Selected work** | Case-study cards with a blueprint cover and a challenge, approach and outcome outline, labeled as placeholders until real write-ups exist. |
 | **FAQ** | Two-column layout: a short intro with an "Ask something else" link beside a native `<details>` accordion. |
 | **Contact** | LinkedIn and Instagram, plus a message builder: pick topics and a business type, add a note and, optionally, the calculator results, then copy the message or (once an email is configured) send it with `mailto:`. On mobile a quick-contact bar appears between the hero and this section. |
@@ -211,7 +211,7 @@ Then open <http://localhost:8000>.
 | :-- | :-- |
 | **Copy and sections** | Edit [`index.html`](index.html). Search for `TODO(verify)` to find placeholder text. |
 | **Colors, fonts, spacing** | Edit the tokens in [`css/tokens.css`](css/tokens.css). Light values are in `:root`, dark in `[data-theme="dark"]`. |
-| **Calculator bands** | Edit `band()` in [`js/calc-math.js`](js/calc-math.js) and the note under the calculator in `index.html`. Band colors are the `--band-*` tokens. Confirm the ranges before relying on them. |
+| **Calculator bands** | Edit `band()` in [`js/calc-math.js`](js/calc-math.js), the note under the calculator in `index.html` and the bands in `scripts/make-tracker-template.py` (then run `python scripts/make-tracker-template.py`, which needs `openpyxl`). Band colors are the `--band-*` tokens. Confirm the ranges before relying on them. |
 | **Example recipes and targets** | Edit `defaults()` in [`js/calc-recipe.js`](js/calc-recipe.js) and the matching static values in `index.html`. |
 | **Contact email** | Set `CONTACT_EMAIL` in [`js/inquiry.js`](js/inquiry.js). While empty, the buttons point to LinkedIn and the message is copied instead of emailed. |
 | **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
@@ -251,7 +251,8 @@ Then open <http://localhost:8000>.
 │   └── main.js              Menu, scroll reveal, nav spy, parallax, marquee pause, quick-contact bar
 ├── assets/
 │   ├── fonts/               Self-hosted Fraunces (upright and italic) and Inter, latin variable woff2
-│   └── images/              Logo, small logo, favicon, apple-touch icon, social cards (site and one per calculator)
+│   ├── images/              Logo, small logo, favicon, apple-touch and app icons, social cards (site and one per calculator)
+│   └── downloads/           Prime cost tracker spreadsheet template
 ├── tests/
 │   ├── calc-math.test.cjs   Unit tests for the calculator maths (node:test, no browser)
 │   └── smoke.cjs            Layout, keyboard, theme, toolkit, contact and axe checks (Playwright)
@@ -260,7 +261,8 @@ Then open <http://localhost:8000>.
 │   ├── sync-tool-pages.cjs  Copies the shared header, footer, sprite and tool markup from index.html into tools/*/
 │   ├── check-links.cjs      External link checker
 │   ├── lighthouse.cjs       Lighthouse floors for every page in the sitemap
-│   └── screenshots.cjs      Regenerates docs/screenshots, the banner and the social card
+│   ├── screenshots.cjs      Regenerates docs/screenshots, the banner, social cards and app icons
+│   └── make-tracker-template.py  Builds assets/downloads/prime-cost-tracker.xlsx (Python, openpyxl)
 ├── docs/                    README banner, calculator social card and app icon sources, screenshots
 ├── package.json             Pinned build and test tooling (no runtime dependencies)
 ├── eslint.config.cjs        Lint rules

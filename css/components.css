@@ -191,6 +191,7 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .tracker-field input { font: 500 1rem/1.2 var(--sans); color: var(--text); background: var(--bg); border: 1.5px solid var(--line); border-radius: var(--radius-ctl); padding: .55rem .7rem; color-scheme: inherit; }
 .tracker-field input:focus, .tracker-field input:focus-within { border-color: var(--accent-text); box-shadow: 0 0 0 4px var(--glow); outline: 3px solid var(--logo-blue); outline-offset: 2px; }
 .tracker .add-note { margin: 0; }
+.tracker-head .tracker-alt { margin-top: .5rem; font-size: .92rem; }
 .tracker-empty { margin: 0; font-size: .9rem; color: var(--text-soft); }
 .tracker-view { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; min-width: 0; }
 .tracker-summary { margin: 0; font-weight: 500; }

@@ -79,6 +79,7 @@ main:focus { outline: none; } /* skip-link target */
   .site-header, .skip-link, .scene, .proof, .pause, .reset, .to-top, .cover, .site-footer ul, .theme-toggle,
   .tabs, .tools-bar, .sticky-cta, .composer, .row-del, .add-row, .split, .case-outline { display: none !important; }
   .rows-head, .row { break-inside: avoid; }
+  input[type="range"] { display: none !important; } /* without their track they print as stray knobs; the typed values carry the numbers */
   [data-reveal] { opacity: 1 !important; transform: none !important; }
   main:focus { outline: none; }
   .section { padding-block: 1.5rem; }
@@ -86,4 +87,24 @@ main:focus { outline: none; } /* skip-link target */
   .tile, .case, .principles li, .quote, .cta-panel { border: 1px solid #999; margin-bottom: .8rem; break-inside: avoid; }
   details p { display: block; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .8em; }
+
+  /* "Print or save as PDF": only the tool in use, its results and a dated link back */
+  .print-tool main > :not(#calculator), .print-tool .site-footer, .print-tool #calculator .section-head > :not(h1, h2),
+  .print-tool .calc-hint, .print-tool .tracker-save, .print-tool .tracker-alt, .print-tool .tracker-view .btn-row, .print-tool .tracker-empty,
+  .print-tool .add-note, .print-tool .calc-summary, .print-tool .share-status { display: none !important; }
+  .print-tool #calculator { padding-block: 0; }
+  .print-tool .calc { display: flex; flex-direction: column; }
+  .print-tool .calc-out { order: -1; padding-block: 1rem; } /* results first, then the inputs behind them */
+  .print-tool .tracker-head p:not(.tracker-title) { display: none !important; }
+  .print-tool #calculator::before { content: attr(data-print-stamp); display: block; margin-bottom: .9rem; padding-bottom: .5rem; border-bottom: 1px solid #999; font-size: .78rem; overflow-wrap: anywhere; }
+  .print-tool .calc-form { padding-block: 1rem; gap: 1rem; }
+  .print-tool .calc-out { gap: .6rem; }
+  .print-tool #calculator .section-head { margin-bottom: .75rem; }
+  .print-tool #calculator :is(h1, h2) { font-size: 1.9rem; margin: 0; }
+  .print-tool .calc-note { break-inside: avoid; padding-block: .6rem; }
+  .print-tool .gauge svg { display: none; } /* the arc is decoration; on paper the number says it */
+  .print-tool .gauge .read { position: static; transform: none; }
+  .print-tool .tracker:has(.tracker-view[hidden]) { display: none !important; } /* nothing saved, nothing to print */
+  .print-tool .calc { border: 1px solid #999; }
+  .print-tool .calc-out { break-inside: avoid; }
 }

@@ -78,6 +78,7 @@
       <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
       <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
       <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+      <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
       <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
       <symbol id="i-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/></symbol>
       <symbol id="i-plate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></symbol>
@@ -338,6 +339,7 @@
               <div class="tracker-head">
                 <p class="tracker-title" id="tracker-title">Track it month by month</p>
                 <p>Save each month's numbers to see which way prime cost is heading. Saved months stay in this browser only, until you clear them.</p>
+                <p class="tracker-alt">Prefer a spreadsheet? <a href="assets/downloads/prime-cost-tracker.xlsx" download>Download the prime cost tracker template</a> (Excel, also opens in Google Sheets and Numbers).</p>
               </div>
               <div class="tracker-save">
                 <div class="tracker-field">
@@ -450,6 +452,7 @@
           <div class="tools-bar">
             <div class="share">
               <button type="button" class="btn btn-ghost btn-sm" id="copy-link"><svg aria-hidden="true"><use href="#i-link"/></svg>Copy a link to these numbers</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="print-numbers"><svg aria-hidden="true"><use href="#i-print"/></svg>Print or save as PDF</button>
               <p class="share-status" id="share-status" role="status"></p>
               <label class="sr-only" for="share-url">Link to these numbers</label>
               <input class="share-url" id="share-url" type="text" readonly hidden>
