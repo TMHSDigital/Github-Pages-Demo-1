@@ -11,11 +11,12 @@ const path = require('node:path');
 const FILES = ['index.html', '404.html', 'README.md', ...fs.readdirSync(path.join(__dirname, '..', 'tools')).map((slug) => path.join('tools', slug, 'index.html'))]
   .filter((f) => fs.existsSync(path.join(__dirname, '..', f)));
 const GUARDED = new Set([403, 429, 999]);
-const IGNORE = [/^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/, /img\.shields\.io/, /^https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/(assets|sitemap|tools)/];
+const IGNORE = [/^https:\/\/tmhsdigital\.github\.io\/?$/, /^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/, /img\.shields\.io/, /^https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/(assets|sitemap|tools)/];
 
 const urls = new Set();
 for (const f of FILES) {
-  const text = fs.readFileSync(path.join(__dirname, '..', f), 'utf8');
+  // Decode the entities that matter, so an escaped code sample (the embed snippet) reads as its URLs
+  const text = fs.readFileSync(path.join(__dirname, '..', f), 'utf8').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
   for (const m of text.matchAll(/https?:\/\/[^\s"'<>)\]]+/g)) {
     const u = m[0].replace(/[.,;]+$/, '');
     if (!IGNORE.some((re) => re.test(u))) urls.add(u);
