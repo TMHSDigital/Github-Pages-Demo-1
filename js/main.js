@@ -138,6 +138,34 @@
     window.addEventListener('load', () => { navigator.serviceWorker.register(sw.content).catch(() => {}); });
   }
 
+  /* Embedded on another site: tell the host page our height so its iframe never scrolls */
+  if (root.classList.contains('embed') && window.parent !== window) {
+    let sent = 0;
+    const report = () => {
+      const height = Math.ceil(root.getBoundingClientRect().height);
+      if (height !== sent) { sent = height; window.parent.postMessage({ type: 'tmhs:height', height }, '*'); }
+    };
+    if ('ResizeObserver' in window) new ResizeObserver(report).observe(document.body);
+    window.addEventListener('load', report);
+    report();
+  }
+
+  /* Copy buttons for read-only code (the embed snippet) */
+  document.querySelectorAll('[data-copy]').forEach((btn) => {
+    const field = document.getElementById(btn.dataset.copy);
+    const note = btn.parentElement.querySelector('[role="status"]');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(field.value);
+        if (note) note.textContent = 'Copied.';
+      } catch {
+        field.focus();
+        field.select();
+        if (note) note.textContent = 'Press Ctrl+C (or Command+C) to copy the selected code.';
+      }
+    });
+  });
+
   /* Footer year */
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();

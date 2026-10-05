@@ -78,7 +78,7 @@
   // reload or bookmark keeps the visitor's changes instead of the link's original numbers.
   // A plain visit leaves the URL alone. Nothing is stored; the numbers live only in the URL.
   if (shared && registry.tools[shared]) {
-    const extra = q.get('talk') === '1' ? { talk: '1' } : {};
+    const extra = Object.fromEntries(['talk', 'embed', 'theme'].filter((k) => q.has(k)).map((k) => [k, q.get(k)]));
     let urlTimer = 0;
     document.addEventListener('tmhs:calc', () => {
       clearTimeout(urlTimer);
@@ -88,6 +88,10 @@
 
   // On a tool page, "Talk through these numbers" opens the home page's message builder with them
   const talk = document.getElementById('talk-numbers');
+  if (talk && document.documentElement.classList.contains('embed')) {
+    talk.target = '_blank'; // embedded: open the conversation on this site, not inside the host's frame
+    talk.rel = 'noopener';
+  }
   if (talk && talk.dataset.home) {
     const syncTalk = () => { talk.href = shareUrl(talk.dataset.home, 'contact', { talk: '1' }); };
     document.addEventListener('tmhs:calc', syncTalk);

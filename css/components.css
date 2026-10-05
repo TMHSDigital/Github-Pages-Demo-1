@@ -212,6 +212,19 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .tracker-table tbody th { font-weight: 600; }
 .tracker-table td:last-child { width: 2.5rem; padding-right: 0; }
 .tracker-table .row-del { margin-left: auto; }
+/* Embedding: the snippet box on tool pages, and the page itself inside another site (?embed=1) */
+.embed-box { margin-top: 2rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: .9rem 1.1rem; }
+.embed-box summary { cursor: pointer; font-weight: 600; }
+.embed-box p { margin: .75rem 0 0; }
+.embed-code { display: block; width: 100%; margin-top: .75rem; font: .8rem/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--text); background: var(--bg); border: 1.5px solid var(--line); border-radius: var(--radius-ctl); padding: .65rem .8rem; resize: vertical; }
+.embed-credit { display: none; }
+.embed .site-header, .embed .skip-link, .embed .site-footer, .embed main > section:not(#calculator),
+.embed .tool-head > p, .embed .tracker, .embed .nojs-note { display: none !important; }
+.embed #calculator { padding-block: 1rem 1.25rem; }
+.embed .wrap { width: calc(100% - 8px); } /* the host page has its own margins; 4px a side keeps focus rings visible */
+.embed .tool-head { margin-bottom: 1rem; }
+.embed .tool-head h1 { font-size: var(--step-3); }
+.embed .embed-credit { display: block; margin: 1rem 0 0; font-size: .88rem; color: var(--text-soft); text-align: center; }
 .calc-note { grid-column: 1 / -1; padding: 1rem var(--space-m); font-size: .88rem; color: var(--text-soft); background: var(--surface-2); border-top: 1px solid var(--line); margin: 0; }
 .calc-summary { font-size: .95rem; color: var(--on-dark-soft); margin: 0; text-align: center; min-height: 3em; }
 .reset { align-self: center; background: none; border: 0; padding: .35rem .5rem; color: var(--on-dark-soft); font: 500 .85rem/1 var(--sans); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; position: relative; }

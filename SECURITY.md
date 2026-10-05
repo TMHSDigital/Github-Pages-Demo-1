@@ -20,5 +20,6 @@ You can expect an acknowledgement within a few days. Once a fix is available it 
 - The published artifact contains only the built site files (see `scripts/stage.cjs`), not the repository.
 - Published pages carry a Content-Security-Policy (`<meta>` tag, as GitHub Pages cannot set headers): scripts, styles, fonts and images load only from the site itself, inline blocks are allowed by SHA-256 hash, and plugins and form submissions are disabled. CI fails if anything on the page violates it.
 - Fonts are self-hosted and there are no analytics, trackers or cookies.
+- Pages may be framed (a `<meta>` CSP cannot set `frame-ancestors`), which the embeddable calculators rely on. There are no accounts, forms or actions to hijack. In embed mode a page only posts its own height to the parent; the published snippet accepts that message only from this site's origin and only for the iframe that sent it.
 - The service worker (published build only) handles same-origin GET requests inside the site's own path, caches only the site's files, and is network first; it never caches responses for URLs carrying calculator numbers.
 - `.gitignore` excludes local tooling output.
