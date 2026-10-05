@@ -757,6 +757,30 @@ async function check(name, fn) {
     // reset
     await page.locator('#be-reset').click();
     assert.equal(await text('out-month'), '$118,421');
+    // variable costs typed to a decimal, or as P&L dollars that need sales to become a share (#51)
+    await page.fill('#be-variable-in', '61.4%');
+    assert.equal(await text('out-month'), '$116,580');
+    assert.equal(await page.locator('#be-variable').inputValue(), '61');
+    assert.equal(await page.locator('#be-variable').getAttribute('aria-valuetext'), '61.4% of sales');
+    await page.fill('#be-variable-in', '$62,000');
+    assert.equal(await text('out-month'), 'Add your sales');
+    assert.match(await text('variable-alt'), /Enter your monthly sales/);
+    assert.equal(await page.locator('#be-band').isVisible(), false);
+    await page.fill('#be-sales', '100,000');
+    assert.equal(await text('out-month'), '$118,421');
+    assert.equal(await text('variable-alt'), '62% of your monthly sales');
+    await page.locator('#be-variable-in').blur();
+    assert.equal(await page.locator('#be-variable-in').inputValue(), '$62,000');
+    const usdLink = await page.evaluate(() => window.TMHSTools.shareUrl());
+    assert.match(usdLink, /variable_usd=62000/);
+    const third = await ctx.newPage();
+    await third.goto(usdLink, { waitUntil: 'networkidle' });
+    assert.equal(await third.locator('#be-variable-in').inputValue(), '$62,000');
+    assert.equal(await third.locator('#be-out-month').textContent(), '$118,421');
+    // dragging makes it a percentage again
+    await page.locator('#be-variable').fill('60');
+    assert.equal(await page.locator('#be-variable-in').inputValue(), '60%');
+    assert.equal(await text('variable-alt'), '');
     assert.deepEqual(errors, []);
     await ctx.close();
   });

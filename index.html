@@ -461,9 +461,10 @@
                 <p class="cost-alt" id="be-fixed-hint">Rent, salaried staff, insurance, loan payments, software: costs that stay the same however busy you are.</p>
               </div>
               <div class="field">
-                <div class="lab"><label for="be-variable">Variable costs</label><span class="val" id="be-variable-out" aria-hidden="true">62%</span></div>
+                <div class="lab"><label for="be-variable">Variable costs</label><input class="val-in" id="be-variable-in" type="text" inputmode="decimal" autocomplete="off" value="62%" aria-label="Variable costs, typed as a percentage of sales or a dollar amount" aria-describedby="be-variable-hint be-variable-alt"></div>
                 <input id="be-variable" type="range" min="20" max="95" step="1" value="62" aria-valuetext="62% of sales" aria-describedby="be-variable-hint">
-                <p class="cost-alt" id="be-variable-hint">As a share of sales: food and beverage, hourly labor, card fees and anything else that rises with every sale.</p>
+                <p class="cost-alt" id="be-variable-alt"></p>
+                <p class="cost-alt" id="be-variable-hint">Food and beverage, hourly labor, card fees and anything else that rises with every sale. Drag, or type a percentage (61.4%) or the month's total from your P&amp;L ($61,400).</p>
               </div>
               <div class="field">
                 <label for="be-check">Average check per guest <span class="opt">optional</span></label>
