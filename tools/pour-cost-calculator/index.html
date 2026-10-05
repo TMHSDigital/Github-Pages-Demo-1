@@ -176,6 +176,14 @@
                 <label for="cocktail-price">Your drink price <span class="opt">optional</span></label>
                 <div class="money"><span aria-hidden="true">$</span><input id="cocktail-price" type="text" inputmode="decimal" autocomplete="off" value="14.00"></div>
               </div>
+              <div class="save-dish">
+                <div class="tracker-field">
+                  <label for="cocktail-dish">Drink name</label>
+                  <input id="cocktail-dish" type="text" maxlength="40" autocomplete="off" aria-describedby="cocktail-save-status">
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" id="cocktail-save" data-save="cocktail">Save to my menu</button>
+              </div>
+              <p class="add-note" id="cocktail-save-status" role="status"></p>
             </div>
             <div class="calc-out" data-band="attention">
               <div class="readout"><span class="readout-k">Suggested drink price</span><b id="cocktail-out-price">$18.56</b><span id="cocktail-out-target">at 20% pour cost</span></div>
@@ -201,6 +209,25 @@
             </div>
             <a class="btn btn-sm" id="talk-numbers" href="../../#contact" data-home="../../">Talk through these numbers <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
+          <!-- sync:menu -->
+          <section class="menu-book" id="menu" aria-labelledby="menu-title">
+            <div class="tracker-head">
+              <p class="tracker-title" id="menu-title">Your menu</p>
+              <p>Save dishes and drinks from the plate and cocktail calculators to see them side by side. Add how many of each sold last month and each one is sorted into stars, plowhorses, puzzles and dogs. Saved dishes stay in this browser only, until you remove them.</p>
+            </div>
+            <p class="tracker-empty" id="menu-empty">Nothing saved yet. Cost a dish or a drink above, give it a name and choose Save to my menu.</p>
+            <p class="add-note" id="menu-status" role="status"></p>
+            <div class="menu-view" id="menu-view" hidden>
+              <div id="menu-groups"></div>
+              <div class="btn-row">
+                <button type="button" class="btn btn-ghost btn-sm" id="menu-export">Download as CSV</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="menu-import">Import a CSV</button>
+                <input type="file" id="menu-file" accept=".csv,text/csv" hidden>
+                <button type="button" class="btn btn-ghost btn-sm" id="menu-clear">Clear my menu</button>
+              </div>
+            </div>
+          </section>
+          <!-- /sync:menu -->
           <!-- sync:template-cocktail -->
           <template id="cocktail-row">
             <li class="row">
@@ -319,6 +346,8 @@
   <script src="../../js/calc-math.js" defer></script>
   <script src="../../js/calc-recipe.js" defer></script>
   <script src="../../js/calc-tabs.js" defer></script>
+  <script src="../../js/calc-menu.js" defer></script>
+
   <script src="../../js/main.js" defer></script>
 </body>
 </html>

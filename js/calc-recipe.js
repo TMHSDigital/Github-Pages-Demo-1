@@ -191,6 +191,8 @@
 
     window.TMHSTools.tools[key] = {
       label: cfg.label,
+      // The figures in use, for saving a dish to the menu (js/calc-menu.js)
+      snapshot: () => ({ cost: result.cost, suggested: result.suggested, price: state.price, target: state.target }),
       get: () => ({
         rows: state.rows.map((r) => cfg.toParts(r).join('_')).join('*'),
         target: state.target, price: state.price || '', ...(extra ? { extra: state.extra || '' } : {}),

@@ -105,6 +105,7 @@ main:focus { outline: none; } /* skip-link target */
   .print-tool .gauge svg { display: none; } /* the arc is decoration; on paper the number says it */
   .print-tool .gauge .read { position: static; transform: none; }
   .print-tool .tracker:has(.tracker-view[hidden]) { display: none !important; } /* nothing saved, nothing to print */
+  .print-tool .menu-book, .print-tool .save-dish, .print-tool [id$="-save-status"] { display: none !important; } /* a printout is one calculation */
   .print-tool .calc { border: 1px solid #999; }
   .print-tool .calc-out { break-inside: avoid; }
 }

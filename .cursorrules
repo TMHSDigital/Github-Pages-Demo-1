@@ -18,6 +18,7 @@ js/calc-tracker.js    # Prime cost month tracker (localStorage only on explicit 
 js/calc-recipe.js     # Plate + cocktail cost tools (one shared row tool, <template> rows)
 js/calc-breakeven.js  # Break-even tool
 js/calc-foodcost.js   # Actual vs theoretical food cost tool
+js/calc-menu.js       # Your menu: saved plate/cocktail costings and menu engineering (localStorage only on explicit save)
 js/calc-tabs.js       # Toolkit tabs, ?tool= shared links, copy link
 js/inquiry.js         # Contact message builder, CONTACT_EMAIL
 js/main.js            # Menu, reveal, nav spy, parallax, marquee, quick-contact bar

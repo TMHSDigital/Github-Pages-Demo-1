@@ -105,6 +105,23 @@ table('variance bands', (p) => C.varianceBand(p).key, [
   [-3, 'strong'], [0, 'strong'], [1, 'strong'], [1.1, 'watch'], [2, 'watch'], [2.1, 'attention'], [6, 'attention'],
 ]);
 
+test('menu engineering classifies by margin against the weighted average and popularity against 70% of an equal share (#54)', () => {
+  // four dishes, 400 sold: average margin (15*150 + 12*150 + 20*50 + 8*50) / 400 = 13.625; popular bar 0.7 / 4 = 17.5%
+  const items = [
+    { margin: 15, sold: 150 }, // 37.5% sold, above average margin: star
+    { margin: 12, sold: 150 }, // popular, below average: plowhorse
+    { margin: 20, sold: 50 }, // 12.5% sold, above average: puzzle
+    { margin: 8, sold: 50 }, // dog
+    { margin: 30, sold: 0 }, // no count yet: unclassified
+  ];
+  const r = C.menuEngineering(items);
+  assert.equal(r.total, 400);
+  assert.equal(r.avgMargin, 13.625);
+  assert.equal(r.popularBar, 0.175);
+  assert.deepEqual([...r.classes], ['star', 'plowhorse', 'puzzle', 'dog', null]);
+  assert.equal(C.menuEngineering([{ margin: 10, sold: 5 }, { margin: 12, sold: 0 }]), null); // one counted dish is not a menu
+});
+
 table('band boundaries', (p) => C.band(p).key, [
   [0, 'strong'], [59.9, 'strong'], [60, 'target'], [64.9, 'target'], [65, 'watch'], [69.9, 'watch'], [70, 'attention'], [120, 'attention'],
 ]);

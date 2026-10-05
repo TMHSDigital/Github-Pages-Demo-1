@@ -172,6 +172,14 @@
                 <label for="plate-price">Your menu price <span class="opt">optional</span></label>
                 <div class="money"><span aria-hidden="true">$</span><input id="plate-price" type="text" inputmode="decimal" autocomplete="off" value="22.00"></div>
               </div>
+              <div class="save-dish">
+                <div class="tracker-field">
+                  <label for="plate-dish">Dish name</label>
+                  <input id="plate-dish" type="text" maxlength="40" autocomplete="off" aria-describedby="plate-save-status">
+                </div>
+                <button type="button" class="btn btn-ghost btn-sm" id="plate-save" data-save="plate">Save to my menu</button>
+              </div>
+              <p class="add-note" id="plate-save-status" role="status"></p>
             </div>
             <div class="calc-out" data-band="strong">
               <div class="readout"><span class="readout-k">Suggested menu price</span><b id="plate-out-price">$20.67</b><span id="plate-out-target">at 30% food cost</span></div>
@@ -197,6 +205,25 @@
             </div>
             <a class="btn btn-sm" id="talk-numbers" href="../../#contact" data-home="../../">Talk through these numbers <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
+          <!-- sync:menu -->
+          <section class="menu-book" id="menu" aria-labelledby="menu-title">
+            <div class="tracker-head">
+              <p class="tracker-title" id="menu-title">Your menu</p>
+              <p>Save dishes and drinks from the plate and cocktail calculators to see them side by side. Add how many of each sold last month and each one is sorted into stars, plowhorses, puzzles and dogs. Saved dishes stay in this browser only, until you remove them.</p>
+            </div>
+            <p class="tracker-empty" id="menu-empty">Nothing saved yet. Cost a dish or a drink above, give it a name and choose Save to my menu.</p>
+            <p class="add-note" id="menu-status" role="status"></p>
+            <div class="menu-view" id="menu-view" hidden>
+              <div id="menu-groups"></div>
+              <div class="btn-row">
+                <button type="button" class="btn btn-ghost btn-sm" id="menu-export">Download as CSV</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="menu-import">Import a CSV</button>
+                <input type="file" id="menu-file" accept=".csv,text/csv" hidden>
+                <button type="button" class="btn btn-ghost btn-sm" id="menu-clear">Clear my menu</button>
+              </div>
+            </div>
+          </section>
+          <!-- /sync:menu -->
           <!-- sync:template-plate -->
           <template id="plate-row">
             <li class="row">
@@ -310,6 +337,8 @@
   <script src="../../js/calc-math.js" defer></script>
   <script src="../../js/calc-recipe.js" defer></script>
   <script src="../../js/calc-tabs.js" defer></script>
+  <script src="../../js/calc-menu.js" defer></script>
+
   <script src="../../js/main.js" defer></script>
 </body>
 </html>

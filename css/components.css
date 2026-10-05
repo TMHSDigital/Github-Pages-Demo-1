@@ -225,6 +225,44 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .embed .tool-head { margin-bottom: 1rem; }
 .embed .tool-head h1 { font-size: var(--step-3); }
 .embed .embed-credit { display: block; margin: 1rem 0 0; font-size: .88rem; color: var(--text-soft); text-align: center; }
+/* Your menu (saved plate and cocktail costings) and menu engineering */
+.save-dish { display: flex; flex-wrap: wrap; align-items: end; gap: .85rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.save-dish .tracker-field { flex: 1 1 12rem; }
+.save-dish .tracker-field input { width: 100%; }
+.menu-book { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-top: 2rem; padding: var(--space-m); border-radius: var(--radius-l); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-s); }
+.menu-book .add-note { margin: 0; }
+.menu-view, .menu-group { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; min-width: 0; }
+.menu-kind { margin: .5rem 0 0; font: 600 1.05rem/1.2 var(--serif); }
+.menu-note { margin: 0; font-size: .9rem; color: var(--text-soft); }
+.menu-flag { font-size: .78rem; color: var(--text-soft); }
+.menu-table .sold-in { width: 5.5rem; text-align: right; font: 500 .92rem/1.2 var(--sans); color: var(--text); background: var(--bg); border: 1.5px solid var(--line); border-radius: var(--radius-ctl); padding: .4rem .5rem; }
+.menu-table .sold-in:focus-visible { border-color: var(--accent-text); outline: 3px solid var(--logo-blue); outline-offset: 2px; }
+.menu-table td.menu-actions-cell { width: auto; } /* two buttons: wider than the tracker's single remove column */
+.menu-actions { display: flex; align-items: center; justify-content: flex-end; gap: .25rem; }
+.menu-actions > * { flex: none; }
+.text-btn { border: 0; background: none; padding: .45rem .55rem; border-radius: var(--radius-ctl); font: 600 .9rem/1 var(--sans); color: var(--accent-text); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.text-btn:hover { background: var(--surface-2); }
+.text-btn:disabled { color: var(--text-soft); text-decoration: none; cursor: default; }
+.menu-matrix { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.quad { border: 1px solid var(--line); border-radius: var(--radius); padding: .85rem 1rem; background: var(--bg); }
+.quad-name { margin: 0; font-weight: 700; }
+.quad-hint { margin: .25rem 0 0; font-size: .86rem; color: var(--text-soft); }
+.quad ul { margin: .6rem 0 0; padding-left: 1.1rem; font-size: .92rem; }
+.quad-star { border-top: 3px solid var(--accent-text); }
+@media (max-width: 30em) { .menu-matrix { grid-template-columns: minmax(0, 1fr); } }
+.menu-group + .menu-group { margin-top: .5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+/* Phones: each dish becomes a small card of labelled values, so the sales field and buttons are in reach */
+@media (max-width: 40em) {
+  .menu-table, .menu-table tbody, .menu-table tr, .menu-table th, .menu-table td { display: block; }
+  .menu-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .menu-table tbody tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .75rem; padding: .85rem 0; border-bottom: 1px solid var(--line); }
+  .menu-table tbody th, .menu-table td { padding: 0; border: 0; text-align: left; white-space: normal; }
+  .menu-table tbody th { grid-column: 1 / -1; font-size: 1rem; }
+  .menu-table td[data-label]::before { content: attr(data-label); display: block; font-size: .78rem; color: var(--text-soft); }
+  .menu-table td.menu-actions-cell { grid-column: 1 / -1; width: auto; }
+  .menu-actions { justify-content: flex-start; }
+}
+.embed .menu-book { display: none !important; }
 .calc-note { grid-column: 1 / -1; padding: 1rem var(--space-m); font-size: .88rem; color: var(--text-soft); background: var(--surface-2); border-top: 1px solid var(--line); margin: 0; }
 .calc-summary { font-size: .95rem; color: var(--on-dark-soft); margin: 0; text-align: center; min-height: 3em; }
 .reset { align-self: center; background: none; border: 0; padding: .35rem .5rem; color: var(--on-dark-soft); font: 500 .85rem/1 var(--sans); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; position: relative; }

@@ -125,11 +125,29 @@ const TMHSCalc = (() => {
     return { key: b.key, label: b.label };
   };
 
+  // Menu engineering (Kasavana and Smith): each dish's contribution margin (price minus cost)
+  // against the menu's sales-weighted average margin, and its share of items sold against 70% of
+  // an equal share. Dishes with no sales count are left unclassified; it needs two counted dishes.
+  const menuEngineering = (items) => {
+    const counted = items.filter((i) => i.sold > 0);
+    const total = counted.reduce((n, i) => n + i.sold, 0);
+    if (counted.length < 2) return null;
+    const avgMargin = counted.reduce((n, i) => n + i.margin * i.sold, 0) / total;
+    const popularBar = 0.7 / counted.length;
+    const classOf = (i) => {
+      if (!(i.sold > 0)) return null;
+      const earns = i.margin >= avgMargin;
+      const popular = i.sold / total >= popularBar;
+      return earns ? (popular ? 'star' : 'puzzle') : (popular ? 'plowhorse' : 'dog');
+    };
+    return { avgMargin, popularBar, total, classes: items.map(classOf) };
+  };
+
   const usd = (n) => '$' + Math.round(n).toLocaleString('en-US');
   const usd2 = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const pct1 = (n) => (Math.round(n * 10) / 10).toLocaleString('en-US') + '%';
 
-  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, breakEven, profitAt, WEEKS_PER_MONTH, cogs, variance, varianceBand, VARIANCE_BANDS, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW, BANDS };
+  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, breakEven, profitAt, WEEKS_PER_MONTH, cogs, variance, varianceBand, VARIANCE_BANDS, menuEngineering, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW, BANDS };
 })();
 
 window.TMHSCalc = TMHSCalc;

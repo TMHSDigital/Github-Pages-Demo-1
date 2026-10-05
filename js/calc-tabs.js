@@ -54,6 +54,9 @@
     registry.active = keys[0];
   }
 
+  // Other scripts (the saved menu) can bring a tool's tab to the front
+  registry.select = (key) => { const t = tabFor(key); if (t) select(t, false); };
+
   // A shared link (?tool=cocktail&rows=...) opens the toolkit with those numbers
   const q = new URLSearchParams(location.search);
   const shared = q.get('tool');
