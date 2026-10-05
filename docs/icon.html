@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>App icon source</title>
+  <!-- Rendered to assets/images/icon-*.png by scripts/screenshots.cjs.
+       ?maskable=1 fills the square and keeps the logo in the central safe zone. -->
+  <style>
+    html, body { margin: 0; background: transparent; }
+    .tile { position: fixed; inset: 4vw; border-radius: 22vw; background: #fff; display: grid; place-items: center; }
+    .tile img { width: 74%; height: auto; }
+    .maskable .tile { inset: 0; border-radius: 0; }
+    .maskable .tile img { width: 58%; }
+  </style>
+</head>
+<body>
+  <div class="tile"><img src="../assets/images/tmhs-logo.png" width="335" height="310" alt=""></div>
+  <script>if (new URLSearchParams(location.search).get('maskable')) document.body.className = 'maskable';</script>
+</body>
+</html>

@@ -89,11 +89,16 @@ const withCsp = (html) => {
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'none'",
+    "worker-src 'self'",
+    "manifest-src 'self'",
   ].join('; ');
   return html.replace(/(<meta name="viewport"[^>]*>)/, `$1
   <meta http-equiv="Content-Security-Policy" content="${policy}">`);
 };
-fs.writeFileSync(path.join(OUT, 'index.html'), withCsp(home));
+// Offline support: pages in the published build tell js/main.js where the service worker is
+const withSw = (html, up = '') => html.replace(/(<meta name="viewport"[^>]*>)/, `$1
+  <meta name="tmhs-sw" content="${up}sw.js">`);
+fs.writeFileSync(path.join(OUT, 'index.html'), withCsp(withSw(home)));
 fs.writeFileSync(path.join(OUT, '404.html'), withCsp(stripLinks(read('404.html'), 'base', ['tokens', 'base'])));
 
 // Calculator pages: tools/<slug>/index.html, two levels below the root
@@ -101,8 +106,27 @@ for (const slug of fs.readdirSync(path.join(ROOT, 'tools'))) {
   const page = path.join('tools', slug, 'index.html');
   if (!fs.existsSync(path.join(ROOT, page))) continue;
   fs.mkdirSync(path.join(OUT, 'tools', slug), { recursive: true });
-  fs.writeFileSync(path.join(OUT, page), withCsp(withInlineCss(read(page), '../../')));
+  fs.writeFileSync(path.join(OUT, page), withCsp(withSw(withInlineCss(read(page), '../../'), '../../')));
 }
+
+fs.copyFileSync(path.join(ROOT, 'manifest.webmanifest'), path.join(OUT, 'manifest.webmanifest'));
+
+// Service worker: precache everything a visitor needs to use the site offline (pages by their
+// directory URL, as they are linked), versioned by a hash of those files so each deploy
+// replaces the previous cache. Social cards are left out: they are for other sites to fetch.
+const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]));
+const precache = walk(OUT)
+  .map((f) => path.relative(OUT, f).split(path.sep).join('/'))
+  .filter((f) => /\.(html|css|js|woff2|png|webmanifest)$/.test(f) && !['404.html', 'sw.js'].includes(f) && !/^assets\/images\/og-/.test(f))
+  .sort();
+const version = crypto.createHash('sha256');
+for (const f of precache) version.update(f).update(fs.readFileSync(path.join(OUT, f)));
+const urls = precache.map((f) => (f === 'index.html' ? './' : f.replace(/index\.html$/, '')));
+const sw = read('sw.js')
+  .replace("const VERSION = 'dev';", `const VERSION = '${version.digest('hex').slice(0, 12)}';`)
+  .replace('const PRECACHE = [];', `const PRECACHE = ${JSON.stringify(urls)};`);
+if (!sw.includes('const PRECACHE = ["') || sw.includes("VERSION = 'dev'")) throw new Error('sw.js: VERSION or PRECACHE placeholder not found');
+fs.writeFileSync(path.join(OUT, 'sw.js'), esbuild.transformSync(sw, { loader: 'js', minify: true }).code);
 
 const size = (p) => fs.statSync(path.join(OUT, p)).size;
 console.log(`staged _site: site.min.css ${size('css/site.min.css')} B (from ${['tokens', 'base', 'components'].reduce((n, f) => n + fs.statSync(path.join(ROOT, `css/${f}.css`)).size, 0)} B)`);

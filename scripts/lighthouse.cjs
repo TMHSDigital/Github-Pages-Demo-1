@@ -17,7 +17,7 @@ const SITE = path.join(ROOT, '_site');
 const ORIGIN = 'https://tmhsdigital.github.io/Github-Pages-Demo-1/';
 const FLOORS = { performance: 90, accessibility: 95, 'best-practices': 95, seo: 95 };
 const RUNS = 2;
-const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain' };
+const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json' };
 
 if (!fs.existsSync(path.join(SITE, 'index.html'))) {
   console.error('No _site/ build found. Run `npm run build` first.');

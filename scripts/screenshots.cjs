@@ -95,6 +95,17 @@ const server = http.createServer((req, res) => {
     console.log(`wrote og-${slug}.png`);
   }
 
+  // App icons for the web app manifest (rendered from docs/icon.html): "any" is the logo on a
+  // white rounded tile; "maskable" fills the square and keeps the logo in the central safe zone
+  for (const [name, size, maskable] of [['icon-192.png', 192, false], ['icon-512.png', 512, false], ['icon-maskable-512.png', 512, true]]) {
+    const ctx = await browser.newContext({ viewport: { width: size, height: size } });
+    const page = await ctx.newPage();
+    await page.goto(base + 'docs/icon.html' + (maskable ? '?maskable=1' : ''), { waitUntil: 'networkidle' });
+    await page.screenshot({ path: path.join(ROOT, 'assets', 'images', name), omitBackground: true });
+    await ctx.close();
+    console.log('wrote', name);
+  }
+
   // README banner (rendered from docs/banner.html)
   {
     const ctx = await browser.newContext({ viewport: { width: 1280, height: 340 }, deviceScaleFactor: 1.5 });

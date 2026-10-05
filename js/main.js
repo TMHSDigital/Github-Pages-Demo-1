@@ -132,6 +132,12 @@
     new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['class'] });
   }
 
+  /* Offline support: only the published build names a service worker (see scripts/stage.cjs) */
+  const sw = document.querySelector('meta[name="tmhs-sw"]');
+  if (sw && 'serviceWorker' in navigator) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register(sw.content).catch(() => {}); });
+  }
+
   /* Footer year */
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();

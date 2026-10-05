@@ -12,6 +12,11 @@ module.exports = [
     languageOptions: { ecmaVersion: 2022, sourceType: 'script', globals: { ...globals.browser } },
   },
   {
+    // The service worker (its VERSION and PRECACHE are filled in by scripts/stage.cjs)
+    files: ['sw.js'],
+    languageOptions: { ecmaVersion: 2022, sourceType: 'script', globals: { ...globals.serviceworker } },
+  },
+  {
     // Build, link-check and test scripts run in Node
     files: ['**/*.cjs'],
     languageOptions: { ecmaVersion: 2022, sourceType: 'commonjs', globals: { ...globals.node } },

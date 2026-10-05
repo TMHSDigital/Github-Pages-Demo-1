@@ -13,8 +13,9 @@ const { chromium } = require('playwright');
 
 // Serves the source tree by default; set SITE_DIR=_site to test the staged build.
 const ROOT = process.env.SITE_DIR ? path.resolve(process.env.SITE_DIR) : path.resolve(__dirname, '..');
+const TOOL_SLUGS = fs.readdirSync(path.join(ROOT, 'tools')).filter((s) => fs.existsSync(path.join(ROOT, 'tools', s, 'index.html')));
 const AXE = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
-const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain' };
+const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json' };
 
 const server = http.createServer((req, res) => {
   const rel = decodeURIComponent(req.url.split('?')[0]);
@@ -443,6 +444,45 @@ async function check(name, fn) {
     assert.equal(await page.locator('#calc-labor').getAttribute('aria-valuetext'), '31% of sales');
     await ctx.close();
   });
+
+  await check('web app manifest is linked from every page, valid, and its icons exist at their stated sizes (#44)', async () => {
+    const pngSize = (file) => { const b = fs.readFileSync(file); return `${b.readUInt32BE(16)}x${b.readUInt32BE(20)}`; };
+    const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8'));
+    assert.equal(manifest.display, 'standalone');
+    assert.ok(manifest.icons.some((i) => i.purpose === 'maskable' && i.sizes === '512x512'));
+    for (const icon of manifest.icons) assert.equal(pngSize(path.join(ROOT, icon.src)), icon.sizes, icon.src);
+    for (const s of manifest.shortcuts) assert.ok(fs.existsSync(path.join(ROOT, s.url, 'index.html')), s.url);
+    for (const page of ['', ...TOOL_SLUGS.map((s) => `tools/${s}/`)]) {
+      const html = fs.readFileSync(path.join(ROOT, page, 'index.html'), 'utf8');
+      const href = /<link rel="manifest" href="([^"]+)">/.exec(html);
+      assert.ok(href, `${page || 'home'}: no manifest link`);
+      assert.ok(fs.existsSync(path.join(ROOT, page, href[1])), `${page || 'home'}: manifest link does not resolve`);
+    }
+    // only the published build registers the service worker
+    assert.equal(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').includes('name="tmhs-sw"'), Boolean(process.env.SITE_DIR));
+  });
+
+  if (process.env.SITE_DIR) {
+    await check('published build works offline once visited, including shared links (#44)', async () => {
+      const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+      const page = await ctx.newPage();
+      const errors = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      await page.goto(base, { waitUntil: 'networkidle' });
+      await page.evaluate(() => navigator.serviceWorker.ready);
+      await ctx.setOffline(true);
+      await page.goto(`${base}tools/pour-cost-calculator/?tool=cocktail&rows=Gin_30_750_2&target=25&price=12`, { waitUntil: 'load' });
+      assert.equal(await page.locator('#cocktail-rows .row').count(), 1);
+      assert.equal(await page.locator('#cocktail-out-price').textContent(), '$11.06'); // ($2.37 gin + $0.40 garnish) at 25%
+      await page.goto(base + 'tools/prime-cost-calculator/', { waitUntil: 'load' });
+      assert.equal(await page.locator('#out-prime-pct').textContent(), '63%');
+      assert.equal(await page.evaluate(() => document.fonts.check('600 16px Fraunces')), true);
+      await page.goto(base, { waitUntil: 'load' });
+      assert.equal(await page.locator('#tab-prime').isVisible(), true);
+      assert.deepEqual(errors, []);
+      await ctx.close();
+    });
+  }
 
   // The published build carries a hash-based CSP; nothing on the page may violate it
   if (process.env.SITE_DIR) {
