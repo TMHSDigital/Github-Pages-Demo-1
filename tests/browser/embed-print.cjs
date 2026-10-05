@@ -1,6 +1,9 @@
 'use strict';
 // Print or save as PDF, and embed mode. Run alone with: npm test -- embed-print
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { site: SITE } = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'tools', 'tools.json'), 'utf8')); // the site's address
 
 module.exports = async ({ base, check, calm, AXE, TOOL_SLUGS }) => {
   await check('print or save as PDF shows only the tool in use, with a dated link back (#43)', async () => {
@@ -32,7 +35,7 @@ module.exports = async ({ base, check, calm, AXE, TOOL_SLUGS }) => {
         assert.equal(await page.locator(sel).isVisible(), shown, `${slug}: ${sel} should be ${shown ? 'shown' : 'hidden'}`);
       }
       const credit = page.locator('.embed-credit a');
-      assert.equal(await credit.getAttribute('href'), `https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/${slug}/`);
+      assert.equal(await credit.getAttribute('href'), `${SITE}tools/${slug}/`);
       assert.equal(await credit.getAttribute('target'), '_blank');
       assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex');
       assert.equal(await page.locator('#talk-numbers').getAttribute('target'), '_blank');
@@ -76,8 +79,8 @@ module.exports = async ({ base, check, calm, AXE, TOOL_SLUGS }) => {
     await page.locator('.embed-box summary').click();
     await page.locator('[data-copy="embed-code"]').click();
     const snippet = await page.evaluate(() => window.__copied);
-    assert.match(snippet, /^<iframe src="https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/tools\/prime-cost-calculator\/\?embed=1"/);
-    const local = snippet.replace('https://tmhsdigital.github.io/Github-Pages-Demo-1/', base).replace('"https://tmhsdigital.github.io"', JSON.stringify(base.replace(/\/$/, '')));
+    assert.ok(snippet.startsWith(`<iframe src="${SITE}tools/prime-cost-calculator/?embed=1"`), snippet.slice(0, 80));
+    const local = snippet.replace(SITE, base).replace(JSON.stringify(new URL(SITE).origin), JSON.stringify(base.replace(/\/$/, '')));
     const host = await ctx.newPage();
     await host.goto(base + 'robots.txt'); // any same-origin page will do as the host
     await host.setContent(`<!doctype html><title>Host</title><h1>A partner site</h1>${local}`);

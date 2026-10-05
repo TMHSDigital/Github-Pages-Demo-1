@@ -11,7 +11,11 @@
  *    tools/tools.json: <!-- gen:NAME --> blocks in the pages (the home page's links to each
  *    tool page; each tool page's "More free tools" list, embed snippet and credit line), and
  *    the whole of sitemap.xml and the manifest's shortcuts.
- * 3. Consistency. Every registry entry needs its tools/<slug>/ page, a home-page tab and a
+ * 3. The site's address. tools/tools.json `site` is the one place it is set; when it changes, every
+ *    page's absolute URLs (canonical, social tags, structured data), robots.txt and the 404
+ *    page's base path follow on the next sync. The pages' current address is read from the home
+ *    page's canonical link.
+ * 4. Consistency. Every registry entry needs its tools/<slug>/ page, a home-page tab and a
  *    sync:tool-<key> block, and every tools/<slug>/ page needs a registry entry.
  *
  * Everything else (titles, metadata, explainer copy) is edited in the page.
@@ -33,11 +37,14 @@ const GEN = /([ \t]*)<!-- gen:([\w-]+) -->\n[\s\S]*?[ \t]*<!-- \/gen:\2 -->/g;
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const homeFile = path.join(ROOT, 'index.html');
-const home = read(homeFile);
+// 3. Move every absolute URL from the address the pages use now to the registry's
+const CURRENT = (/<link rel="canonical" href="([^"]+)">/.exec(read(homeFile)) || [])[1] || SITE;
+const relocateSite = (text) => (CURRENT === SITE ? text : text.split(CURRENT).join(SITE));
+const home = relocateSite(read(homeFile));
 const blocks = {};
 for (const [, name, body] of home.matchAll(BLOCK)) blocks[name] = body;
 
-// 3. The registry, the tool pages and the home page's tabs and tool blocks must agree
+// 4. The registry, the tool pages and the home page's tabs and tool blocks must agree
 const problems = [];
 const pages = fs.readdirSync(TOOLS).filter((slug) => fs.existsSync(path.join(TOOLS, slug, 'index.html')));
 for (const t of REGISTRY) {
@@ -121,7 +128,7 @@ const outputs = [[homeFile, fillGen(home, homeFile)]];
 for (const tool of REGISTRY) {
   const file = path.join(TOOLS, tool.slug, 'index.html');
   const up = '../'.repeat(path.relative(ROOT, path.dirname(file)).split(path.sep).length);
-  const synced = read(file).replace(BLOCK, (all, name) => {
+  const synced = relocateSite(read(file)).replace(BLOCK, (all, name) => {
     if (!(name in blocks)) throw new Error(`${path.relative(ROOT, file)}: index.html has no sync:${name} block`);
     const indent = /^[ \t]*/.exec(all.slice(all.indexOf('\n') + 1))[0];
     return `<!-- sync:${name} -->\n${forPage(name, blocks[name], up)}${indent}<!-- /sync:${name} -->`;
@@ -129,6 +136,11 @@ for (const tool of REGISTRY) {
   outputs.push([file, fillGen(synced, file, tool)]);
 }
 outputs.push([path.join(ROOT, 'sitemap.xml'), sitemap()], [manifestFile, manifest()]);
+// robots.txt points at the sitemap; the 404 page resolves its files through a <base> of the site's path
+const robotsFile = path.join(ROOT, 'robots.txt');
+outputs.push([robotsFile, read(robotsFile).replace(/^Sitemap: .*$/m, `Sitemap: ${SITE}sitemap.xml`)]);
+const notFoundFile = path.join(ROOT, '404.html');
+outputs.push([notFoundFile, read(notFoundFile).replace(/<base href="[^"]*">/, `<base href="${new URL(SITE).pathname}">`)]);
 
 let stale = 0;
 for (const [file, after] of outputs) {
@@ -142,4 +154,4 @@ if (check && stale) {
   console.log('\nRun `npm run sync` and commit the result.');
   process.exit(1);
 }
-if (!stale) console.log('pages, sitemap and manifest are in sync with index.html and tools/tools.json');
+if (!stale) console.log('pages, sitemap, manifest, robots.txt and 404 page are in sync with index.html and tools/tools.json');

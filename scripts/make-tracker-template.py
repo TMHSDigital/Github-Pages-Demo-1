@@ -6,6 +6,7 @@ Run: pip install -r scripts/requirements.txt && python scripts/make-tracker-temp
 The bands are TODO(verify) like the ones in index.html (#27): change them on the Settings
 sheet and in js/calc-math.js together.
 """
+import json
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -14,7 +15,9 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 
 OUT = Path(__file__).resolve().parent.parent / 'assets' / 'downloads' / 'prime-cost-tracker.xlsx'
-SITE = 'https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/prime-cost-calculator/'
+ROOT = Path(__file__).resolve().parent.parent
+# The site's address, from the tool registry
+SITE = json.loads((ROOT / 'tools' / 'tools.json').read_text(encoding='utf-8'))['site'] + 'tools/prime-cost-calculator/'
 
 FONT = 'Arial'
 NAVY = '203164'

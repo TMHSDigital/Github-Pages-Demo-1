@@ -14,7 +14,16 @@ const path = require('node:path');
 const FILES = ['index.html', '404.html', 'README.md', ...fs.readdirSync(path.join(__dirname, '..', 'tools')).map((slug) => path.join('tools', slug, 'index.html'))]
   .filter((f) => fs.existsSync(path.join(__dirname, '..', f)));
 const GUARDED = new Set([403, 429, 999]);
-const IGNORE = [/^https:\/\/tmhsdigital\.github\.io\/?$/, /^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/, /img\.shields\.io/, /^https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/(assets|sitemap|tools)/];
+// The site's own address comes from the tool registry. Its bare origin (the embed snippet compares
+// against it) is not a page, and its files only exist once deployed, so neither is fetched.
+const SITE = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'tools', 'tools.json'), 'utf8')).site;
+const literally = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, (c) => '\\' + c);
+const IGNORE = [
+  new RegExp(`^${literally(new URL(SITE).origin)}/?$`),
+  new RegExp(`^${literally(SITE)}(assets|sitemap|tools)`),
+  /^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/,
+  /img\.shields\.io/,
+];
 
 // Every external URL in a page or document. Entities are decoded first, so an escaped code
 // sample (the embed snippet) reads as the URLs it contains

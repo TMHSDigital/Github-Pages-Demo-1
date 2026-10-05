@@ -49,6 +49,16 @@ The screenshot script rewrites every image each run, and some differ only by ani
 
 Browser tests live in `tests/browser/`, one file per area, and run in parallel. `npm test -- tracker` runs just the areas whose names match (several names are fine), `VERBOSE=1` prints each failure in full, and `SMOKE_WORKERS=1` runs the areas one at a time if you suspect a timing problem. A new check goes in the file for its area; a new area is just a new file there.
 
+## Moving to your own domain
+
+The site's address is set once, as `site` in [`tools/tools.json`](tools/tools.json).
+
+1. Set `site` to the new address, with a trailing slash (for example `https://www.example.com/`), and run `npm run sync`. Canonical links, social tags, structured data, the sitemap, `robots.txt`, the 404 page's base path, embed snippets and credits all follow; the build, Lighthouse, link checks and tests read it too.
+2. Run `python scripts/make-tracker-template.py` (the spreadsheet names the site) and `npm run check`.
+3. Update the links to the live site in `README.md` by hand.
+4. In the repository's **Settings > Pages**, set the custom domain and turn on **Enforce HTTPS** (the site deploys through Actions, so no `CNAME` file is needed). Point the domain's DNS at GitHub Pages as GitHub describes. The old `github.io` address then redirects.
+5. Browsers keep saved data per address, so saved tracker months and menus do not move with the site. Before switching, say so on the site and point people to **Download as CSV**; both import on the new address. Partners who pasted an embed snippet need the new one for auto-sizing.
+
 ## Commits and pull requests
 
 - Keep commits focused, with a short imperative subject.

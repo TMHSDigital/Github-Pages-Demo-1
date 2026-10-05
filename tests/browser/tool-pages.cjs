@@ -3,6 +3,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { site: SITE } = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'tools', 'tools.json'), 'utf8')); // the site's address
 
 module.exports = async ({ browser, base, check, open, AXE, ROOT, TOOL_PAGES }) => {
   // Calculator pages (tools/<slug>/): one tool each, held to the same bar as the home page
@@ -23,15 +24,15 @@ module.exports = async ({ browser, base, check, open, AXE, ROOT, TOOL_PAGES }) =
         const levels = await page.evaluate(() => [...document.querySelectorAll('h1,h2,h3,h4')].map((h) => +h.tagName[1]));
         assert.equal(levels.filter((l) => l === 1).length, 1);
         levels.reduce((prev, l) => { assert.ok(l - prev <= 1, `heading jumps h${prev} -> h${l}`); return l; }, 1);
-        assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), `https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/${t.slug}/`);
+        assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), `${SITE}tools/${t.slug}/`);
         const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).map((s) => JSON.parse(s));
         assert.deepEqual(ld.map((d) => d['@type']), ['WebApplication', 'BreadcrumbList']);
         const crumbs = ld[1].itemListElement;
-        assert.equal(crumbs.at(-1).item, `https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/${t.slug}/`);
+        assert.equal(crumbs.at(-1).item, `${SITE}tools/${t.slug}/`);
         assert.deepEqual(crumbs.map((c) => c.position), crumbs.map((_, i) => i + 1));
         // its own social card, which exists
         const card = await page.locator('meta[property="og:image"]').getAttribute('content');
-        assert.equal(card, `https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-${t.slug}.png`);
+        assert.equal(card, `${SITE}assets/images/og-${t.slug}.png`);
         assert.ok(fs.existsSync(path.join(ROOT, 'assets', 'images', `og-${t.slug}.png`)), 'social card missing');
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'page scrolls sideways');
         assert.deepEqual(errors, []);

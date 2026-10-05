@@ -14,7 +14,7 @@ const { spawn } = require('node:child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const SITE = path.join(ROOT, '_site');
-const ORIGIN = 'https://tmhsdigital.github.io/Github-Pages-Demo-1/';
+const ORIGIN = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'tools.json'), 'utf8')).site; // the site's address, from the tool registry
 const FLOORS = { performance: 90, accessibility: 95, 'best-practices': 95, seo: 95 };
 const RUNS = 2;
 const TYPES = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.png': 'image/png', '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json' };

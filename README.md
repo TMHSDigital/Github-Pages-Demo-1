@@ -218,7 +218,7 @@ Then open <http://localhost:8000>.
 | **Social cards, app icons, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. It also renders one social card per calculator page from `docs/tool-card.html` (text set in the `CARDS` list in the script). |
 | **Header, footer or a calculator** | Edit it in `index.html` (the blocks between `sync:` markers), then run `npm run sync` to update the pages in `tools/`. CI fails if they drift apart. |
 | **Add a calculator** | Write its script and its `sync:tool-<key>` panel and tab in `index.html`, create `tools/<slug>/index.html` (copy one and edit the prose), add one entry to [`tools/tools.json`](tools/tools.json), then run `npm run sync` and `node scripts/screenshots.cjs`. The sitemap, manifest shortcuts, links between tool pages, embed snippet, social card and test list all come from that entry, and CI fails if any part is missing. |
-| **Repo name or domain** | Change `site` in `tools/tools.json` and run `npm run sync` (sitemap, embed snippets and credits follow), then update `og:url`, `og:image`, canonical and JSON-LD URLs (home and `tools/*/`), `robots.txt`, the `<base>` in `404.html` and the URL in `scripts/make-tracker-template.py`. |
+| **Repo name or domain** | Change `site` in `tools/tools.json` and run `npm run sync`: every page, the sitemap, `robots.txt`, the 404 page's base path and the embed snippets follow. The full checklist, including the GitHub settings, is in [CONTRIBUTING](CONTRIBUTING.md#moving-to-your-own-domain). |
 
 <div align="right"><sub><a href="#top">↑ Back to top</a></sub></div>
 
