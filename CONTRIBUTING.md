@@ -34,6 +34,21 @@ If you change the header, footer, icon sprite or a calculator in `index.html`, r
 
 If you change the page visibly, regenerate the README images and social card with `node scripts/screenshots.cjs`.
 
+## Generated files
+
+Some committed files are built by scripts. Regenerate them when their inputs change and commit the result.
+
+| Files | Command | Run it when | Needs |
+| :-- | :-- | :-- | :-- |
+| `tools/*/index.html` (header, footer, sprite and tool blocks) | `npm run sync` | you change a `sync:` block in `index.html` (CI fails if you forget) | Node |
+| `docs/screenshots/*`, `assets/images/og-*.png` (site and one per calculator), `assets/images/icon-*.png` | `node scripts/screenshots.cjs` | the page changes visibly, a calculator's worked example changes, or a calculator is added (add it to `CARDS`) | Node, Chrome |
+| `assets/downloads/prime-cost-tracker.xlsx` | `python scripts/make-tracker-template.py` | the prime cost bands change (they also live in `js/calc-math.js` and the calculator note) | Python, `pip install -r scripts/requirements.txt` |
+| `_site/` (not committed) | `npm run build` | to preview the published site; `npm run lighthouse` then checks every page in the sitemap against the CI floors | Node, Chrome |
+
+The screenshot script rewrites every image each run, and some differ only by animation timing. Commit just the ones your change affects (`git checkout -- docs/screenshots/` drops the rest).
+
+Browser tests print only the first line of a failure; run `VERBOSE=1 npm test` for the full message.
+
 ## Commits and pull requests
 
 - Keep commits focused, with a short imperative subject.

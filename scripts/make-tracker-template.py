@@ -2,7 +2,7 @@
 Builds assets/downloads/prime-cost-tracker.xlsx: a month-by-month prime cost tracker that
 uses the same formulas and rule-of-thumb bands as the calculators on the site.
 
-Run: python scripts/make-tracker-template.py   (needs openpyxl)
+Run: pip install -r scripts/requirements.txt && python scripts/make-tracker-template.py
 The bands are TODO(verify) like the ones in index.html (#27): change them on the Settings
 sheet and in js/calc-math.js together.
 """
