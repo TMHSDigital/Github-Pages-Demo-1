@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cocktail Pour Cost Calculator — TM Hospitality Strategies</title>
-  <meta name="description" content="Free cocktail pour cost calculator: cost each pour from the bottle price and size, add mixers, and get a drink price at your target pour cost.">
-  <link rel="canonical" href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/pour-cost-calculator/">
+  <title>Actual vs Theoretical Food Cost Calculator for Restaurants — TMHS</title>
+  <meta name="description" content="Free food cost calculator: work out actual food cost from your inventory counts and purchases, and see what the gap to theoretical food cost costs you a month and a year.">
+  <link rel="canonical" href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/food-cost-calculator/">
 
   <meta property="og:site_name" content="TM Hospitality Strategies">
-  <meta property="og:title" content="Cocktail Pour Cost Calculator">
-  <meta property="og:description" content="Cost each pour from the bottle price and size and get a drink price at your target pour cost. Free, and it runs in your browser.">
+  <meta property="og:title" content="Actual vs Theoretical Food Cost Calculator">
+  <meta property="og:description" content="Turn your inventory counts into actual food cost and see what the gap to theoretical costs you. Free, and it runs in your browser.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/pour-cost-calculator/">
-  <meta property="og:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-pour-cost-calculator.png">
+  <meta property="og:url" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/food-cost-calculator/">
+  <meta property="og:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-food-cost-calculator.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Cocktail pour cost calculator from TM Hospitality Strategies: cost a drink from bottle prices and pours, with a worked example priced at $18.56">
+  <meta property="og:image:alt" content="Food cost calculator from TM Hospitality Strategies: actual food cost from inventory counts, with a worked example at 31.8% against a 29% theoretical">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0A1226" media="(prefers-color-scheme: dark)">
@@ -25,9 +25,9 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Cocktail pour cost calculator",
-      "description": "Costs each pour in a drink from the bottle price and size and suggests a price at a target pour cost percentage.",
-      "url": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/pour-cost-calculator/",
+      "name": "Actual vs theoretical food cost calculator",
+      "description": "Works out actual food cost from opening inventory, purchases and closing inventory, and the gap to theoretical food cost in points and dollars.",
+      "url": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/food-cost-calculator/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any (runs in the browser)",
       "isAccessibleForFree": true,
@@ -42,7 +42,7 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tmhsdigital.github.io/Github-Pages-Demo-1/" },
-        { "@type": "ListItem", "position": 2, "name": "Cocktail pour cost calculator", "item": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/pour-cost-calculator/" }
+        { "@type": "ListItem", "position": 2, "name": "Food cost calculator", "item": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/food-cost-calculator/" }
       ]
     }
   </script>
@@ -147,50 +147,54 @@
       <div class="wrap">
         <div class="section-head tool-head">
           <p class="crumbs"><a href="../../">Home</a> <span aria-hidden="true">/</span> <a href="../../#calculator">Free tools</a></p>
-          <h1 id="tool-title">Cocktail pour cost <em>calculator</em></h1>
-          <p>Cost each pour from the bottle price and size, add mixers and garnish, and get a drink price at the pour cost you are aiming for. Nothing you enter leaves your browser.</p>
+          <h1 id="tool-title">Actual food cost <em>calculator</em></h1>
+          <p>Turn your inventory counts and purchases into actual food cost, and see what the gap to your theoretical food cost is worth each month and each year. Nothing you enter leaves your browser.</p>
         </div>
         <noscript><p class="note nojs-note">This calculator needs JavaScript. The worked example below shows the same calculation by hand.</p></noscript>
         <div class="toolkit">
-          <!-- sync:tool-cocktail -->
-          <div class="calc recipe" id="cocktail">
+          <!-- sync:tool-foodcost -->
+          <div class="calc foodcost needs-js" id="foodcost">
             <div class="calc-form">
-              <!-- TODO(verify): the example recipe, bottle prices and 20% target are illustrations, not benchmarks -->
-              <fieldset class="recipe-rows">
-                <legend>Pours in one drink <span class="hint">Example recipe</span></legend>
-                <div class="rows-head" aria-hidden="true"><span>Ingredient</span><span>Bottle price</span><span>Size</span><span>Pour</span><span>Cost</span></div>
-                <ul class="rows" id="cocktail-rows"></ul>
-                <p class="rows-empty" id="cocktail-empty" hidden>No pours yet. Add one to start.</p>
-                <button type="button" class="add-row" id="cocktail-add"><svg aria-hidden="true"><use href="#i-plus"/></svg>Add a pour</button>
-                <p class="add-note" id="cocktail-add-note" role="status"></p>
-              </fieldset>
+              <!-- TODO(verify): the example inventory, purchases, sales and 29% theoretical food cost are illustrations, not benchmarks -->
               <div class="field">
-                <label for="cocktail-extra">Mixers, garnish and ice</label>
-                <div class="money"><span aria-hidden="true">$</span><input id="cocktail-extra" type="text" inputmode="decimal" autocomplete="off" value="0.40"></div>
+                <label for="fc-open">Opening food inventory</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-open" type="text" inputmode="decimal" autocomplete="off" value="18,500" aria-describedby="fc-open-hint"></div>
+                <p class="cost-alt" id="fc-open-hint">The value of food on hand at the start of the period: last count's closing figure.</p>
               </div>
               <div class="field">
-                <div class="lab"><label for="cocktail-target">Target pour cost</label><span class="val" id="cocktail-target-out" aria-hidden="true">20%</span></div>
-                <input id="cocktail-target" type="range" min="10" max="40" step="1" value="20" aria-valuetext="20% pour cost">
+                <label for="fc-purchases">Food purchases</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-purchases" type="text" inputmode="decimal" autocomplete="off" value="31,200" aria-describedby="fc-purchases-hint"></div>
+                <p class="cost-alt" id="fc-purchases-hint">Everything received in the period, net of credits and returns.</p>
               </div>
               <div class="field">
-                <label for="cocktail-price">Your drink price <span class="opt">optional</span></label>
-                <div class="money"><span aria-hidden="true">$</span><input id="cocktail-price" type="text" inputmode="decimal" autocomplete="off" value="14.00"></div>
+                <label for="fc-close">Closing food inventory</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-close" type="text" inputmode="decimal" autocomplete="off" value="17,900" aria-describedby="fc-close-issue"></div>
+                <p class="add-note" id="fc-close-issue" role="status"></p>
+              </div>
+              <div class="field">
+                <label for="fc-sales">Food sales</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-sales" type="text" inputmode="decimal" autocomplete="off" value="100,000"></div>
+              </div>
+              <div class="field">
+                <label for="fc-theory">Theoretical food cost <span class="opt">optional</span></label>
+                <div class="money"><input id="fc-theory" type="text" inputmode="decimal" autocomplete="off" value="29" aria-describedby="fc-theory-hint"><span aria-hidden="true">%</span></div>
+                <p class="cost-alt" id="fc-theory-hint">What your recipes say food cost should be at this sales mix; the plate cost calculator gives it dish by dish.</p>
               </div>
             </div>
             <div class="calc-out" data-band="attention">
-              <div class="readout"><span class="readout-k">Suggested drink price</span><b id="cocktail-out-price">$18.56</b><span id="cocktail-out-target">at 20% pour cost</span></div>
-              <span class="band" id="cocktail-band">Over target</span>
+              <div class="readout"><span class="readout-k">Actual food cost</span><b id="fc-out-pct">31.8%</b><span>of food sales</span></div>
+              <span class="band" id="fc-band">Well over theoretical: +2.8 points</span>
               <dl class="stats stats-3">
-                <div><dt>Cost per drink</dt><dd id="cocktail-out-cost">$3.71</dd></div>
-                <div><dt>Pour cost at your price</dt><dd id="cocktail-out-pct">26.5%</dd></div>
-                <div><dt>Gross profit <span id="cocktail-profit-at">at your price</span></dt><dd id="cocktail-out-profit">$10.29</dd></div>
+                <div><dt>Food used (cost of goods)</dt><dd id="fc-out-cogs">$31,800</dd></div>
+                <div><dt>Over theoretical, a month</dt><dd id="fc-out-month">$2,800</dd></div>
+                <div><dt>A year at this rate</dt><dd id="fc-out-year">$33,600</dd></div>
               </dl>
-              <p class="calc-summary" id="cocktail-summary" role="status" aria-live="polite"></p>
-              <button type="button" class="reset" id="cocktail-reset">Reset to the example</button>
+              <p class="calc-summary" id="fc-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="fc-reset">Reset to the example</button>
             </div>
-            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example recipe, bottle prices and target are placeholders, so set your own. Pour cost uses 29.57 ml to the ounce.</p>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example figures are placeholders, so use your own counts. Actual food cost is opening inventory plus purchases minus closing inventory, divided by food sales. Bands for the gap are rules of thumb: within 1 point close, up to 2 points worth a look, more than that well over.</p>
           </div>
-          <!-- /sync:tool-cocktail -->
+          <!-- /sync:tool-foodcost -->
           <div class="tools-bar">
             <div class="share">
               <button type="button" class="btn btn-ghost btn-sm" id="copy-link"><svg aria-hidden="true"><use href="#i-link"/></svg>Copy a link to these numbers</button>
@@ -201,21 +205,9 @@
             </div>
             <a class="btn btn-sm" id="talk-numbers" href="../../#contact" data-home="../../">Talk through these numbers <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
-          <!-- sync:template-cocktail -->
-          <template id="cocktail-row">
-            <li class="row">
-              <input class="r-name" type="text" maxlength="40" autocomplete="off" data-k="name" aria-label="Ingredient name">
-              <span class="money sm r-price"><span aria-hidden="true">$</span><input type="text" inputmode="decimal" autocomplete="off" data-k="price" aria-label="Bottle price"></span>
-              <select class="r-ml" data-k="ml" aria-label="Bottle size"><option value="375">375 ml</option><option value="700">700 ml</option><option value="750">750 ml</option><option value="1000">1 L</option><option value="1750">1.75 L</option></select>
-              <span class="money sm r-oz"><input type="text" inputmode="decimal" autocomplete="off" data-k="oz" aria-label="Pour in ounces"><span aria-hidden="true">oz</span></span>
-              <span class="r-out" aria-hidden="true">$0.00</span>
-              <button type="button" class="row-del" aria-label="Remove ingredient"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
-            </li>
-          </template>
-          <!-- /sync:template-cocktail -->
         </div>
         <!-- gen:credit -->
-        <p class="embed-credit">Free calculator by <a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/pour-cost-calculator/" target="_blank" rel="noopener">TM Hospitality Strategies</a></p>
+        <p class="embed-credit">Free calculator by <a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/food-cost-calculator/" target="_blank" rel="noopener">TM Hospitality Strategies</a></p>
         <!-- /gen:credit -->
       </div>
     </section>
@@ -223,35 +215,33 @@
     <!-- TODO(verify): drafted explainer; confirm the wording and examples match how you advise clients -->
     <section class="section tint" aria-labelledby="how-title">
       <div class="wrap explainer">
-        <h2 id="how-title">How cocktail pour cost works</h2>
-        <p>Pour cost is what goes into a drink as a share of its price. Work out what each ounce of a bottle costs, multiply by the pour, add mixers, garnish and ice, and divide by the pour cost you are aiming for to get a starting price.</p>
-        <p class="formula">Cost per ounce = bottle price ÷ (bottle size in ml ÷ 29.57)</p>
-        <p class="formula">Suggested price = drink cost ÷ target pour cost %</p>
+        <h2 id="how-title">Actual and theoretical food cost</h2>
+        <p><strong>Theoretical</strong> food cost is what your recipes say food should cost at the sales you made: every dish costed out, weighted by how many sold. <strong>Actual</strong> food cost is what you really used, measured by counting what is on the shelves. The gap between them is food that was bought but never sold: waste, over-portioning, spoilage, theft, staff meals and unrecorded comps.</p>
+        <p class="formula">Food used = opening inventory + purchases − closing inventory</p>
+        <p class="formula">Actual food cost % = food used ÷ food sales × 100</p>
+
+        <h3>Getting the inputs right</h3>
+        <ul>
+          <li><strong>Count the same way every time:</strong> same day of the week, same time, same units and prices, ideally the last supplier price.</li>
+          <li><strong>Purchases are what arrived in the period,</strong> net of credits and returns, not what was paid.</li>
+          <li><strong>Use food sales only.</strong> If you count beverage separately, work out beverage cost the same way against beverage sales.</li>
+        </ul>
 
         <h3>A worked example</h3>
-        <p>A 750 ml bottle holds 750 ÷ 29.57 = 25.4 ounces. The example drink uses:</p>
-        <ul>
-          <li><strong>Tequila:</strong> a $30 bottle is $1.18 an ounce, so a 2 oz pour costs $2.37.</li>
-          <li><strong>Orange liqueur:</strong> a $32 bottle is $1.26 an ounce, so a 0.75 oz pour costs $0.95.</li>
-          <li><strong>Mixers, garnish and ice:</strong> $0.40.</li>
-        </ul>
-        <p class="formula">$3.71 ÷ 20% = $18.56 suggested price</p>
-        <p>At a $14.00 menu price, pour cost is $3.71 ÷ $14.00 = 26.5%, so the drink earns $10.29 before labor and overheads.</p>
+        <p>The calculator opens on an example month: $18,500 of food on hand at the start, $31,200 of purchases and $17,900 left at the end, against $100,000 of food sales.</p>
+        <p class="formula">$18,500 + $31,200 − $17,900 = $31,800 used, so $31,800 ÷ $100,000 = 31.8%</p>
+        <p>The recipes say food cost should be 29%, so actual is 2.8 points over theoretical: about $2,800 a month, or $33,600 a year, of food that went somewhere other than a guest's plate.</p>
 
-        <h3>Keeping pour cost honest</h3>
-        <ul>
-          <li><strong>Price the pour you actually serve.</strong> If a 2 oz recipe is free-poured at 2.25 oz, the spirit costs 12.5% more than the menu price assumes.</li>
-          <li><strong>Count mixers, juice, garnish and ice.</strong> With lower-priced spirits they can be a large share of the drink.</li>
-          <li><strong>Compare usage with sales regularly,</strong> by bottle count or weight, so overpouring and waste show up early.</li>
-        </ul>
+        <h3>Reading the result</h3>
+        <p>A gap of a point or less is about as close as counts get. Up to two points is worth a look; more than that usually has a cause you can find and fix. If the result comes out <em>under</em> theoretical, check the counts and recipe costs first: that is rarely real.</p>
 
         <h3>More free tools</h3>
         <!-- gen:other-tools -->
         <ul class="other-tools">
           <li><a class="text-link" href="../prime-cost-calculator/">Prime cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
           <li><a class="text-link" href="../plate-cost-calculator/">Plate cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          <li><a class="text-link" href="../pour-cost-calculator/">Cocktail pour cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
           <li><a class="text-link" href="../break-even-calculator/">Break-even calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
-          <li><a class="text-link" href="../food-cost-calculator/">Actual food cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
         </ul>
         <!-- /gen:other-tools -->
 
@@ -260,7 +250,7 @@
           <summary>Embed this calculator on your site</summary>
           <p>Paste this where the calculator should appear. It sizes itself to fit, links back here, and like this page it sends nothing anywhere. Add <code>&amp;theme=dark</code> to the address for the dark theme.</p>
           <label class="sr-only" for="embed-code">Embed code</label>
-          <textarea class="embed-code" id="embed-code" rows="5" readonly>&lt;iframe src=&quot;https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/pour-cost-calculator/?embed=1&quot; title=&quot;Cocktail pour cost calculator by TM Hospitality Strategies&quot; width=&quot;100%&quot; height=&quot;900&quot; style=&quot;border:0&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;
+          <textarea class="embed-code" id="embed-code" rows="5" readonly>&lt;iframe src=&quot;https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/food-cost-calculator/?embed=1&quot; title=&quot;Actual food cost calculator by TM Hospitality Strategies&quot; width=&quot;100%&quot; height=&quot;900&quot; style=&quot;border:0&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;
 &lt;script&gt;addEventListener(&quot;message&quot;,function(e){if(e.origin!==&quot;https://tmhsdigital.github.io&quot;||!e.data||e.data.type!==&quot;tmhs:height&quot;)return;document.querySelectorAll(&quot;iframe&quot;).forEach(function(f){if(f.contentWindow===e.source)f.style.height=e.data.height+&quot;px&quot;})})&lt;/script&gt;</textarea>
           <p><button type="button" class="btn btn-ghost btn-sm" data-copy="embed-code"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy the embed code</button> <span class="share-status" role="status"></span></p>
         </details>
@@ -272,8 +262,8 @@
       <div class="wrap">
         <div class="cta-panel">
           <div class="wrap-in">
-            <h2 id="next-title">Building a drinks <em>program?</em></h2>
-            <p>Talk through pricing, pour standards and the numbers behind your bar.</p>
+            <h2 id="next-title">Food cost running <em>over theoretical?</em></h2>
+            <p>An operations review finds where the gap goes: ordering, receiving, prep, portioning, waste and comps.</p>
             <p><a class="btn" href="../../#contact">Start a conversation <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
           </div>
         </div>
@@ -317,7 +307,7 @@
 
   <script src="../../js/theme.js" defer></script>
   <script src="../../js/calc-math.js" defer></script>
-  <script src="../../js/calc-recipe.js" defer></script>
+  <script src="../../js/calc-foodcost.js" defer></script>
   <script src="../../js/calc-tabs.js" defer></script>
   <script src="../../js/main.js" defer></script>
 </body>

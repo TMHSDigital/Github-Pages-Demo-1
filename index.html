@@ -80,6 +80,7 @@
       <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
       <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
       <symbol id="i-balance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v17M7 20h10M4 7h16M7 7l-3 7a3 3 0 0 0 6 0zM17 7l-3 7a3 3 0 0 0 6 0z"/></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></symbol>
       <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
       <symbol id="i-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/></symbol>
       <symbol id="i-plate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></symbol>
@@ -269,9 +270,9 @@
         <div class="section-head" data-reveal>
           <p class="eyebrow">Free tools</p>
           <h2 id="calc-title">Run the <em>numbers</em></h2>
-          <p>Four quick calculators: prime cost for the whole business, plate cost for a dish, pour cost for a drink and the sales you need to break even. Everything runs in your browser.</p>
+          <p>Five quick calculators: prime cost for the whole business, plate cost for a dish, pour cost for a drink, actual food cost from your inventory counts and the sales you need to break even. Everything runs in your browser.</p>
           <!-- gen:tool-links -->
-          <p class="tool-pages">Each one also has its own page with a worked example: <a href="tools/prime-cost-calculator/">prime cost</a>, <a href="tools/plate-cost-calculator/">plate cost</a>, <a href="tools/pour-cost-calculator/">cocktail pour cost</a> and <a href="tools/break-even-calculator/">break-even</a>.</p>
+          <p class="tool-pages">Each one also has its own page with a worked example: <a href="tools/prime-cost-calculator/">prime cost</a>, <a href="tools/plate-cost-calculator/">plate cost</a>, <a href="tools/pour-cost-calculator/">cocktail pour cost</a>, <a href="tools/break-even-calculator/">break-even</a> and <a href="tools/food-cost-calculator/">actual food cost</a>.</p>
           <!-- /gen:tool-links -->
         </div>
         <div class="toolkit" data-reveal>
@@ -281,6 +282,7 @@
             <button type="button" role="tab" id="tab-plate" data-tool="plate" aria-controls="plate" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-plate"/></svg>Plate cost</button>
             <button type="button" role="tab" id="tab-cocktail" data-tool="cocktail" aria-controls="cocktail" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-glass"/></svg>Cocktail cost</button>
             <button type="button" role="tab" id="tab-breakeven" data-tool="breakeven" aria-controls="breakeven" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-balance"/></svg>Break-even</button>
+            <button type="button" role="tab" id="tab-foodcost" data-tool="foodcost" aria-controls="foodcost" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-box"/></svg>Food cost</button>
           </div>
 
           <!-- sync:tool-prime -->
@@ -496,6 +498,50 @@
           </div>
           <!-- /sync:tool-breakeven -->
 
+          <!-- sync:tool-foodcost -->
+          <div class="calc foodcost needs-js" id="foodcost" role="tabpanel" aria-labelledby="tab-foodcost" hidden>
+            <div class="calc-form">
+              <!-- TODO(verify): the example inventory, purchases, sales and 29% theoretical food cost are illustrations, not benchmarks -->
+              <div class="field">
+                <label for="fc-open">Opening food inventory</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-open" type="text" inputmode="decimal" autocomplete="off" value="18,500" aria-describedby="fc-open-hint"></div>
+                <p class="cost-alt" id="fc-open-hint">The value of food on hand at the start of the period: last count's closing figure.</p>
+              </div>
+              <div class="field">
+                <label for="fc-purchases">Food purchases</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-purchases" type="text" inputmode="decimal" autocomplete="off" value="31,200" aria-describedby="fc-purchases-hint"></div>
+                <p class="cost-alt" id="fc-purchases-hint">Everything received in the period, net of credits and returns.</p>
+              </div>
+              <div class="field">
+                <label for="fc-close">Closing food inventory</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-close" type="text" inputmode="decimal" autocomplete="off" value="17,900" aria-describedby="fc-close-issue"></div>
+                <p class="add-note" id="fc-close-issue" role="status"></p>
+              </div>
+              <div class="field">
+                <label for="fc-sales">Food sales</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="fc-sales" type="text" inputmode="decimal" autocomplete="off" value="100,000"></div>
+              </div>
+              <div class="field">
+                <label for="fc-theory">Theoretical food cost <span class="opt">optional</span></label>
+                <div class="money"><input id="fc-theory" type="text" inputmode="decimal" autocomplete="off" value="29" aria-describedby="fc-theory-hint"><span aria-hidden="true">%</span></div>
+                <p class="cost-alt" id="fc-theory-hint">What your recipes say food cost should be at this sales mix; the plate cost calculator gives it dish by dish.</p>
+              </div>
+            </div>
+            <div class="calc-out" data-band="attention">
+              <div class="readout"><span class="readout-k">Actual food cost</span><b id="fc-out-pct">31.8%</b><span>of food sales</span></div>
+              <span class="band" id="fc-band">Well over theoretical: +2.8 points</span>
+              <dl class="stats stats-3">
+                <div><dt>Food used (cost of goods)</dt><dd id="fc-out-cogs">$31,800</dd></div>
+                <div><dt>Over theoretical, a month</dt><dd id="fc-out-month">$2,800</dd></div>
+                <div><dt>A year at this rate</dt><dd id="fc-out-year">$33,600</dd></div>
+              </dl>
+              <p class="calc-summary" id="fc-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="fc-reset">Reset to the example</button>
+            </div>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example figures are placeholders, so use your own counts. Actual food cost is opening inventory plus purchases minus closing inventory, divided by food sales. Bands for the gap are rules of thumb: within 1 point close, up to 2 points worth a look, more than that well over.</p>
+          </div>
+          <!-- /sync:tool-foodcost -->
+
           <div class="tools-bar">
             <div class="share">
               <button type="button" class="btn btn-ghost btn-sm" id="copy-link"><svg aria-hidden="true"><use href="#i-link"/></svg>Copy a link to these numbers</button>
@@ -691,6 +737,7 @@
   <script src="js/calc-tracker.js" defer></script>
   <script src="js/calc-recipe.js" defer></script>
   <script src="js/calc-breakeven.js" defer></script>
+  <script src="js/calc-foodcost.js" defer></script>
   <script src="js/calc-tabs.js" defer></script>
   <script src="js/inquiry.js" defer></script>
   <script src="js/main.js" defer></script>

@@ -94,6 +94,17 @@ test('break-even (#38)', () => {
   assert.ok(Math.abs(C.breakEven(45000, 62) / C.WEEKS_PER_MONTH - 27328) < 1);
 });
 
+test('actual food cost from inventory, and variance against theoretical (#53)', () => {
+  assert.equal(C.cogs(18500, 31200, 17900), 31800);
+  assert.equal(C.cogs(10000, 0, 12000), -2000); // a miscount shows up as negative usage
+  assert.deepEqual({ ...C.variance(31.8, 29, 100000) }, { pts: 2.8, monthly: 2800, yearly: 33600 });
+  assert.deepEqual({ ...C.variance(28.5, 29, 100000) }, { pts: -0.5, monthly: -500, yearly: -6000 });
+});
+
+table('variance bands', (p) => C.varianceBand(p).key, [
+  [-3, 'strong'], [0, 'strong'], [1, 'strong'], [1.1, 'watch'], [2, 'watch'], [2.1, 'attention'], [6, 'attention'],
+]);
+
 table('band boundaries', (p) => C.band(p).key, [
   [0, 'strong'], [59.9, 'strong'], [60, 'target'], [64.9, 'target'], [65, 'watch'], [69.9, 'watch'], [70, 'attention'], [120, 'attention'],
 ]);

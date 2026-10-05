@@ -107,11 +107,29 @@ const TMHSCalc = (() => {
   const profitAt = (sales, fixed, variablePct) => sales * (1 - variablePct / 100) - fixed;
   const WEEKS_PER_MONTH = 52 / 12;
 
+  // Actual food cost from an inventory count: what was used is what you started with, plus what
+  // came in, minus what is left. Negative usage means the counts or purchases are wrong.
+  const cogs = (opening, purchases, closing) => opening + purchases - closing;
+  // Actual against theoretical (recipe) food cost, in points of sales and dollars
+  const variance = (actualPct, theoryPct, sales) => {
+    const pts = round1(actualPct - theoryPct);
+    return { pts, monthly: (pts * sales) / 100, yearly: (pts * sales * 12) / 100 };
+  };
+  // How far over theoretical is worth a look. TODO(verify) the thresholds with the owner (#27).
+  const VARIANCE_BANDS = Object.freeze([
+    { upTo: 1, key: 'strong', label: 'Close to theoretical' },
+    { upTo: 2, key: 'watch', label: 'Worth a look' },
+  ]);
+  const varianceBand = (pts) => {
+    const b = VARIANCE_BANDS.find((x) => pts <= x.upTo) || { key: 'attention', label: 'Well over theoretical' };
+    return { key: b.key, label: b.label };
+  };
+
   const usd = (n) => '$' + Math.round(n).toLocaleString('en-US');
   const usd2 = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const pct1 = (n) => (Math.round(n * 10) / 10).toLocaleString('en-US') + '%';
 
-  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, breakEven, profitAt, WEEKS_PER_MONTH, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW, BANDS };
+  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, breakEven, profitAt, WEEKS_PER_MONTH, cogs, variance, varianceBand, VARIANCE_BANDS, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW, BANDS };
 })();
 
 window.TMHSCalc = TMHSCalc;

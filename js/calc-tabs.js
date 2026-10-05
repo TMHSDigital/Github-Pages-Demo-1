@@ -17,9 +17,13 @@
     const moveInk = () => {
       const t = tabs.find((x) => x.getAttribute('aria-selected') === 'true');
       if (!t || !ink) return;
+      // The sliding ink only moves sideways, so once the tabs wrap onto two rows each tab marks
+      // itself instead (the no-ink style)
+      const wrapped = tabs.some((x) => x.offsetTop !== tabs[0].offsetTop);
+      list.classList.toggle('has-ink', !wrapped);
+      if (wrapped) return;
       list.style.setProperty('--ink-x', t.offsetLeft + 'px');
       list.style.setProperty('--ink-w', t.offsetWidth + 'px');
-      list.classList.add('has-ink');
     };
 
     select = (tab, focus) => {
