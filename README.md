@@ -263,7 +263,7 @@ Then open <http://localhost:8000>.
 │   ├── calc-math.test.cjs   Unit tests for the calculator maths (node:test, no browser)
 │   ├── bands.test.cjs, links.test.cjs  Unit tests: band copies agree, link extraction
 │   ├── smoke.cjs            Browser test runner (Playwright): runs the areas below in parallel
-│   └── browser/             One file per area: site, theme, prime, tracker, recipe, menu, breakeven, foodcost,
+│   └── browser/             One file per area: site, keyboard, pages, theme, prime, tracker, recipe, menu, breakeven, foodcost,
 │                            contact, embed-print, build, tool-pages
 ├── scripts/
 │   ├── stage.cjs            Builds the publishable _site (minified CSS/JS, site files only)
@@ -321,7 +321,7 @@ npm run build && cd _site && python -m http.server 8000
 | **Layout** | Playwright, source and staged build | No horizontal scroll at 375, 768 and 1280px; no console errors |
 | **Features** | Playwright | Theme toggle persists and follows the system; prime, plate and cocktail maths, shorthand (120k), decimal-comma and dot-grouped (120.000) input, negative sales flagged, prime cost lines typed as dollars or decimal percentages, the month tracker (save, trend, CSV round trip, remove, two-step clear, blocked storage), per-field caps shown in the field, live readouts, caret-safe formatting and reset; ingredient rows add, remove and cap at 12; shared links open the right tool with their numbers, the address bar then follows edits so a reload keeps them, and copy link round-trips; the message builder includes calculator results and switches to `mailto:` when an email is set; the mobile quick-contact bar shows and hides; marquee pauses; one header call to action per layout; valid JSON-LD |
 | **Resilience** | Playwright | With JavaScript off, or if the main script fails to load, all content stays visible; the mobile nav stays reachable |
-| **Keyboard** | Playwright | Skip link first, menu moves focus into its links and closes on Escape or an outside click, toolkit tabs follow the ARIA arrow/Home/End pattern, focus stays put when rows are added or removed, FAQ operable, visible focus rings |
+| **Keyboard** | Playwright | A full Tab walk of every page (home, each calculator, privacy) at 1280 and 375px, with saved months and dishes loaded: every stop has an accessible name, is visible or shows focus on the control it stands in for, and follows reading order. Skip link first, menu moves focus into its links and closes on Escape or an outside click, toolkit tabs follow the ARIA arrow/Home/End pattern, focus stays put when rows are added or removed, FAQ operable, visible focus rings |
 | **Reflow and spacing** | Playwright | No sideways scrolling or cut-off content at 320px and 640px (400% and 200% zoom), including with WCAG text-spacing overrides |
 | **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion, including the plate and cocktail tools and a filled-in message |
 | **Security** | Playwright, staged build | Content-Security-Policy present on every page and no violations while using the theme toggle, toolkit tabs, message builder and 404 page |
