@@ -39,8 +39,6 @@ jobs:
         run: npm run build
       - name: Smoke, keyboard and accessibility tests (staged build)
         run: SITE_DIR=_site node tests/smoke.cjs
-      - name: Check external links
-        run: npm run links
       - name: Lighthouse budgets (every page in the sitemap)
         run: npm run lighthouse
       - name: Check internal links

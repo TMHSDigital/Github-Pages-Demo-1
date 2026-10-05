@@ -269,7 +269,8 @@ Then open <http://localhost:8000>.
 ├── eslint.config.cjs        Lint rules
 ├── CONTRIBUTING.md  SECURITY.md  LICENSE
 └── .github/
-    ├── workflows/ci.yml     Validation, tests, Lighthouse, link checks, then deploy
+    ├── workflows/ci.yml     Validation, tests, Lighthouse, internal links, then deploy
+    ├── workflows/links.yml  Weekly external link check; reports rot as an issue
     └── dependabot.yml       Weekly GitHub Actions and npm tooling updates
 ```
 
@@ -316,7 +317,7 @@ npm run build && cd _site && python -m http.server 8000
 | **Accessibility** | axe-core | 0 violations (WCAG 2.0, 2.1 and 2.2 A/AA, best practice) at mobile and desktop, in both themes and with reduced motion, including the plate and cocktail tools and a filled-in message |
 | **Security** | Playwright, staged build | Content-Security-Policy present on every page and no violations while using the theme toggle, toolkit tabs, message builder and 404 page |
 | **Performance and quality** | Lighthouse, staged build | Every page in `sitemap.xml`: Performance 90 or higher; Accessibility, Best Practices and SEO 95 or higher (a page under a floor gets one rerun). Scores are posted to the CI job summary |
-| **Links** | internal and external checkers | No broken links |
+| **Links** | internal checker in CI; external checker weekly ([`links.yml`](.github/workflows/links.yml)) | No broken internal links, or no deploy. Broken external links open a `link-rot` issue instead of blocking a release |
 
 <details>
 <summary><b>Run the checks locally</b></summary>
@@ -325,7 +326,7 @@ npm run build && cd _site && python -m http.server 8000
 npm ci            # pinned tooling; tests use your installed Chrome
 npm run test:unit # calculator maths only, no browser needed
 npm run check     # unit tests, HTML validation, lint, browser tests on the source and on the published build
-npm run links     # external link check (home, 404, README and every tool page)
+npm run links     # external link check (home, 404, README and every tool page); CI runs it weekly
 npm run build && npm run lighthouse   # Lighthouse floors for every page in the sitemap
 ```
 

@@ -3,6 +3,9 @@
  * External link check. Social networks block bots (403/429/999), so those
  * statuses count as "reachable but guarded"; anything else >= 400 fails. Network
  * errors and 5xx responses are retried twice before they count.
+ * Runs weekly in .github/workflows/links.yml (it does not gate deploys: other people's
+ * servers should not stop a release). With LINK_REPORT=<file> it also writes a Markdown
+ * report of the broken links, which that workflow posts as an issue.
  * Run: node scripts/check-links.cjs
  */
 const fs = require('node:fs');
@@ -13,15 +16,17 @@ const FILES = ['index.html', '404.html', 'README.md', ...fs.readdirSync(path.joi
 const GUARDED = new Set([403, 429, 999]);
 const IGNORE = [/^https:\/\/tmhsdigital\.github\.io\/?$/, /^https?:\/\/(localhost|www\.w3\.org\/2000\/svg)/, /img\.shields\.io/, /^https:\/\/tmhsdigital\.github\.io\/Github-Pages-Demo-1\/(assets|sitemap|tools)/];
 
-const urls = new Set();
-for (const f of FILES) {
-  // Decode the entities that matter, so an escaped code sample (the embed snippet) reads as its URLs
-  const text = fs.readFileSync(path.join(__dirname, '..', f), 'utf8').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-  for (const m of text.matchAll(/https?:\/\/[^\s"'<>)\]]+/g)) {
+// Every external URL in a page or document. Entities are decoded first, so an escaped code
+// sample (the embed snippet) reads as the URLs it contains
+const extractUrls = (text) => {
+  const decoded = text.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  const found = new Set();
+  for (const m of decoded.matchAll(/https?:\/\/[^\s"'<>)\]]+/g)) {
     const u = m[0].replace(/[.,;]+$/, '');
-    if (!IGNORE.some((re) => re.test(u))) urls.add(u);
+    if (!IGNORE.some((re) => re.test(u))) found.add(u);
   }
-}
+  return [...found];
+};
 
 // A network error or a 5xx is often a passing blip on the runner or the far end, and a
 // dead link is not, so those are retried with a growing pause before counting as broken
@@ -45,15 +50,28 @@ const probe = async (url) => {
   }
 };
 
-(async () => {
-  let failed = 0;
+const main = async () => {
+  const urls = new Set(FILES.flatMap((f) => extractUrls(fs.readFileSync(path.join(__dirname, '..', f), 'utf8'))));
+  const broken = [];
   for (const url of [...urls].sort()) {
     const { status, error, attempts } = await probe(url);
     const ok = !error && (status < 400 || GUARDED.has(status));
     const tries = attempts > 1 ? ` after ${attempts} tries` : '';
     console.log(`${ok ? 'ok  ' : 'FAIL'} ${error ? 'ERR' : status} ${url}${error ? ` (${error})` : ''}${tries}`);
-    if (!ok) failed++;
+    if (!ok) broken.push({ url, result: error ? `no response (${error})` : `HTTP ${status}` });
   }
-  console.log(`\n${urls.size - failed}/${urls.size} links ok`);
-  process.exit(failed ? 1 : 0);
-})();
+  console.log(`\n${urls.size - broken.length}/${urls.size} links ok`);
+  if (process.env.LINK_REPORT) {
+    const where = (url) => FILES.filter((f) => fs.readFileSync(path.join(__dirname, '..', f), 'utf8').includes(url)).map((f) => `\`${f.split(path.sep).join('/')}\``).join(', ');
+    fs.writeFileSync(process.env.LINK_REPORT, [
+      `${broken.length} of ${urls.size} external links failed in the weekly check.`, '',
+      '| Link | Result | Found in |', '| :-- | :-- | :-- |',
+      ...broken.map((b) => `| ${b.url} | ${b.result} | ${where(b.url)} |`), '',
+      'Fix or remove each link, or add it to `IGNORE` in `scripts/check-links.cjs` if it only blocks bots. This issue closes itself when a weekly run passes.',
+    ].join('\n'));
+  }
+  process.exit(broken.length ? 1 : 0);
+};
+
+if (require.main === module) main();
+module.exports = { extractUrls };

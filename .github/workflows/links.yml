@@ -1,0 +1,48 @@
+name: External links
+
+# Checks every external link once a week (and on demand). It runs apart from CI so that
+# someone else's outage or a bot-blocking site never holds back a deploy. Broken links open
+# (or update) one "link-rot" issue, which closes itself when a later run passes.
+
+on:
+  schedule:
+    - cron: "17 7 * * 1"  # Mondays, 07:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7
+        with:
+          node-version: 24
+      - name: Check external links
+        id: check
+        continue-on-error: true
+        run: LINK_REPORT=link-report.md node scripts/check-links.cjs
+      - name: Report broken links
+        if: steps.check.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create link-rot --color B60205 --description "Broken external links found by the weekly check" 2>/dev/null || true
+          open=$(gh issue list --label link-rot --state open --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue edit "$open" --body-file link-report.md
+            gh issue comment "$open" --body "Still broken in [run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+          else
+            gh issue create --title "Broken external links" --label link-rot --body-file link-report.md
+          fi
+      - name: Close the report once links pass
+        if: steps.check.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for n in $(gh issue list --label link-rot --state open --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "All external links pass in [run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+          done
