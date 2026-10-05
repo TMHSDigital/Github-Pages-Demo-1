@@ -6,7 +6,7 @@ You are a senior front-end developer working on the TM Hospitality Strategies ma
 index.html            # Single page, all sections, inline icon sprite, pre-paint theme snippet
 404.html              # Error page (uses <base href="/Github-Pages-Demo-1/">)
 manifest.webmanifest  # Web app manifest
-sw.js                 # Service worker source; stage.cjs fills VERSION/PRECACHE and only the build registers it
+sw.js                 # Service worker source; stage.cjs fills VERSION, only the build registers it, nothing is precached
 tools/*/index.html    # One page per calculator; shared blocks synced from index.html
 css/tokens.css        # Fonts, brand tokens, fluid scales, light/dark themes
 css/base.css          # Reset, typography, layout, buttons, reveal rules

@@ -135,7 +135,15 @@
   /* Offline support: only the published build names a service worker (see scripts/stage.cjs) */
   const sw = document.querySelector('meta[name="tmhs-sw"]');
   if (sw && 'serviceWorker' in navigator) {
-    window.addEventListener('load', () => { navigator.serviceWorker.register(sw.content).catch(() => {}); });
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register(sw.content).catch(() => {});
+      // Ask the worker to keep this page and the files it used, so it works offline next time.
+      // They are usually still in the HTTP cache, so this costs next to no extra download.
+      navigator.serviceWorker.ready.then((reg) => {
+        const urls = [location.href, ...performance.getEntriesByType('resource').map((e) => e.name)];
+        if (reg.active) reg.active.postMessage({ type: 'tmhs:keep', urls });
+      });
+    });
   }
 
   /* Embedded on another site: tell the host page our height so its iframe never scrolls */

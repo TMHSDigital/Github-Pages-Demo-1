@@ -44,8 +44,9 @@ fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), { recursive: true
 const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const minCss = (files) => esbuild.transformSync(files.map(read).join('\n'), { loader: 'css', minify: true }).code;
 
-// Stylesheets: the font URLs are relative to css/, so the bundle stays in css/
-fs.writeFileSync(path.join(OUT, 'css', 'site.min.css'), minCss(['css/tokens.css', 'css/base.css', 'css/components.css']));
+// Stylesheets: the full bundle is inlined into every page that uses it (below), so only the
+// 404 page's smaller bundle is published as a file. Font URLs are relative to css/.
+const siteCss = minCss(['css/tokens.css', 'css/base.css', 'css/components.css']);
 fs.writeFileSync(path.join(OUT, 'css', 'base.min.css'), minCss(['css/tokens.css', 'css/base.css']));
 
 // Scripts: minified in place (same names, so the HTML needs no change)
@@ -66,7 +67,6 @@ const stripLinks = (html, bundle, files, up = '') => {
 };
 // Pages using the full stylesheet inline it (it is small) to remove a render-blocking request.
 // Font URLs are relative to css/, so they are rewritten for where the page sits.
-const siteCss = fs.readFileSync(path.join(OUT, 'css', 'site.min.css'), 'utf8');
 const withInlineCss = (html, up = '') => {
   const css = siteCss.replace(/url\((['"]?)\.\.\/assets\//g, `url($1${up}assets/`);
   return stripLinks(html, 'site', ['tokens', 'base', 'components'], up)
@@ -111,22 +111,14 @@ for (const slug of fs.readdirSync(path.join(ROOT, 'tools'))) {
 
 fs.copyFileSync(path.join(ROOT, 'manifest.webmanifest'), path.join(OUT, 'manifest.webmanifest'));
 
-// Service worker: precache everything a visitor needs to use the site offline (pages by their
-// directory URL, as they are linked), versioned by a hash of those files so each deploy
-// replaces the previous cache. Social cards are left out: they are for other sites to fetch.
+// Service worker: versioned by a hash of every published file, so each deploy starts a new
+// cache (sw.js re-fetches what the visitor had kept). Nothing is precached.
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]));
-const precache = walk(OUT)
-  .map((f) => path.relative(OUT, f).split(path.sep).join('/'))
-  .filter((f) => /\.(html|css|js|woff2|png|webmanifest)$/.test(f) && !['404.html', 'sw.js'].includes(f) && !/^assets\/images\/og-/.test(f))
-  .sort();
+const files = walk(OUT).map((f) => path.relative(OUT, f).split(path.sep).join('/')).sort();
 const version = crypto.createHash('sha256');
-for (const f of precache) version.update(f).update(fs.readFileSync(path.join(OUT, f)));
-const urls = precache.map((f) => (f === 'index.html' ? './' : f.replace(/index\.html$/, '')));
-const sw = read('sw.js')
-  .replace("const VERSION = 'dev';", `const VERSION = '${version.digest('hex').slice(0, 12)}';`)
-  .replace('const PRECACHE = [];', `const PRECACHE = ${JSON.stringify(urls)};`);
-if (!sw.includes('const PRECACHE = ["') || sw.includes("VERSION = 'dev'")) throw new Error('sw.js: VERSION or PRECACHE placeholder not found');
+for (const f of files) version.update(f).update(fs.readFileSync(path.join(OUT, f)));
+const sw = read('sw.js').replace("const VERSION = 'dev';", `const VERSION = '${version.digest('hex').slice(0, 12)}';`);
+if (sw.includes("VERSION = 'dev'")) throw new Error('sw.js: VERSION placeholder not found');
 fs.writeFileSync(path.join(OUT, 'sw.js'), esbuild.transformSync(sw, { loader: 'js', minify: true }).code);
 
-const size = (p) => fs.statSync(path.join(OUT, p)).size;
-console.log(`staged _site: site.min.css ${size('css/site.min.css')} B (from ${['tokens', 'base', 'components'].reduce((n, f) => n + fs.statSync(path.join(ROOT, `css/${f}.css`)).size, 0)} B)`);
+console.log(`staged _site: inlined CSS ${Buffer.byteLength(siteCss)} B (from ${['tokens', 'base', 'components'].reduce((n, f) => n + fs.statSync(path.join(ROOT, `css/${f}.css`)).size, 0)} B)`);

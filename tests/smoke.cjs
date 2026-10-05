@@ -463,22 +463,31 @@ async function check(name, fn) {
   });
 
   if (process.env.SITE_DIR) {
-    await check('published build works offline once visited, including shared links (#44)', async () => {
+    await check('published build: pages work offline once visited, and a first visit fetches nothing else (#44, #46)', async () => {
       const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+      const fetched = [];
+      ctx.on('request', (r) => fetched.push(new URL(r.url()).pathname)); // includes the service worker's own requests
       const page = await ctx.newPage();
       const errors = [];
       page.on('pageerror', (e) => errors.push(e.message));
+      // kept: wait until the worker holds a copy of the page it was told about
+      const kept = (path) => page.waitForFunction((p) => caches.keys().then((ks) => Promise.all(ks.map((k) => caches.open(k).then((c) => c.match(new URL(p, location.href).href))))).then((hits) => hits.some(Boolean)), path, { timeout: 15000 });
       await page.goto(base, { waitUntil: 'networkidle' });
       await page.evaluate(() => navigator.serviceWorker.ready);
+      await kept('./');
+      // the first visit downloaded nothing the home page doesn't use: no other pages, no install icons, no unused CSS
+      for (const p of fetched) assert.doesNotMatch(p, /\/tools\/|icon-512|icon-maskable|site\.min\.css/, `first visit fetched ${p}`);
+      await page.goto(`${base}tools/pour-cost-calculator/`, { waitUntil: 'networkidle' });
+      await kept('tools/pour-cost-calculator/');
       await ctx.setOffline(true);
+      // a shared link to a visited page opens offline with its numbers
       await page.goto(`${base}tools/pour-cost-calculator/?tool=cocktail&rows=Gin_30_750_2&target=25&price=12`, { waitUntil: 'load' });
       assert.equal(await page.locator('#cocktail-rows .row').count(), 1);
       assert.equal(await page.locator('#cocktail-out-price').textContent(), '$11.06'); // ($2.37 gin + $0.40 garnish) at 25%
-      await page.goto(base + 'tools/prime-cost-calculator/', { waitUntil: 'load' });
-      assert.equal(await page.locator('#out-prime-pct').textContent(), '63%');
       assert.equal(await page.evaluate(() => document.fonts.check('600 16px Fraunces')), true);
       await page.goto(base, { waitUntil: 'load' });
       assert.equal(await page.locator('#tab-prime').isVisible(), true);
+      assert.equal(await page.locator('#out-prime-pct').textContent(), '63%');
       assert.deepEqual(errors, []);
       await ctx.close();
     });

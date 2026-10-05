@@ -233,7 +233,7 @@ Then open <http://localhost:8000>.
 ├── index.html               Single page: hero, about, services, approach, toolkit, work, FAQ, contact
 ├── 404.html                 Branded error page (uses <base> for the repo path)
 ├── manifest.webmanifest     Web app manifest: name, icons, shortcuts to each calculator
-├── sw.js                    Service worker source (network first; the build fills in its version and precache list)
+├── sw.js                    Service worker source (network first, keeps the pages a visitor opens; the build fills in its version)
 ├── tools/                   One indexable page per calculator, with a worked example:
 │                            prime-cost-calculator/, plate-cost-calculator/, pour-cost-calculator/, break-even-calculator/
 ├── css/
@@ -283,7 +283,7 @@ Then open <http://localhost:8000>.
 
 ## Deployment
 
-Every push to `main` runs [`ci.yml`](.github/workflows/ci.yml): it builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs), runs every quality gate against it, and only if they all pass publishes that exact `_site/` to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy, dates each sitemap entry from the page's last commit, writes the service worker (versioned by a hash of the files it precaches) and copies only site files (`index.html`, `404.html`, the calculator pages in `tools/`, `manifest.webmanifest`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
+Every push to `main` runs [`ci.yml`](.github/workflows/ci.yml): it builds `_site/` with [`scripts/stage.cjs`](scripts/stage.cjs), runs every quality gate against it, and only if they all pass publishes that exact `_site/` to GitHub Pages. The build bundles and minifies the CSS (inlined into the home page to save a render-blocking request), minifies the scripts, adds a hash-based Content-Security-Policy, dates each sitemap entry from the page's last commit, writes the service worker (versioned by a hash of the published files) and copies only site files (`index.html`, `404.html`, the calculator pages in `tools/`, `manifest.webmanifest`, `robots.txt`, `sitemap.xml`, `assets`). Source files stay unbundled for development.
 
 <details>
 <summary><b>Preview the published build locally</b></summary>
@@ -361,7 +361,7 @@ npm run build && npm run lighthouse   # Lighthouse floors for every page in the 
 ## Privacy and security
 
 - The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculators and the message builder run locally and never send what you enter. The only thing ever stored is a month the visitor chooses to save in the prime cost tracker, and that stays in their browser's `localStorage` until they remove it or clear the tracker. A shared calculator link carries its numbers in the URL, and only to whoever you give it to; after opening one, the address bar keeps up with your changes (still only in the URL, never stored).
-- The published site can be installed as an app and works offline after one visit. Its service worker caches only the site's own files, never anything a visitor types, and always tries the network first so a new deploy shows up straight away.
+- The published site can be installed as an app, and every page a visitor has opened works offline afterwards. Its service worker downloads nothing up front: each page hands it the files it already loaded. It keeps only the site's own files, never anything a visitor types, and always tries the network first so a new deploy shows up straight away.
 - The published pages carry a strict Content-Security-Policy: only the site's own files run, and the few inline blocks are allowed by hash (generated in `scripts/stage.cjs`).
 - GitHub Actions are pinned to commit SHAs and kept current by Dependabot.
 - Found a vulnerability? See [SECURITY.md](SECURITY.md) and report it privately through the repository's **Security** tab.
