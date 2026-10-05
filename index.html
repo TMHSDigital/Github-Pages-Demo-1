@@ -79,6 +79,7 @@
       <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
       <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
       <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+      <symbol id="i-balance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v17M7 20h10M4 7h16M7 7l-3 7a3 3 0 0 0 6 0zM17 7l-3 7a3 3 0 0 0 6 0z"/></symbol>
       <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
       <symbol id="i-glass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/></symbol>
       <symbol id="i-plate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></symbol>
@@ -268,8 +269,8 @@
         <div class="section-head" data-reveal>
           <p class="eyebrow">Free tools</p>
           <h2 id="calc-title">Run the <em>numbers</em></h2>
-          <p>Three quick calculators: prime cost for the whole business, plate cost for a dish and pour cost for a drink. Everything runs in your browser.</p>
-          <p class="tool-pages">Each one also has its own page with a worked example: <a href="tools/prime-cost-calculator/">prime cost</a>, <a href="tools/plate-cost-calculator/">plate cost</a> and <a href="tools/pour-cost-calculator/">cocktail pour cost</a>.</p>
+          <p>Four quick calculators: prime cost for the whole business, plate cost for a dish, pour cost for a drink and the sales you need to break even. Everything runs in your browser.</p>
+          <p class="tool-pages">Each one also has its own page with a worked example: <a href="tools/prime-cost-calculator/">prime cost</a>, <a href="tools/plate-cost-calculator/">plate cost</a>, <a href="tools/pour-cost-calculator/">cocktail pour cost</a> and <a href="tools/break-even-calculator/">break-even</a>.</p>
         </div>
         <div class="toolkit" data-reveal>
           <div class="tabs" id="tool-tabs" role="tablist" aria-label="Calculators">
@@ -277,6 +278,7 @@
             <button type="button" role="tab" id="tab-prime" data-tool="prime" aria-controls="calc" aria-selected="true"><svg aria-hidden="true"><use href="#i-chart"/></svg>Prime cost</button>
             <button type="button" role="tab" id="tab-plate" data-tool="plate" aria-controls="plate" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-plate"/></svg>Plate cost</button>
             <button type="button" role="tab" id="tab-cocktail" data-tool="cocktail" aria-controls="cocktail" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-glass"/></svg>Cocktail cost</button>
+            <button type="button" role="tab" id="tab-breakeven" data-tool="breakeven" aria-controls="breakeven" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-balance"/></svg>Break-even</button>
           </div>
 
           <!-- sync:tool-prime -->
@@ -448,6 +450,48 @@
             <p class="calc-note"><strong>Illustration only, not advice.</strong> The example recipe, bottle prices and target are placeholders, so set your own. Pour cost uses 29.57 ml to the ounce.</p>
           </div>
           <!-- /sync:tool-cocktail -->
+
+          <!-- sync:tool-breakeven -->
+          <div class="calc breakeven needs-js" id="breakeven" role="tabpanel" aria-labelledby="tab-breakeven" hidden>
+            <div class="calc-form">
+              <!-- TODO(verify): the example fixed costs, 62% variable costs, average check and days open are illustrations, not benchmarks -->
+              <div class="field">
+                <label for="be-fixed">Monthly fixed costs</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="be-fixed" type="text" inputmode="decimal" autocomplete="off" value="45,000" aria-describedby="be-fixed-hint"></div>
+                <p class="cost-alt" id="be-fixed-hint">Rent, salaried staff, insurance, loan payments, software: costs that stay the same however busy you are.</p>
+              </div>
+              <div class="field">
+                <div class="lab"><label for="be-variable">Variable costs</label><span class="val" id="be-variable-out" aria-hidden="true">62%</span></div>
+                <input id="be-variable" type="range" min="20" max="95" step="1" value="62" aria-valuetext="62% of sales" aria-describedby="be-variable-hint">
+                <p class="cost-alt" id="be-variable-hint">As a share of sales: food and beverage, hourly labor, card fees and anything else that rises with every sale.</p>
+              </div>
+              <div class="field">
+                <label for="be-check">Average check per guest <span class="opt">optional</span></label>
+                <div class="money"><span aria-hidden="true">$</span><input id="be-check" type="text" inputmode="decimal" autocomplete="off" value="28.00"></div>
+              </div>
+              <div class="field">
+                <div class="lab"><label for="be-days">Days open a month</label><span class="val" id="be-days-out" aria-hidden="true">26</span></div>
+                <input id="be-days" type="range" min="1" max="31" step="1" value="26" aria-valuetext="26 days">
+              </div>
+              <div class="field">
+                <label for="be-sales">Your monthly sales <span class="opt">optional</span></label>
+                <div class="money"><span aria-hidden="true">$</span><input id="be-sales" type="text" inputmode="decimal" autocomplete="off" value=""></div>
+              </div>
+            </div>
+            <div class="calc-out" data-band="none">
+              <div class="readout"><span class="readout-k">Break-even sales</span><b id="be-out-month">$118,421</b><span>a month</span></div>
+              <span class="band" id="be-band" hidden></span>
+              <dl class="stats stats-3">
+                <div><dt>A week</dt><dd id="be-out-week">$27,328</dd></div>
+                <div><dt>A day open</dt><dd id="be-out-day">$4,555</dd></div>
+                <div><dt>Guests a day</dt><dd id="be-out-guests">163</dd></div>
+              </dl>
+              <p class="calc-summary" id="be-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="be-reset">Reset to the example</button>
+            </div>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example costs, average check and days open are placeholders, so use your own. Break-even sales are fixed costs divided by the share of each sales dollar left after variable costs.</p>
+          </div>
+          <!-- /sync:tool-breakeven -->
 
           <div class="tools-bar">
             <div class="share">
@@ -643,6 +687,7 @@
   <script src="js/calc-prime.js" defer></script>
   <script src="js/calc-tracker.js" defer></script>
   <script src="js/calc-recipe.js" defer></script>
+  <script src="js/calc-breakeven.js" defer></script>
   <script src="js/calc-tabs.js" defer></script>
   <script src="js/inquiry.js" defer></script>
   <script src="js/main.js" defer></script>

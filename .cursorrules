@@ -16,6 +16,7 @@ js/calc-math.js       # Pure calculator maths (TMHSCalc) + TMHSTools registry; l
 js/calc-prime.js      # Prime cost tool
 js/calc-tracker.js    # Prime cost month tracker (localStorage only on explicit save)
 js/calc-recipe.js     # Plate + cocktail cost tools (one shared row tool, <template> rows)
+js/calc-breakeven.js  # Break-even tool
 js/calc-tabs.js       # Toolkit tabs, ?tool= shared links, copy link
 js/inquiry.js         # Contact message builder, CONTACT_EMAIL
 js/main.js            # Menu, reveal, nav spy, parallax, marquee, quick-contact bar

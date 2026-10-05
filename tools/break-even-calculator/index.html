@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prime Cost Calculator for Restaurants — TM Hospitality Strategies</title>
-  <meta name="description" content="Free prime cost calculator for restaurants: add food, beverage and labor costs as a share of sales, see what each point is worth, with a worked example.">
-  <link rel="canonical" href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/prime-cost-calculator/">
+  <title>Restaurant Break-Even Calculator: Sales You Need Each Month — TMHS</title>
+  <meta name="description" content="Free restaurant break-even calculator: from fixed costs and variable cost %, see the sales you need a month, a week and a day, and how many guests that is.">
+  <link rel="canonical" href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/break-even-calculator/">
 
   <meta property="og:site_name" content="TM Hospitality Strategies">
-  <meta property="og:title" content="Prime Cost Calculator for Restaurants">
-  <meta property="og:description" content="Add food, beverage and labor costs as a share of sales and see what each point of prime cost is worth. Free, and it runs in your browser.">
+  <meta property="og:title" content="Restaurant Break-Even Calculator">
+  <meta property="og:description" content="See the sales you need to cover your costs each month, week and day, and the guests that takes. Free, and it runs in your browser.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/prime-cost-calculator/">
-  <meta property="og:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-prime-cost-calculator.png">
+  <meta property="og:url" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/break-even-calculator/">
+  <meta property="og:image" content="https://tmhsdigital.github.io/Github-Pages-Demo-1/assets/images/og-break-even-calculator.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Prime cost calculator from TM Hospitality Strategies: food, beverage and labor as a share of sales, with a worked example at 63% prime cost">
+  <meta property="og:image:alt" content="Break-even calculator from TM Hospitality Strategies: the sales a restaurant needs to cover its costs, with a worked example at $118,421 a month">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#F6F7FA" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0A1226" media="(prefers-color-scheme: dark)">
@@ -25,9 +25,9 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Prime cost calculator",
-      "description": "Adds food, beverage and labor costs as a share of sales and shows what each point of prime cost is worth.",
-      "url": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/prime-cost-calculator/",
+      "name": "Restaurant break-even calculator",
+      "description": "Works out the sales a restaurant needs to cover its fixed and variable costs, per month, week and day open, and the guests a day that takes.",
+      "url": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/break-even-calculator/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any (runs in the browser)",
       "isAccessibleForFree": true,
@@ -42,7 +42,7 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://tmhsdigital.github.io/Github-Pages-Demo-1/" },
-        { "@type": "ListItem", "position": 2, "name": "Prime cost calculator", "item": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/prime-cost-calculator/" }
+        { "@type": "ListItem", "position": 2, "name": "Break-even calculator", "item": "https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/break-even-calculator/" }
       ]
     }
   </script>
@@ -146,103 +146,52 @@
       <div class="wrap">
         <div class="section-head tool-head">
           <p class="crumbs"><a href="../../">Home</a> <span aria-hidden="true">/</span> <a href="../../#calculator">Free tools</a></p>
-          <h1 id="tool-title">Prime cost <em>calculator</em></h1>
-          <p>Add up food, beverage and labor as a share of sales and see what each point of prime cost is worth to you. Nothing to sign up for, and nothing you enter leaves your browser.</p>
+          <h1 id="tool-title">Break-even <em>calculator</em></h1>
+          <p>Find the sales you need each month to cover your costs, what that means per week and per day open, and how many guests it takes. Nothing you enter leaves your browser.</p>
         </div>
+        <noscript><p class="note nojs-note">This calculator needs JavaScript. The worked example below shows the same calculation by hand.</p></noscript>
         <div class="toolkit">
-          <!-- sync:tool-prime -->
-          <div class="calc" id="calc">
+          <!-- sync:tool-breakeven -->
+          <div class="calc breakeven needs-js" id="breakeven">
             <div class="calc-form">
+              <!-- TODO(verify): the example fixed costs, 62% variable costs, average check and days open are illustrations, not benchmarks -->
               <div class="field">
-                <label for="calc-revenue">Monthly sales</label>
-                <div class="money"><span aria-hidden="true">$</span><input id="calc-revenue" name="revenue" type="text" inputmode="numeric" autocomplete="off" value="100,000" aria-describedby="calc-revenue-hint calc-revenue-issue"></div>
-                <p id="calc-revenue-hint" class="sr-only">Enter your total monthly sales in dollars, for example 120,000 or 120k.</p>
-                <p id="calc-revenue-issue" class="add-note" role="status"></p>
-              </div>
-              <p class="calc-hint" id="calc-cost-hint">Drag a slider, or type a percentage (31.5%) or a dollar amount from your P&amp;L ($31,240).</p>
-              <div class="field">
-                <div class="lab"><label for="calc-food">Food and beverage cost</label><input class="val-in" id="calc-food-in" type="text" inputmode="decimal" autocomplete="off" value="31%" aria-label="Food and beverage cost, typed as a percentage of sales or a dollar amount" aria-describedby="calc-cost-hint calc-food-alt"></div>
-                <input id="calc-food" name="food" type="range" aria-valuetext="31% of sales" min="15" max="50" step="1" value="31">
-                <p class="cost-alt" id="calc-food-alt">$31,000 a month</p>
+                <label for="be-fixed">Monthly fixed costs</label>
+                <div class="money"><span aria-hidden="true">$</span><input id="be-fixed" type="text" inputmode="decimal" autocomplete="off" value="45,000" aria-describedby="be-fixed-hint"></div>
+                <p class="cost-alt" id="be-fixed-hint">Rent, salaried staff, insurance, loan payments, software: costs that stay the same however busy you are.</p>
               </div>
               <div class="field">
-                <div class="lab"><label for="calc-labor">Labor cost</label><input class="val-in" id="calc-labor-in" type="text" inputmode="decimal" autocomplete="off" value="32%" aria-label="Labor cost, typed as a percentage of sales or a dollar amount" aria-describedby="calc-cost-hint calc-labor-alt"></div>
-                <input id="calc-labor" name="labor" type="range" aria-valuetext="32% of sales" min="15" max="50" step="1" value="32">
-                <p class="cost-alt" id="calc-labor-alt">$32,000 a month</p>
+                <div class="lab"><label for="be-variable">Variable costs</label><span class="val" id="be-variable-out" aria-hidden="true">62%</span></div>
+                <input id="be-variable" type="range" min="20" max="95" step="1" value="62" aria-valuetext="62% of sales" aria-describedby="be-variable-hint">
+                <p class="cost-alt" id="be-variable-hint">As a share of sales: food and beverage, hourly labor, card fees and anything else that rises with every sale.</p>
               </div>
               <div class="field">
-                <div class="lab"><label for="calc-other">Other controllable costs</label><input class="val-in" id="calc-other-in" type="text" inputmode="decimal" autocomplete="off" value="12%" aria-label="Other controllable costs, typed as a percentage of sales or a dollar amount" aria-describedby="calc-cost-hint calc-other-alt"></div>
-                <input id="calc-other" name="other" type="range" aria-valuetext="12% of sales" min="0" max="30" step="1" value="12">
-                <p class="cost-alt" id="calc-other-alt">$12,000 a month</p>
+                <label for="be-check">Average check per guest <span class="opt">optional</span></label>
+                <div class="money"><span aria-hidden="true">$</span><input id="be-check" type="text" inputmode="decimal" autocomplete="off" value="28.00"></div>
               </div>
-              <div class="split" aria-hidden="true">
-                <p class="split-label">Where each sales dollar goes</p>
-                <div class="split-bar"><span class="seg seg-food"></span><span class="seg seg-labor"></span><span class="seg seg-other"></span><span class="seg seg-left"></span></div>
-                <ul class="split-key">
-                  <li class="k-food">Food &amp; bev <b id="split-food">31%</b></li>
-                  <li class="k-labor">Labor <b id="split-labor">32%</b></li>
-                  <li class="k-other">Other <b id="split-other">12%</b></li>
-                  <li class="k-left">Left <b id="split-left">25%</b></li>
-                </ul>
+              <div class="field">
+                <div class="lab"><label for="be-days">Days open a month</label><span class="val" id="be-days-out" aria-hidden="true">26</span></div>
+                <input id="be-days" type="range" min="1" max="31" step="1" value="26" aria-valuetext="26 days">
               </div>
-              <dl class="whatif">
-                <div><dt>Each point of prime cost is worth</dt><dd><b id="wi-point">$1,000 a month</b><span id="wi-point-yr">$12,000 a year</span></dd></div>
-                <div><dt>Getting prime cost to 60%</dt><dd><b id="wi-gap">+$36,000 a year</b><span id="wi-gap-note">if prime cost came down 3 points</span></dd></div>
-              </dl>
+              <div class="field">
+                <label for="be-sales">Your monthly sales <span class="opt">optional</span></label>
+                <div class="money"><span aria-hidden="true">$</span><input id="be-sales" type="text" inputmode="decimal" autocomplete="off" value=""></div>
+              </div>
             </div>
-            <div class="calc-out" data-band="target">
-              <div class="gauge">
-                <svg viewBox="0 0 220 124" aria-hidden="true">
-                  <path class="track" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100"/>
-                  <path class="bar-fill" id="gauge-fill" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke-width="16" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="37"/>
-                </svg>
-                <div class="read"><b id="out-prime-pct">63%</b><span>Prime cost</span></div>
-              </div>
-              <span class="band" id="out-band">On target</span>
-              <dl class="stats">
-                <div><dt>Prime cost</dt><dd id="out-prime-usd">$63,000</dd></div>
-                <div><dt>Left after these costs</dt><dd id="out-left-usd">$25,000</dd></div>
+            <div class="calc-out" data-band="none">
+              <div class="readout"><span class="readout-k">Break-even sales</span><b id="be-out-month">$118,421</b><span>a month</span></div>
+              <span class="band" id="be-band" hidden></span>
+              <dl class="stats stats-3">
+                <div><dt>A week</dt><dd id="be-out-week">$27,328</dd></div>
+                <div><dt>A day open</dt><dd id="be-out-day">$4,555</dd></div>
+                <div><dt>Guests a day</dt><dd id="be-out-guests">163</dd></div>
               </dl>
-              <p class="calc-summary" id="out-summary" role="status" aria-live="polite"></p>
-              <button type="button" class="reset" id="calc-reset">Reset to example values</button>
+              <p class="calc-summary" id="be-summary" role="status" aria-live="polite"></p>
+              <button type="button" class="reset" id="be-reset">Reset to the example</button>
             </div>
-            <section class="tracker" id="tracker" aria-labelledby="tracker-title">
-              <div class="tracker-head">
-                <p class="tracker-title" id="tracker-title">Track it month by month</p>
-                <p>Save each month's numbers to see which way prime cost is heading. Saved months stay in this browser only, until you clear them.</p>
-                <p class="tracker-alt">Prefer a spreadsheet? <a href="../../assets/downloads/prime-cost-tracker.xlsx" download>Download the prime cost tracker template</a> (Excel, also opens in Google Sheets and Numbers).</p>
-              </div>
-              <div class="tracker-save">
-                <div class="tracker-field">
-                  <label for="tracker-month">Month</label>
-                  <input type="month" id="tracker-month" min="2000-01">
-                </div>
-                <button type="button" class="btn btn-sm" id="tracker-save">Save this month</button>
-              </div>
-              <p class="add-note" id="tracker-status" role="status"></p>
-              <p class="tracker-empty" id="tracker-empty">No months saved yet. Set this month's numbers above, then save them.</p>
-              <div class="tracker-view" id="tracker-view" hidden>
-                <p class="tracker-summary" id="tracker-summary"></p>
-                <svg class="tracker-chart" id="tracker-chart" aria-hidden="true" focusable="false"></svg>
-                <div class="table-scroll">
-                  <table class="tracker-table">
-                    <caption class="sr-only">Saved months, newest first</caption>
-                    <thead><tr><th scope="col">Month</th><th scope="col">Sales</th><th scope="col">Food &amp; bev</th><th scope="col">Labor</th><th scope="col">Prime cost</th><th scope="col"><span class="sr-only">Remove</span></th></tr></thead>
-                    <tbody id="tracker-rows"></tbody>
-                  </table>
-                </div>
-                <div class="btn-row">
-                  <button type="button" class="btn btn-ghost btn-sm" id="tracker-export">Download as CSV</button>
-                  <button type="button" class="btn btn-ghost btn-sm" id="tracker-import">Import a CSV</button>
-                  <input type="file" id="tracker-file" accept=".csv,text/csv" hidden>
-                  <button type="button" class="btn btn-ghost btn-sm" id="tracker-clear">Clear saved months</button>
-                </div>
-              </div>
-            </section>
-            <!-- TODO(verify): confirm benchmark ranges (rule-of-thumb bands below) before relying on them -->
-            <p class="calc-note"><strong>Illustration only, not advice.</strong> Bands are common rules of thumb (under 60% strong, 60-65% on target, 65-70% watch, over 70% needs attention) and vary by concept. Nothing you enter is sent anywhere, and nothing is stored unless you save a month (then only in this browser).</p>
+            <p class="calc-note"><strong>Illustration only, not advice.</strong> The example costs, average check and days open are placeholders, so use your own. Break-even sales are fixed costs divided by the share of each sales dollar left after variable costs.</p>
           </div>
-          <!-- /sync:tool-prime -->
+          <!-- /sync:tool-breakeven -->
           <div class="tools-bar">
             <div class="share">
               <button type="button" class="btn btn-ghost btn-sm" id="copy-link"><svg aria-hidden="true"><use href="#i-link"/></svg>Copy a link to these numbers</button>
@@ -254,44 +203,44 @@
             <a class="btn btn-sm" id="talk-numbers" href="../../#contact" data-home="../../">Talk through these numbers <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </div>
-        <p class="embed-credit">Free calculator by <a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/prime-cost-calculator/" target="_blank" rel="noopener">TM Hospitality Strategies</a></p>
+        <p class="embed-credit">Free calculator by <a href="https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/break-even-calculator/" target="_blank" rel="noopener">TM Hospitality Strategies</a></p>
       </div>
     </section>
 
-    <!-- TODO(verify): drafted explainer; confirm the definitions and wording match how you advise clients -->
+    <!-- TODO(verify): drafted explainer; confirm the wording and examples match how you advise clients -->
     <section class="section tint" aria-labelledby="how-title">
       <div class="wrap explainer">
-        <h2 id="how-title">How prime cost works</h2>
-        <p>Prime cost is the two biggest costs a restaurant controls week to week, added together: what you spent on food and drink, and what you spent on people. It is the largest share of sales most operators can actually move, which is why it is worth checking every month.</p>
-        <p class="formula">Prime cost % = (food and beverage cost + labor cost) ÷ sales × 100</p>
+        <h2 id="how-title">How break-even works</h2>
+        <p>Every sale has to pay for two kinds of cost. Variable costs rise and fall with sales: food and beverage, hourly labor, card fees. Fixed costs stay put however busy you are: rent, salaried staff, insurance, loan payments. Break-even is the level of sales where what is left after variable costs exactly covers the fixed ones.</p>
+        <p class="formula">Break-even sales = fixed costs ÷ (1 − variable costs as a share of sales)</p>
 
-        <h3>What to include</h3>
+        <h3>Fixed or variable?</h3>
         <ul>
-          <li><strong>Food and beverage cost:</strong> what you actually used in the period, meaning opening inventory plus purchases minus closing inventory. Purchases alone can hide waste or stock building up on the shelves.</li>
-          <li><strong>Labor cost:</strong> everyone's pay, including salaried managers, plus payroll taxes and benefits.</li>
-          <li><strong>Sales:</strong> net sales for the same period, before sales tax and tips.</li>
+          <li><strong>Fixed:</strong> rent and common charges, salaried managers and chefs, insurance, loan and lease payments, software subscriptions, most utilities.</li>
+          <li><strong>Variable:</strong> food and beverage cost, hourly staff scheduled to sales, card processing and delivery fees, paper goods.</li>
+          <li><strong>In between?</strong> Split it. The minimum crew you schedule whatever the sales is fixed; the extra shifts on busy nights are variable.</li>
         </ul>
 
         <h3>A worked example</h3>
-        <p>The calculator opens on an example month: $100,000 in sales, food and beverage at 31% ($31,000) and labor at 32% ($32,000).</p>
-        <p class="formula">($31,000 + $32,000) ÷ $100,000 × 100 = 63%</p>
-        <p>So $63,000 of the month's sales went to prime cost. With other controllable costs at 12%, about $25,000 is left for rent, other overheads and profit. At these sales, each point of prime cost is worth $1,000 a month, or $12,000 a year.</p>
+        <p>The calculator opens on an example month: $45,000 of fixed costs and variable costs at 62% of sales, so 38 cents of every sales dollar is left to cover the fixed costs.</p>
+        <p class="formula">$45,000 ÷ (1 − 0.62) = $45,000 ÷ 0.38 = $118,421 a month</p>
+        <p>That is about $27,328 a week, or $4,555 for each of 26 days open. At a $28 average check, it takes 163 guests a day just to cover costs. At $130,000 of monthly sales, about $4,400 is left after these costs; below $118,421, the month runs at a loss.</p>
 
         <h3>Reading the result</h3>
-        <p>The calculator labels a result using common rules of thumb: under 60% strong, 60 to 65% on target, 65 to 70% worth watching and over 70% needing attention. Healthy ranges differ by concept, since a counter-service café, a full-service dining room and a bar run very different mixes of food and labor, so the trend in your own numbers from month to month usually says more than any single benchmark. Save each month under the calculator to see that trend build up; saved months stay in your browser.</p>
+        <p>Break-even moves with every lever: a point of variable cost saved, a higher average check, or one more day open each change how many guests it takes. Use it to test a lease before you sign, to set a sales target for a slow season, or to see how much a price rise has to deliver.</p>
 
         <h3>More free tools</h3>
         <ul class="other-tools">
+          <li><a class="text-link" href="../prime-cost-calculator/">Prime cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
           <li><a class="text-link" href="../plate-cost-calculator/">Plate cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
           <li><a class="text-link" href="../pour-cost-calculator/">Cocktail pour cost calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
-          <li><a class="text-link" href="../break-even-calculator/">Break-even calculator <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
         </ul>
 
         <details class="embed-box">
           <summary>Embed this calculator on your site</summary>
           <p>Paste this where the calculator should appear. It sizes itself to fit, links back here, and like this page it sends nothing anywhere. Add <code>&amp;theme=dark</code> to the address for the dark theme.</p>
           <label class="sr-only" for="embed-code">Embed code</label>
-          <textarea class="embed-code" id="embed-code" rows="5" readonly>&lt;iframe src=&quot;https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/prime-cost-calculator/?embed=1&quot; title=&quot;Prime cost calculator by TM Hospitality Strategies&quot; width=&quot;100%&quot; height=&quot;900&quot; style=&quot;border:0&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;
+          <textarea class="embed-code" id="embed-code" rows="5" readonly>&lt;iframe src=&quot;https://tmhsdigital.github.io/Github-Pages-Demo-1/tools/break-even-calculator/?embed=1&quot; title=&quot;Restaurant break-even calculator by TM Hospitality Strategies&quot; width=&quot;100%&quot; height=&quot;900&quot; style=&quot;border:0&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;
 &lt;script&gt;addEventListener(&quot;message&quot;,function(e){if(e.origin!==&quot;https://tmhsdigital.github.io&quot;||!e.data||e.data.type!==&quot;tmhs:height&quot;)return;document.querySelectorAll(&quot;iframe&quot;).forEach(function(f){if(f.contentWindow===e.source)f.style.height=e.data.height+&quot;px&quot;})})&lt;/script&gt;</textarea>
           <p><button type="button" class="btn btn-ghost btn-sm" data-copy="embed-code"><svg aria-hidden="true"><use href="#i-copy"/></svg>Copy the embed code</button> <span class="share-status" role="status"></span></p>
         </details>
@@ -302,8 +251,8 @@
       <div class="wrap">
         <div class="cta-panel">
           <div class="wrap-in">
-            <h2 id="next-title">Want a second pair of eyes on <em>these numbers?</em></h2>
-            <p>Bring your prime cost into a short conversation and get honest next steps.</p>
+            <h2 id="next-title">Planning an opening or a <em>new site?</em></h2>
+            <p>Opening plans test the numbers before you sign: rent, staffing, pricing and the covers it takes to make it work.</p>
             <p><a class="btn" href="../../#contact">Start a conversation <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
           </div>
         </div>
@@ -347,8 +296,7 @@
 
   <script src="../../js/theme.js" defer></script>
   <script src="../../js/calc-math.js" defer></script>
-  <script src="../../js/calc-prime.js" defer></script>
-  <script src="../../js/calc-tracker.js" defer></script>
+  <script src="../../js/calc-breakeven.js" defer></script>
   <script src="../../js/calc-tabs.js" defer></script>
   <script src="../../js/main.js" defer></script>
 </body>

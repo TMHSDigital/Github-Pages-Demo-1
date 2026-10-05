@@ -421,7 +421,7 @@ html:not(.js) .composer { display: none; }
 .tool-head h1 { font-size: var(--step-4); margin-bottom: .35em; }
 .tool-head h1 em { color: var(--accent-text); font-weight: 500; padding-right: .06em; }
 .nojs-note { margin: 0 0 var(--space-m); }
-html:not(.js) .tool-top .recipe { display: none; }
+html:not(.js) .tool-top .recipe, html:not(.js) .tool-top .needs-js { display: none; }
 .explainer { max-width: 46rem; }
 .explainer h2 { font-size: var(--step-3); }
 .explainer h3 { margin-top: var(--space-m); }

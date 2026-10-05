@@ -8,7 +8,7 @@
 
 ### The official marketing site for TM Hospitality Strategies
 
-A fast, accessible, single-page build with a dark/light theme, three operator cost calculators and a message builder.<br>
+A fast, accessible, single-page build with a dark/light theme, four operator calculators and a message builder.<br>
 No framework, no runtime dependencies.
 
 <br>
@@ -147,7 +147,7 @@ No framework, no runtime dependencies.
 | **About** | The story behind the brand, a pull quote and three principles. |
 | **Services** | Bento grid: concept and positioning, operations, financial performance, growth and openings. |
 | **Approach** | Listen, diagnose, build, sustain, joined by a progress line that fills as you scroll. |
-| **Operator toolkit** | Three tabbed calculators that run entirely in the browser. **Prime cost**: sliders, or typed percentages and dollar amounts straight from the P&L, a live gauge and rule-of-thumb band, a month-by-month tracker (trend chart, table, CSV export and import, kept only in the browser), a breakdown of where each sales dollar goes and what each point of prime cost is worth. **Plate cost** and **cocktail cost**: ingredient or pour rows (bottle price, size and pour), a target cost % and an optional menu price, giving a suggested price, actual cost % and gross profit. Any result can be shared as a link or printed (or saved as a PDF) as a one-page sheet with the date and a link back, and "Talk through these numbers" carries it into the contact message. The prime cost tracker also offers a spreadsheet template with the same formulas and bands. Each calculator page has an "Embed this calculator" snippet: other sites can show the calculator alone (`?embed=1`, optional `&theme=dark`), credited and linked back, sized to fit through `postMessage`, and kept out of search results. |
+| **Operator toolkit** | Four tabbed calculators that run entirely in the browser. **Prime cost**: sliders, or typed percentages and dollar amounts straight from the P&L, a live gauge and rule-of-thumb band, a month-by-month tracker (trend chart, table, CSV export and import, kept only in the browser), a breakdown of where each sales dollar goes and what each point of prime cost is worth. **Plate cost** and **cocktail cost**: ingredient or pour rows (bottle price, size and pour), a target cost % and an optional menu price, giving a suggested price, actual cost % and gross profit. **Break-even**: fixed costs, variable cost %, average check and days open give the sales needed a month, a week and a day open, the guests a day it takes, and how far the visitor's own sales sit above or below it. Any result can be shared as a link or printed (or saved as a PDF) as a one-page sheet with the date and a link back, and "Talk through these numbers" carries it into the contact message. The prime cost tracker also offers a spreadsheet template with the same formulas and bands. Each calculator page has an "Embed this calculator" snippet: other sites can show the calculator alone (`?embed=1`, optional `&theme=dark`), credited and linked back, sized to fit through `postMessage`, and kept out of search results. |
 | **Selected work** | Case-study cards with a blueprint cover and a challenge, approach and outcome outline, labeled as placeholders until real write-ups exist. |
 | **FAQ** | Two-column layout: a short intro with an "Ask something else" link beside a native `<details>` accordion. |
 | **Contact** | LinkedIn and Instagram, plus a message builder: pick topics and a business type, add a note and, optionally, the calculator results, then copy the message or (once an email is configured) send it with `mailto:`. On mobile a quick-contact bar appears between the hero and this section. |
@@ -212,7 +212,7 @@ Then open <http://localhost:8000>.
 | **Copy and sections** | Edit [`index.html`](index.html). Search for `TODO(verify)` to find placeholder text. |
 | **Colors, fonts, spacing** | Edit the tokens in [`css/tokens.css`](css/tokens.css). Light values are in `:root`, dark in `[data-theme="dark"]`. |
 | **Calculator bands** | Edit `band()` in [`js/calc-math.js`](js/calc-math.js), the note under the calculator in `index.html` and the bands in `scripts/make-tracker-template.py` (then run `python scripts/make-tracker-template.py`, which needs `openpyxl`). Band colors are the `--band-*` tokens. Confirm the ranges before relying on them. |
-| **Example recipes and targets** | Edit `defaults()` in [`js/calc-recipe.js`](js/calc-recipe.js) and the matching static values in `index.html`. |
+| **Example recipes and targets** | Edit `defaults()` in [`js/calc-recipe.js`](js/calc-recipe.js) and the matching static values in `index.html`. The break-even example lives in the `value` attributes of its fields in `index.html`. |
 | **Contact email** | Set `CONTACT_EMAIL` in [`js/inquiry.js`](js/inquiry.js). While empty, the buttons point to LinkedIn and the message is copied instead of emailed. |
 | **Logo** | Replace `assets/images/tmhs-logo.png` and `tmhs-logo-96.png` (an SVG master is tracked in [#16](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/16)). |
 | **Social cards, app icons, banner, screenshots** | Run `node scripts/screenshots.cjs` after changing the page. It also renders one social card per calculator page from `docs/tool-card.html` (text set in the `CARDS` list in the script). |
@@ -235,7 +235,7 @@ Then open <http://localhost:8000>.
 ├── manifest.webmanifest     Web app manifest: name, icons, shortcuts to each calculator
 ├── sw.js                    Service worker source (network first; the build fills in its version and precache list)
 ├── tools/                   One indexable page per calculator, with a worked example:
-│                            prime-cost-calculator/, plate-cost-calculator/, pour-cost-calculator/
+│                            prime-cost-calculator/, plate-cost-calculator/, pour-cost-calculator/, break-even-calculator/
 ├── css/
 │   ├── tokens.css           Fonts, brand tokens, fluid scales, light and dark themes
 │   ├── base.css             Reset, typography, layout primitives, buttons, reveal rules
@@ -246,6 +246,7 @@ Then open <http://localhost:8000>.
 │   ├── calc-prime.js        Prime cost tool: gauge, breakdown, what-if
 │   ├── calc-tracker.js      Prime cost month-by-month tracker (localStorage, chart, CSV)
 │   ├── calc-recipe.js       Plate and cocktail cost tools (one shared row-based tool)
+│   ├── calc-breakeven.js    Break-even tool: sales per month, week and day, guests a day
 │   ├── calc-tabs.js         Toolkit tabs, shared links and copy link
 │   ├── inquiry.js           Contact message builder and CONTACT_EMAIL
 │   └── main.js              Menu, scroll reveal, nav spy, parallax, marquee pause, quick-contact bar

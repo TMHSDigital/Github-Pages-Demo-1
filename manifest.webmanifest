@@ -1,7 +1,7 @@
 {
   "name": "TM Hospitality Strategies",
   "short_name": "TMHS Tools",
-  "description": "Prime cost, plate cost and cocktail pour cost calculators for restaurant operators. They work offline once installed.",
+  "description": "Prime cost, plate cost, cocktail pour cost and break-even calculators for restaurant operators. They work offline once installed.",
   "id": "./",
   "start_url": "./#calculator",
   "scope": "./",
@@ -16,6 +16,7 @@
   "shortcuts": [
     { "name": "Prime cost calculator", "url": "tools/prime-cost-calculator/" },
     { "name": "Plate cost calculator", "url": "tools/plate-cost-calculator/" },
-    { "name": "Cocktail pour cost calculator", "url": "tools/pour-cost-calculator/" }
+    { "name": "Cocktail pour cost calculator", "url": "tools/pour-cost-calculator/" },
+    { "name": "Break-even calculator", "url": "tools/break-even-calculator/" }
   ]
 }

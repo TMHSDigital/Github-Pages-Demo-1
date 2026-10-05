@@ -83,6 +83,17 @@ test('derived percentages carry no floating-point noise', () => {
   assert.equal(C.whatIf(100000, 63.4).gapPts, 3.4);
 });
 
+test('break-even (#38)', () => {
+  assert.ok(Math.abs(C.breakEven(45000, 62) - 118421.05) < 0.01);
+  assert.equal(C.breakEven(45000, 0), 45000);
+  assert.equal(C.breakEven(45000, 100), Infinity);
+  assert.equal(C.breakEven(45000, 120), Infinity);
+  assert.equal(C.breakEven(0, 62), 0);
+  assert.ok(Math.abs(C.profitAt(130000, 45000, 62) - 4400) < 1e-9);
+  assert.ok(Math.abs(C.profitAt(100000, 45000, 62) + 7000) < 1e-9);
+  assert.ok(Math.abs(C.breakEven(45000, 62) / C.WEEKS_PER_MONTH - 27328) < 1);
+});
+
 table('band boundaries', (p) => C.band(p).key, [
   [0, 'strong'], [59.9, 'strong'], [60, 'target'], [64.9, 'target'], [65, 'watch'], [69.9, 'watch'], [70, 'attention'], [120, 'attention'],
 ]);

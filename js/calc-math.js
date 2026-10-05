@@ -95,11 +95,17 @@ const TMHSCalc = (() => {
     return { key: 'attention', label: 'Over target' };
   };
 
+  // Break-even: the sales at which what is left after variable costs exactly covers fixed costs.
+  // Variable costs at or above 100% of sales can never break even (Infinity).
+  const breakEven = (fixed, variablePct) => (variablePct >= 100 ? Infinity : fixed / (1 - variablePct / 100));
+  const profitAt = (sales, fixed, variablePct) => sales * (1 - variablePct / 100) - fixed;
+  const WEEKS_PER_MONTH = 52 / 12;
+
   const usd = (n) => '$' + Math.round(n).toLocaleString('en-US');
   const usd2 = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const pct1 = (n) => (Math.round(n * 10) / 10).toLocaleString('en-US') + '%';
 
-  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW };
+  return { parseMoney, moneyIssue, parseAmount, parseCost, lineShare, breakEven, profitAt, WEEKS_PER_MONTH, primeCostPct, leftoverPct, band, whatIf, costPerOz, pourCost, priceAtTarget, costPct, vsTarget, usd, usd2, pct1, STRONG_BELOW };
 })();
 
 window.TMHSCalc = TMHSCalc;
