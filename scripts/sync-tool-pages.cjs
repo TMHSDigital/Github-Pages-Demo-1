@@ -29,7 +29,7 @@ const path = require('node:path');
 const ROOT = path.resolve(__dirname, '..');
 const TOOLS = path.join(ROOT, 'tools');
 const check = process.argv.includes('--check');
-const { site: SITE, tools: REGISTRY } = JSON.parse(fs.readFileSync(path.join(TOOLS, 'tools.json'), 'utf8'));
+const { site: SITE, tools: REGISTRY, pages: PAGES = [] } = JSON.parse(fs.readFileSync(path.join(TOOLS, 'tools.json'), 'utf8'));
 
 const read = (f) => fs.readFileSync(f, 'utf8').replace(/\r\n/g, '\n');
 const BLOCK = /<!-- sync:([\w-]+) -->\n([\s\S]*?)[ \t]*<!-- \/sync:\1 -->/g;
@@ -53,6 +53,7 @@ for (const t of REGISTRY) {
   if (!blocks[`tool-${t.key}`]) problems.push(`index.html has no sync:tool-${t.key} block`);
 }
 for (const slug of pages) if (!REGISTRY.some((t) => t.slug === slug)) problems.push(`tools/${slug}/ has no entry in tools/tools.json`);
+for (const page of PAGES) if (!fs.existsSync(path.join(ROOT, page, 'index.html'))) problems.push(`tools.json lists the page ${page}, but ${page}index.html does not exist`);
 if (problems.length) {
   console.log(problems.map((p) => '- ' + p).join('\n'));
   process.exit(1);
@@ -113,7 +114,7 @@ const fillGen = (html, file, tool) => html.replace(GEN, (all, indent, name) => {
 const sitemap = () => [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...['', ...REGISTRY.map((t) => `tools/${t.slug}/`)].flatMap((p) => ['  <url>', `    <loc>${SITE}${p}</loc>`, '  </url>']),
+  ...['', ...REGISTRY.map((t) => `tools/${t.slug}/`), ...PAGES].flatMap((p) => ['  <url>', `    <loc>${SITE}${p}</loc>`, '  </url>']),
   '</urlset>',
   '',
 ].join('\n');
@@ -125,15 +126,23 @@ const manifest = () => {
 };
 
 const outputs = [[homeFile, fillGen(home, homeFile)]];
-for (const tool of REGISTRY) {
-  const file = path.join(TOOLS, tool.slug, 'index.html');
+// Copy the shared blocks into a page below the root, relocated for its depth
+const withShared = (file) => {
   const up = '../'.repeat(path.relative(ROOT, path.dirname(file)).split(path.sep).length);
-  const synced = relocateSite(read(file)).replace(BLOCK, (all, name) => {
+  return relocateSite(read(file)).replace(BLOCK, (all, name) => {
     if (!(name in blocks)) throw new Error(`${path.relative(ROOT, file)}: index.html has no sync:${name} block`);
     const indent = /^[ \t]*/.exec(all.slice(all.indexOf('\n') + 1))[0];
     return `<!-- sync:${name} -->\n${forPage(name, blocks[name], up)}${indent}<!-- /sync:${name} -->`;
   });
-  outputs.push([file, fillGen(synced, file, tool)]);
+};
+for (const tool of REGISTRY) {
+  const file = path.join(TOOLS, tool.slug, 'index.html');
+  outputs.push([file, fillGen(withShared(file), file, tool)]);
+}
+// Other pages (tools.json "pages", such as privacy/): shared blocks and the site's address only
+for (const page of PAGES) {
+  const file = path.join(ROOT, page, 'index.html');
+  outputs.push([file, withShared(file)]);
 }
 outputs.push([path.join(ROOT, 'sitemap.xml'), sitemap()], [manifestFile, manifest()]);
 // robots.txt points at the sitemap; the 404 page resolves its files through a <base> of the site's path

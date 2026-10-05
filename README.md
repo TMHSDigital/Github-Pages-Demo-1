@@ -235,7 +235,8 @@ Then open <http://localhost:8000>.
 ├── 404.html                 Branded error page (uses <base> for the repo path)
 ├── manifest.webmanifest     Web app manifest: name, icons, shortcuts to each calculator
 ├── sw.js                    Service worker source (network first, keeps the pages a visitor opens; the build fills in its version)
-├── tools/                   tools.json (the tool registry) and one indexable page per calculator, with a worked example:
+├── privacy/                 Privacy page (plain language; listed under "pages" in tools/tools.json)
+├── tools/                   tools.json (the site address, the tool registry, other pages) and one indexable page per calculator, with a worked example:
 │                            prime-cost-calculator/, plate-cost-calculator/, pour-cost-calculator/,
 │                            break-even-calculator/, food-cost-calculator/
 ├── css/
@@ -367,6 +368,7 @@ npm run build && npm run lighthouse   # Lighthouse floors for every page in the 
 
 ## Privacy and security
 
+- A plain-language [privacy page](privacy/index.html) (`/privacy/`, linked from every footer) says the same for visitors. It is marked `TODO(verify)` until the owner has reviewed it ([#29](https://github.com/TMHSDigital/Github-Pages-Demo-1/issues/29)).
 - The site makes **no third-party requests**: fonts are self-hosted, and there are no cookies, analytics or forms. The calculators and the message builder run locally and never send what you enter. The only things ever stored are what the visitor chooses to save (a month in the prime cost tracker, a dish in their menu), and those stay in their browser's `localStorage` until they remove them. A shared calculator link carries its numbers in the URL, and only to whoever you give it to; after opening one, the address bar keeps up with your changes (still only in the URL, never stored).
 - The published site can be installed as an app, and every page a visitor has opened works offline afterwards. Its service worker downloads nothing up front: each page hands it the files it already loaded. It keeps only the site's own files, never anything a visitor types, and always tries the network first so a new deploy shows up straight away.
 - The published pages carry a strict Content-Security-Policy: only the site's own files run, and the few inline blocks are allowed by hash (generated in `scripts/stage.cjs`).

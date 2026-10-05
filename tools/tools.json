@@ -76,5 +76,8 @@
         "statLabel": "against 29% theoretical on the worked example"
       }
     }
+  ],
+  "pages": [
+    "privacy/"
   ]
 }

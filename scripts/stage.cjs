@@ -109,6 +109,14 @@ for (const slug of fs.readdirSync(path.join(ROOT, 'tools'))) {
   fs.writeFileSync(path.join(OUT, page), withCsp(withSw(withInlineCss(read(page), '../../'), '../../')));
 }
 
+// Other pages (tools.json "pages", such as privacy/), each one level below the root
+for (const dir of JSON.parse(read('tools/tools.json')).pages || []) {
+  const page = path.join(dir, 'index.html');
+  const up = '../'.repeat(dir.split('/').filter(Boolean).length);
+  fs.mkdirSync(path.join(OUT, dir), { recursive: true });
+  fs.writeFileSync(path.join(OUT, page), withCsp(withSw(withInlineCss(read(page), up), up)));
+}
+
 fs.copyFileSync(path.join(ROOT, 'manifest.webmanifest'), path.join(OUT, 'manifest.webmanifest'));
 
 // Service worker: versioned by a hash of every published file, so each deploy starts a new
