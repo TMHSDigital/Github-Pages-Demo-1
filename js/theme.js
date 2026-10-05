@@ -46,7 +46,9 @@
     });
   }
 
+  // An embed given ?theme= keeps it: the host site chose it, so the system setting doesn't apply
+  const embedTheme = root.classList.contains('embed') && /^(light|dark)$/.test(new URLSearchParams(location.search).get('theme') || '');
   media.addEventListener('change', (e) => {
-    if (!read()) apply(e.matches ? 'dark' : 'light');
+    if (!read() && !embedTheme) apply(e.matches ? 'dark' : 'light');
   });
 })();
